@@ -5,8 +5,8 @@ import safronov.apps.domain.model.task_category.TaskCategory
 
 interface TaskCategoryRepository {
 
-    fun insertTaskCategories(list: List<TaskCategory>): List<TaskCategory>
+    fun insertTaskCategories(list: List<TaskCategory>)
     fun getTaskCategories(): Flow<List<TaskCategory>>
-    fun clearTaskCategories(): List<TaskCategory>
+    fun clearTaskCategories()
 
 }
