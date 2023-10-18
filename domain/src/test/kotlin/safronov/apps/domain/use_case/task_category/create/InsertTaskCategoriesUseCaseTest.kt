@@ -77,6 +77,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
         }
     }
 
+    override fun getTaskCategoryById(id: String): TaskCategory? {
+        return dataToReturn.first()
+    }
+
     override fun updateTaskCategory(taskCategory: TaskCategory) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn[0] = taskCategory
