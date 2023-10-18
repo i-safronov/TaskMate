@@ -20,7 +20,7 @@ class GetTaskCategoriesUseCaseTest {
         val list: Flow<List<TaskCategory>> = getTaskCategoriesUseCase.execute()
         val result: List<TaskCategory> = list.first()
         assertEquals(fakeTaskCategoryRepository.dataToReturn, result)
-        assertEquals(true, result)
+        assertEquals(true, result.isNotEmpty())
     }
 
     @Test(expected = DomainException::class)
@@ -46,28 +46,28 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
         )
     )
 
-    override fun insertTaskCategories(list: List<TaskCategory>) {
+    override suspend fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = list.toMutableList()
     }
 
-    override fun getTaskCategories(): Flow<List<TaskCategory>> {
+    override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
         if (isNeedToThrowException) throw DomainException("some exception")
         return flow {
             emit(dataToReturn)
         }
     }
 
-    override fun getTaskCategoryById(id: String): TaskCategory? {
+    override suspend fun getTaskCategoryById(id: String): TaskCategory? {
         return dataToReturn.first()
     }
 
-    override fun updateTaskCategory(taskCategory: TaskCategory) {
+    override suspend fun updateTaskCategory(taskCategory: TaskCategory) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn[0] = taskCategory
     }
 
-    override fun clearTaskCategories() {
+    override suspend fun clearTaskCategories() {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn.clear()
     }

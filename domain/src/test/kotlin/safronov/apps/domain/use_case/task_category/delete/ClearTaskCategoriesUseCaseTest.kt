@@ -2,6 +2,7 @@ package safronov.apps.domain.use_case.task_category.delete
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -12,7 +13,7 @@ import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 class ClearTaskCategoriesUseCaseTest {
 
     @Test
-    fun `test, execute, should clear all task categories`() {
+    fun `test, execute, should clear all task categories`() = runBlocking {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         val clearTaskCategoriesUseCase = ClearTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
         clearTaskCategoriesUseCase.execute()
@@ -20,7 +21,7 @@ class ClearTaskCategoriesUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`(): Unit = runBlocking {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         fakeTaskCategoryRepository.throwException()
         val clearTaskCategoriesUseCase = ClearTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
@@ -46,28 +47,28 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
         isNeedToThrowException = true
     }
 
-    override fun insertTaskCategories(list: List<TaskCategory>) {
+    override suspend fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = list.toMutableList()
     }
 
-    override fun getTaskCategories(): Flow<List<TaskCategory>> {
+    override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
         if (isNeedToThrowException) throw DomainException("some exception")
         return flow {
             emit(dataToReturn)
         }
     }
 
-    override fun getTaskCategoryById(id: String): TaskCategory? {
+    override suspend fun getTaskCategoryById(id: String): TaskCategory? {
         return dataToReturn.first()
     }
 
-    override fun updateTaskCategory(taskCategory: TaskCategory) {
+    override suspend fun updateTaskCategory(taskCategory: TaskCategory) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn[0] = taskCategory
     }
 
-    override fun clearTaskCategories() {
+    override suspend fun clearTaskCategories() {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn.clear()
     }
