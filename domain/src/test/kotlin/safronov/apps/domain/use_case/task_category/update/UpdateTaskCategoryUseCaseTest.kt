@@ -54,7 +54,7 @@ class UpdateTaskCategoryUseCaseTest {
     @Test(expected = DomainException::class)
     fun `test, execute, should throw domain exception`() {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
-        fakeTaskCategoryRepository.throwException()
+        fakeTaskCategoryRepository.isNeedToThrowException = true
         val updateTaskCategoryUseCase = UpdateTaskCategoryUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
         val newTaskCategory = TaskCategory(
             id = 4,

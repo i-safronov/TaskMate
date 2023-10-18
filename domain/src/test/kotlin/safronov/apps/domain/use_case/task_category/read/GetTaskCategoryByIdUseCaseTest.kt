@@ -50,10 +50,6 @@ private class FakeTaskCategoryRepository1: TaskCategoryRepository {
         categoryType = CategoryTypes.System
     )
 
-    fun throwException() {
-        isNeedToThrowException = true
-    }
-
     override fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = list.toMutableList()

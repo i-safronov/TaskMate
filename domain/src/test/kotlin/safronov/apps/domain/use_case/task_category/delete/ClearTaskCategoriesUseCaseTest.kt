@@ -1,4 +1,4 @@
-package safronov.apps.domain.use_case.task_category.create
+package safronov.apps.domain.use_case.task_category.delete
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,41 +9,22 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 
-class InsertTaskCategoriesUseCaseTest {
+class ClearTaskCategoriesUseCaseTest {
 
     @Test
-    fun `test, insert task categories, should save and return saved categories`() {
+    fun `test, execute, should clear all task categories`() {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
-        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
-        val newData = listOf(
-            TaskCategory(
-                id = 5,
-                icon = 2,
-                backgroundColor = 1,
-                categoryName = "some name2",
-                categoryType = CategoryTypes.User
-            )
-        )
-        val savedData: List<TaskCategory> = insertTaskCategoriesUseCase.execute(list = newData)
-        assertEquals(newData, savedData)
-        assertEquals(fakeTaskCategoryRepository.dataToReturn, savedData)
+        val clearTaskCategoriesUseCase = ClearTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
+        clearTaskCategoriesUseCase.execute()
+        assertEquals(true, fakeTaskCategoryRepository.dataToReturn.isEmpty())
     }
 
     @Test(expected = DomainException::class)
-    fun `test, insert task categories, should throw exception`() {
+    fun `test, execute, should throw domain exception`() {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
-        fakeTaskCategoryRepository.isNeedToThrowException = true
-        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
-        val newData = listOf(
-            TaskCategory(
-                id = 5,
-                icon = 2,
-                backgroundColor = 1,
-                categoryName = "some name2",
-                categoryType = CategoryTypes.User
-            )
-        )
-        val savedData: List<TaskCategory> = insertTaskCategoriesUseCase.execute(list = newData)
+        fakeTaskCategoryRepository.throwException()
+        val clearTaskCategoriesUseCase = ClearTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
+        clearTaskCategoriesUseCase.execute()
     }
 
 }
@@ -60,6 +41,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
             categoryType = CategoryTypes.System
         )
     )
+
+    fun throwException() {
+        isNeedToThrowException = true
+    }
 
     override fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")

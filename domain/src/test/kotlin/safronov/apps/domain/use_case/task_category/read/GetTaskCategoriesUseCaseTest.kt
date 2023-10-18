@@ -26,7 +26,7 @@ class GetTaskCategoriesUseCaseTest {
     @Test(expected = DomainException::class)
     fun `test, execute, should throw domain exception`() = runBlocking {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
-        fakeTaskCategoryRepository.throwException()
+        fakeTaskCategoryRepository.isNeedToThrowException = true
         val getTaskCategoriesUseCase = GetTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
         val list: Flow<List<TaskCategory>> = getTaskCategoriesUseCase.execute()
     }
@@ -45,10 +45,6 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
             categoryType = CategoryTypes.System
         )
     )
-
-    fun throwException() {
-        isNeedToThrowException = true
-    }
 
     override fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")
