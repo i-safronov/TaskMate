@@ -12,5 +12,6 @@
     <dimen name="stroke_width_normal">2dp</dimen>
     <dimen name="default_radius">8dp</dimen>
     <dimen name="small_img_size">48dp</dimen>
+    <dimen name="clickable_item_min_height">48dp</dimen>
 
 </resources>
