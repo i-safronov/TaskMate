@@ -10,12 +10,23 @@
         <item name="android:textSize">@dimen/text_size</item>
     </style>
 
+    <style name="hint" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/hint</item>
+    </style>
+
     <style name="button" parent="Widget.AppCompat.Button">
         <item name="android:padding">@dimen/padding</item>
         <item name="android:minHeight">@dimen/clickable_item_min_height</item>
         <item name="android:background">@drawable/button_shape</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/text_color_in_button</item>
+        <item name="android:layout_margin">@dimen/margin_big</item>
+    </style>
+
+    <style name="logo_image">
+        <item name="cornerSizeBottomLeft">16%</item>
+        <item name="cornerSizeBottomRight">16%</item>
     </style>
 
 </resources>
