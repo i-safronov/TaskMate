@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="light_ripple_color">#4DFFFFFF</color>
-    <color name="button_color">#1091F8</color>
+    <color name="accent_color">#1091F8</color>
     <color name="text_color_in_button">#FFFFFFFF</color>
     <color name="hint">#747474</color>
     <color name="transparent_tint_for_image">#B3000000</color>
