@@ -7,6 +7,7 @@ interface TaskCategoryRepository {
 
     fun insertTaskCategories(list: List<TaskCategory>)
     fun getTaskCategories(): Flow<List<TaskCategory>>
+    fun updateTaskCategory(taskCategory: TaskCategory)
     fun clearTaskCategories()
 
 }
