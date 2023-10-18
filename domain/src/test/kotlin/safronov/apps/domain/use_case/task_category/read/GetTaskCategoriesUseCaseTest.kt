@@ -1,7 +1,9 @@
-package safronov.apps.domain.use_case.task_category.create
+package safronov.apps.domain.use_case.task_category.read
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -9,41 +11,24 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 
-class InsertTaskCategoriesUseCaseTest {
+class GetTaskCategoriesUseCaseTest {
 
     @Test
-    fun `test, insert task categories, should save and return saved categories`() {
+    fun `test, execute, should return categories`() = runBlocking {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
-        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
-        val newData = listOf(
-            TaskCategory(
-                id = 5,
-                icon = 2,
-                backgroundColor = 1,
-                categoryName = "some name2",
-                categoryType = CategoryTypes.User
-            )
-        )
-        val savedData: List<TaskCategory> = insertTaskCategoriesUseCase.execute(list = newData)
-        assertEquals(newData, savedData)
-        assertEquals(fakeTaskCategoryRepository.dataToReturn, savedData)
+        val getTaskCategoriesUseCase = GetTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
+        val list: Flow<List<TaskCategory>> = getTaskCategoriesUseCase.execute()
+        val result: List<TaskCategory> = list.first()
+        assertEquals(fakeTaskCategoryRepository.dataToReturn, result)
+        assertEquals(true, result)
     }
 
     @Test(expected = DomainException::class)
-    fun `test, insert task categories, should throw exception`() {
+    fun `test, execute, should throw domain exception`() = runBlocking {
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         fakeTaskCategoryRepository.throwException()
-        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
-        val newData = listOf(
-            TaskCategory(
-                id = 5,
-                icon = 2,
-                backgroundColor = 1,
-                categoryName = "some name2",
-                categoryType = CategoryTypes.User
-            )
-        )
-        val savedData: List<TaskCategory> = insertTaskCategoriesUseCase.execute(list = newData)
+        val getTaskCategoriesUseCase = GetTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
+        val list: Flow<List<TaskCategory>> = getTaskCategoriesUseCase.execute()
     }
 
 }
