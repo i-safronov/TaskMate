@@ -1,5 +1,6 @@
 package safronov.apps.domain.use_case.user_login
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -8,7 +9,7 @@ import safronov.apps.domain.repository.user_login.UserLoginRepository
 class IsUserLoggedInUseCaseTest {
 
     @Test
-    fun `test, execute, should check is user logged in, and return true`() {
+    fun `test, execute, should check is user logged in, and return true`() = runBlocking {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         fakeUserLoginRepository.isUserLoggedIn = true
         val isUserLoggedInUseCase = IsUserLoggedInUseCase(userLoginRepository = fakeUserLoginRepository)
@@ -17,7 +18,7 @@ class IsUserLoggedInUseCaseTest {
     }
 
     @Test
-    fun `test, execute, should check is user logged in, and return false`() {
+    fun `test, execute, should check is user logged in, and return false`() = runBlocking {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         fakeUserLoginRepository.isUserLoggedIn = false
         val isUserLoggedInUseCase = IsUserLoggedInUseCase(userLoginRepository = fakeUserLoginRepository)
@@ -26,7 +27,7 @@ class IsUserLoggedInUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should check is user logged in, should throw exception`() {
+    fun `test, execute, should check is user logged in, should throw exception`() = runBlocking {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         fakeUserLoginRepository.isNeedToThrowException = true
         val isUserLoggedInUseCase = IsUserLoggedInUseCase(userLoginRepository = fakeUserLoginRepository)
