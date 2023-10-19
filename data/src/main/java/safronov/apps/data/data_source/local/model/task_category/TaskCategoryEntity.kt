@@ -8,18 +8,23 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 
 @Entity(tableName = TaskCategoryEntity.TASK_CATEGORY_TABLE_NAME)
 data class TaskCategoryEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
-    @ColumnInfo val icon: Int?,
-    @ColumnInfo val backgroundColor: Int?,
-    @ColumnInfo val categoryName: String?,
-    @ColumnInfo val categoryType: CategoryTypes?
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null,
+    @ColumnInfo
+    val icon: Int?,
+    @ColumnInfo
+    val backgroundColor: Int?,
+    @ColumnInfo
+    val categoryName: String?,
+    @ColumnInfo
+    val categoryType: CategoryTypes?
 ) {
     companion object {
-        const val TASK_CATEGORY_TABLE_NAME = "Task category"
+        const val TASK_CATEGORY_TABLE_NAME = "TaskCategoriesTableName"
 
         fun convertTaskCategoryEntityToTaskCategory(taskCategoryEntity: TaskCategoryEntity): TaskCategory {
             return TaskCategory(
-                id = taskCategoryEntity.id,
+                id = taskCategoryEntity.id?.toLong(),
                 icon = taskCategoryEntity.icon,
                 backgroundColor = taskCategoryEntity.backgroundColor,
                 categoryType = taskCategoryEntity.categoryType,
@@ -31,7 +36,7 @@ data class TaskCategoryEntity(
             taskCategory: TaskCategory
         ): TaskCategoryEntity {
             return TaskCategoryEntity(
-                id = taskCategory.id,
+                id = taskCategory.id?.toInt(),
                 icon = taskCategory.icon,
                 backgroundColor = taskCategory.backgroundColor,
                 categoryType = taskCategory.categoryType,
