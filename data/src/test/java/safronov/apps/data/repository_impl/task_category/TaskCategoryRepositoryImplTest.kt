@@ -43,21 +43,24 @@ class TaskCategoryRepositoryImplTest {
     @Test
     fun `test, insert new categories, should save new categories`() = runBlocking {
         val fakeTaskCategoryService = FakeTaskCategoryService()
-        val oldData = fakeTaskCategoryService.dataToReturn
+        val oldData = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
         val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
         assertNotEquals(oldData, newTaskCategories)
         taskCategoryRepository.insertTaskCategories(newTaskCategories)
-        assertEquals(fakeTaskCategoryService.dataToReturn, newTaskCategories)
+        val savedTaskCategory = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
+        assertEquals(savedTaskCategory, newTaskCategories)
     }
 
     @Test
     fun `test, insert new categories, should save and return saved categories`() = runBlocking {
         val fakeTaskCategoryService = FakeTaskCategoryService()
         val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
-        val oldData = fakeTaskCategoryService.dataToReturn
+        val oldData = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
         assertNotEquals(oldData, newTaskCategories)
         taskCategoryRepository.insertTaskCategories(newTaskCategories)
-        val savedData: List<TaskCategoryEntity> = fakeTaskCategoryService.getTaskCategories().first()
+        val savedData = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(
+            fakeTaskCategoryService.getTaskCategories().first()
+        )
         assertEquals(savedData, newTaskCategories)
     }
 
@@ -86,7 +89,8 @@ class TaskCategoryRepositoryImplTest {
         val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
         assertNotEquals(newTaskCategoryForUpdate, taskCategoryRepository.getTaskCategoryById("3"))
         taskCategoryRepository.updateTaskCategory(newTaskCategoryForUpdate)
-        assertEquals(newTaskCategoryForUpdate, fakeTaskCategoryService.getTaskCategoryById("3"))
+        val savedTaskCategory = TaskCategoryEntity.convertTaskCategoryEntityToTaskCategory(fakeTaskCategoryService.getTaskCategoryById("3"))
+        assertEquals(newTaskCategoryForUpdate, savedTaskCategory)
     }
 
     @Test
@@ -96,7 +100,9 @@ class TaskCategoryRepositoryImplTest {
         assertNotEquals(fakeTaskCategoryService.getTaskCategoryById("3"), newTaskCategoryForUpdate)
         taskCategoryRepository.clearTaskCategories()
         assertEquals(true, fakeTaskCategoryService.dataToReturn.isEmpty())
-        taskCategoryRepository.updateTaskCategory(fakeTaskCategoryService.getTaskCategoryById("3"), newTaskCategoryForUpdate)
+        taskCategoryRepository.updateTaskCategory(newTaskCategoryForUpdate)
+        val savedTaskCategory = TaskCategoryEntity.convertTaskCategoryEntityToTaskCategory(fakeTaskCategoryService.getTaskCategoryById("3"))
+        assertEquals(savedTaskCategory, newTaskCategoryForUpdate)
     }
 
     @Test
@@ -105,8 +111,9 @@ class TaskCategoryRepositoryImplTest {
         val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
         assertNotEquals(fakeTaskCategoryService.getTaskCategoryById("3"), newTaskCategoryForUpdate)
         taskCategoryRepository.updateTaskCategory(newTaskCategoryForUpdate)
-        assertEquals(fakeTaskCategoryService.getTaskCategoryById("3"), taskCategoryRepository.getTaskCategoryById("3"))
-        assertEquals(fakeTaskCategoryService.getTaskCategoryById("3"), newTaskCategoryForUpdate)
+        val savedTaskCategory = TaskCategoryEntity.convertTaskCategoryEntityToTaskCategory(fakeTaskCategoryService.getTaskCategoryById("3"))
+        assertEquals(savedTaskCategory, taskCategoryRepository.getTaskCategoryById("3"))
+        assertEquals(savedTaskCategory, newTaskCategoryForUpdate)
     }
 
     @Test
@@ -196,14 +203,15 @@ private class FakeTaskCategoryService: TaskCategoryService {
         }
     }
 
-    override suspend fun getTaskCategoryById(id: String): TaskCategoryEntity? {
+    override suspend fun getTaskCategoryById(id: String): TaskCategoryEntity {
         if (isNeedToThrowException) throw DataException("some exception")
         return dataToReturn.first()
     }
 
     override suspend fun updateTaskCategory(taskCategory: TaskCategoryEntity) {
         if (isNeedToThrowException) throw DataException("some exception")
-        dataToReturn[0] = taskCategory
+        dataToReturn.clear()
+        dataToReturn.add(taskCategory)
     }
 
     override suspend fun clearTaskCategories() {

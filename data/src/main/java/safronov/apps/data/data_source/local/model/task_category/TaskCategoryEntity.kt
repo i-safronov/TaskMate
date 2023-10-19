@@ -27,5 +27,37 @@ data class TaskCategoryEntity(
             )
         }
 
+        fun convertTaskCategoryToTaskCategoryEntity(
+            taskCategory: TaskCategory
+        ): TaskCategoryEntity {
+            return TaskCategoryEntity(
+                id = taskCategory.id,
+                icon = taskCategory.icon,
+                backgroundColor = taskCategory.backgroundColor,
+                categoryType = taskCategory.categoryType,
+                categoryName = taskCategory.categoryName
+            )
+        }
+
+        fun convertListOfTaskCategoryEntityToListOfTaskCategory(
+            list: List<TaskCategoryEntity>
+        ): List<TaskCategory> {
+            val mList = mutableListOf<TaskCategory>()
+            list.forEach {
+                mList.add(TaskCategoryEntity.convertTaskCategoryEntityToTaskCategory(it))
+            }
+            return mList
+        }
+
+        fun convertListOfTaskCategoryToListOfTaskCategoryEntity(
+            list: List<TaskCategory>
+        ): List<TaskCategoryEntity> {
+            val mList = mutableListOf<TaskCategoryEntity>()
+            list.forEach {
+                mList.add(TaskCategoryEntity.convertTaskCategoryToTaskCategoryEntity(taskCategory = it))
+            }
+            return mList
+        }
+
     }
 }
