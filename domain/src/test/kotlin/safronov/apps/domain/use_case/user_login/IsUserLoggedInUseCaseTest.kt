@@ -36,12 +36,12 @@ class IsUserLoggedInUseCaseTest {
 
 }
 
-class FakeUserLoginRepository: UserLoginRepository {
+private class FakeUserLoginRepository: UserLoginRepository {
 
     var isNeedToThrowException = false
     var isUserLoggedIn = true
 
-    override suspend fun logIn(): Boolean {
+    override suspend fun userLogIn(): Boolean {
         if (isNeedToThrowException) throw DomainException("some exception")
         return true
     }
