@@ -9,7 +9,7 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 @Entity(tableName = TaskCategoryEntity.TASK_CATEGORY_TABLE_NAME)
 data class TaskCategoryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    val id: Long? = null,
     @ColumnInfo
     val icon: Int?,
     @ColumnInfo
@@ -24,7 +24,7 @@ data class TaskCategoryEntity(
 
         fun convertTaskCategoryEntityToTaskCategory(taskCategoryEntity: TaskCategoryEntity): TaskCategory {
             return TaskCategory(
-                id = taskCategoryEntity.id?.toLong(),
+                id = taskCategoryEntity.id,
                 icon = taskCategoryEntity.icon,
                 backgroundColor = taskCategoryEntity.backgroundColor,
                 categoryType = taskCategoryEntity.categoryType,
@@ -36,7 +36,7 @@ data class TaskCategoryEntity(
             taskCategory: TaskCategory
         ): TaskCategoryEntity {
             return TaskCategoryEntity(
-                id = taskCategory.id?.toInt(),
+                id = taskCategory.id,
                 icon = taskCategory.icon,
                 backgroundColor = taskCategory.backgroundColor,
                 categoryType = taskCategory.categoryType,

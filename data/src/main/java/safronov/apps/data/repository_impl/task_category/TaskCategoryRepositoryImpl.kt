@@ -3,7 +3,7 @@ package safronov.apps.data.repository_impl.task_category
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
-import safronov.apps.data.data_source.local.service.TaskCategoryService
+import safronov.apps.data.data_source.local.service.task_category.TaskCategoryService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository

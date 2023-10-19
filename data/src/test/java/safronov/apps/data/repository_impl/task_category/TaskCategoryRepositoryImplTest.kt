@@ -8,7 +8,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
-import safronov.apps.data.data_source.local.service.TaskCategoryService
+import safronov.apps.data.data_source.local.service.task_category.TaskCategoryService
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task_category.TaskCategory
