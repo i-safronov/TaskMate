@@ -1,4 +1,4 @@
-package safronov.apps.data.data_source.local.app_db.dao
+package safronov.apps.data.data_source.local.app_db.dao_sql
 
 import android.content.Context
 import androidx.room.Room
@@ -11,7 +11,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import safronov.apps.data.data_source.local.app_db.core.AppDB
+import safronov.apps.data.data_source.local.app_db.core_sql.AppDB
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import java.io.IOException

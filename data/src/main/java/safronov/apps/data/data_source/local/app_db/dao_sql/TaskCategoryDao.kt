@@ -1,4 +1,4 @@
-package safronov.apps.data.data_source.local.app_db.dao
+package safronov.apps.data.data_source.local.app_db.dao_sql
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import safronov.apps.data.data_source.local.app_db.dao.TaskCategoryDao
+import safronov.apps.data.data_source.local.app_db.dao_sql.TaskCategoryDao
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes

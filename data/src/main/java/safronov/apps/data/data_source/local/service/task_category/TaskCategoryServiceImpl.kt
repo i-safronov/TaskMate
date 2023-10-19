@@ -1,7 +1,7 @@
 package safronov.apps.data.data_source.local.service.task_category
 
 import kotlinx.coroutines.flow.Flow
-import safronov.apps.data.data_source.local.app_db.dao.TaskCategoryDao
+import safronov.apps.data.data_source.local.app_db.dao_sql.TaskCategoryDao
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 import safronov.apps.data.exception.DataException
 
