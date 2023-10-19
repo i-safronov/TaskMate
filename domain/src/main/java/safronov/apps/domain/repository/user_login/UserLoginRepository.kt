@@ -1,8 +1,8 @@
 package safronov.apps.domain.repository.user_login
 
-interface UserLogin {
+interface UserLoginRepository {
 
-    suspend fun logIn()
+    suspend fun logIn(): Boolean
     suspend fun isUserLoggedIn(): Boolean
 
 }
