@@ -6,7 +6,6 @@ import org.junit.Test
 import safronov.apps.data.data_source.local.service.user_login.UserLoginService
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
-import safronov.apps.domain.repository.user_login.UserLoginRepository
 
 class UserLoginRepositoryImplTest {
 
@@ -15,8 +14,8 @@ class UserLoginRepositoryImplTest {
         val fakeUserLoginService = FakeUserLoginService()
         fakeUserLoginService.isUserLoggedIn = false
         fakeUserLoginService.userLogIn = true
-        val userLoginRepositoryImpl = UserLoginRepositoryImpl(iserLoginService = fakeUserLoginService)
-        assertEquals(true, userLoginRepositoryImpl.userLogIn)
+        val userLoginRepositoryImpl = UserLoginRepositoryImpl(userLoginService = fakeUserLoginService)
+        assertEquals(true, userLoginRepositoryImpl.userLogIn())
     }
 
     @Test
@@ -24,16 +23,16 @@ class UserLoginRepositoryImplTest {
         val fakeUserLoginService = FakeUserLoginService()
         fakeUserLoginService.isUserLoggedIn = true
         fakeUserLoginService.userLogIn = false
-        val userLoginRepositoryImpl = UserLoginRepositoryImpl(iserLoginService = fakeUserLoginService)
-        assertEquals(false, userLoginRepositoryImpl.userLogIn)
+        val userLoginRepositoryImpl = UserLoginRepositoryImpl(userLoginService = fakeUserLoginService)
+        assertEquals(false, userLoginRepositoryImpl.userLogIn())
     }
 
     @Test(expected = DomainException::class)
     fun `test, user log in, should throw exception`() = runBlocking {
         val fakeUserLoginService = FakeUserLoginService()
         fakeUserLoginService.isNeedToThrowException = true
-        val userLoginRepositoryImpl = UserLoginRepositoryImpl(iserLoginService = fakeUserLoginService)
-        assertEquals(false, userLoginRepositoryImpl.userLogIn)
+        val userLoginRepositoryImpl = UserLoginRepositoryImpl(userLoginService = fakeUserLoginService)
+        assertEquals(false, userLoginRepositoryImpl.userLogIn())
     }
 
 }
