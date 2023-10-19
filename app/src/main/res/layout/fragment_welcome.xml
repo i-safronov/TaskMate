@@ -16,7 +16,7 @@
         android:src="@drawable/logo"
         android:scaleType="centerCrop"
         android:tintMode="src_atop"
-        app:tint="#B3000000"
+        app:tint="#99000000"
         android:adjustViewBounds="true"
         app:shapeAppearanceOverlay="@style/logo_image"
         app:layout_constraintStart_toStartOf="parent"

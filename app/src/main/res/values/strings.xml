@@ -3,4 +3,6 @@
     <string name="continuee">Продолжить</string>
     <string name="welcome">Добро пожаловать в</string>
     <string name="privacy_policy">Нажимая «Продолжить», вы соглашаетесь с тем, что прочитали нашу Политику конфиденциальности</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

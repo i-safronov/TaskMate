@@ -29,4 +29,8 @@
         <item name="cornerSizeBottomRight">16%</item>
     </style>
 
+    <style name="progress_bar">
+        <item name="android:indeterminateTint">@color/accent_color</item>
+    </style>
+
 </resources>
