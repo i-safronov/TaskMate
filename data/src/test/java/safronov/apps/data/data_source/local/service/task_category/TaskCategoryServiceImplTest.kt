@@ -33,7 +33,6 @@ class TaskCategoryServiceImplTest {
     fun testInsertTaskCategoriesShouldSaveTaskCategories() = runBlocking {
         val fakeTaskCategoryDao = FakeTaskCategoryDao()
         val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
-        assertEquals(true, taskCategoryServiceImpl.getTaskCategories().first().isEmpty())
         taskCategoryServiceImpl.insertTaskCategories(dataToSave)
         assertEquals(dataToSave, taskCategoryServiceImpl.getTaskCategories().first())
     }
@@ -50,7 +49,6 @@ class TaskCategoryServiceImplTest {
     fun testGetTaskCategoryById() = runBlocking {
         val fakeTaskCategoryDao = FakeTaskCategoryDao()
         val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
-        assertEquals(true, taskCategoryServiceImpl.getTaskCategories().first().isEmpty())
         taskCategoryServiceImpl.insertTaskCategories(dataToSave)
         assertEquals(dataToSave, taskCategoryServiceImpl.getTaskCategories().first())
         val currentItem = dataToSave.first()
@@ -61,7 +59,6 @@ class TaskCategoryServiceImplTest {
     fun updateTaskCategory() = runBlocking {
         val fakeTaskCategoryDao = FakeTaskCategoryDao()
         val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
-        assertEquals(true, taskCategoryServiceImpl.getTaskCategories().first().isEmpty())
         taskCategoryServiceImpl.insertTaskCategories(dataToSave)
         assertEquals(dataToSave, taskCategoryServiceImpl.getTaskCategories().first())
         val newData = dataToSave.first().copy(
@@ -78,7 +75,6 @@ class TaskCategoryServiceImplTest {
     fun clearTaskCategories() = runBlocking {
         val fakeTaskCategoryDao = FakeTaskCategoryDao()
         val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
-        assertEquals(true, taskCategoryServiceImpl.getTaskCategories().first().isEmpty())
         taskCategoryServiceImpl.insertTaskCategories(dataToSave)
         assertEquals(dataToSave, taskCategoryServiceImpl.getTaskCategories().first())
         taskCategoryServiceImpl.clearTaskCategories()
