@@ -35,7 +35,7 @@ class FragmentStart : Fragment() {
     }
 
     private fun setup() {
-        //requireAppComponent().inject(this)
+        requireAppComponent().inject(this)
         fragmentStartViewModel = ViewModelProvider(this, fragmentStartViewModelFactory)
             .get(FragmentStartViewModel::class.java)
     }
