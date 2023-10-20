@@ -1,60 +1,60 @@
 package safronov.apps.taskmate.project.ui.fragment.start
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import safronov.apps.taskmate.R
+import safronov.apps.taskmate.databinding.FragmentStartBinding
+import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
+import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModel
+import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentStart.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentStart : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentStartBinding? = null
+    private val binding get() = _binding!!
+
+    @Inject
+    lateinit var fragmentStartViewModelFactory: FragmentStartViewModelFactory
+    private var fragmentStartViewModel: FragmentStartViewModel? = null
+
+    override fun onStart() {
+        super.onStart()
+        try {
+            setup()
+        } catch (e: RuntimeException) {
+            Log.e(TAG, e.message.toString())
         }
+    }
+
+    private fun setup() {
+        requireAppComponent().inject(this)
+        fragmentStartViewModel = ViewModelProvider(this, fragmentStartViewModelFactory)
+            .get(FragmentStartViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start, container, false)
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentStart.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentStart().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = FragmentStart()
+        const val TAG = "sfrLog"
     }
+
 }
