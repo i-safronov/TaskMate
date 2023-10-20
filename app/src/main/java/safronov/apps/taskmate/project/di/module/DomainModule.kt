@@ -3,7 +3,7 @@ package safronov.apps.taskmate.project.di.module
 import dagger.Module
 import dagger.Provides
 import safronov.apps.data.data_source.local.service.task_category.TaskCategoryService
-import safronov.apps.data.data_source.local.service.user_login.UserLoginService
+import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesService
 import safronov.apps.data.repository_impl.task_category.TaskCategoryRepositoryImpl
 import safronov.apps.data.repository_impl.user_login.UserLoginRepositoryImpl
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
@@ -26,9 +26,9 @@ class DomainModule {
     }
 
     @Provides
-    fun provideUserLoginRepository(userLoginService: UserLoginService): UserLoginRepository {
+    fun provideUserLoginRepository(sharedPreferencesService: SharedPreferencesService): UserLoginRepository {
         return UserLoginRepositoryImpl(
-            userLoginService = userLoginService
+            sharedPreferencesService = sharedPreferencesService
         )
     }
 

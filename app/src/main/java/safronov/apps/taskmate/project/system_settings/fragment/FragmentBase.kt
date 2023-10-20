@@ -42,17 +42,21 @@ abstract class FragmentBase(): Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        try {
+            removeUI()
+        } catch (e: RuntimeException) {
+            logError(e)
+        }
+        super.onDestroyView()
+    }
+
     abstract fun starting()
     abstract fun createUI(inflater: LayoutInflater, container: ViewGroup?): View?
     abstract fun prepareArguments()
     abstract fun uiCreated(view: View, savedInstanceState: Bundle?)
     abstract fun handeException(e: RuntimeException)
     abstract fun removeUI()
-
-    override fun onDestroyView() {
-        removeUI()
-        super.onDestroyView()
-    }
 
     private fun wasException(e: RuntimeException) {
         handeException(e)

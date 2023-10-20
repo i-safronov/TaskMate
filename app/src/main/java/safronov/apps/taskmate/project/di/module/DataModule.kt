@@ -10,13 +10,9 @@ import safronov.apps.data.data_source.local.app_db.core_sql.AppDB
 import safronov.apps.data.data_source.local.app_db.dao_sql.TaskCategoryDao
 import safronov.apps.data.data_source.local.service.task_category.TaskCategoryService
 import safronov.apps.data.data_source.local.service.task_category.TaskCategoryServiceImpl
-import safronov.apps.data.data_source.local.service.user_login.UserLoginService
-import safronov.apps.data.data_source.local.service.user_login.UserLoginServiceImpl
-import safronov.apps.data.data_source.local.service.user_login.UserLoginServiceImpl.Companion.SHARED_PREFERENCES_NAME
-import safronov.apps.data.repository_impl.task_category.TaskCategoryRepositoryImpl
-import safronov.apps.data.repository_impl.user_login.UserLoginRepositoryImpl
-import safronov.apps.domain.repository.task_category.TaskCategoryRepository
-import safronov.apps.domain.repository.user_login.UserLoginRepository
+import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesService
+import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesServiceImpl
+import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesServiceImpl.Companion.SHARED_PREFERENCES_NAME
 
 @Module
 class DataModule {
@@ -47,8 +43,8 @@ class DataModule {
     }
 
     @Provides
-    fun provideUserLoginService(sharedPreferences: SharedPreferences): UserLoginService {
-        return UserLoginServiceImpl(
+    fun provideUserLoginService(sharedPreferences: SharedPreferences): SharedPreferencesService {
+        return SharedPreferencesServiceImpl(
             sharedPreferences = sharedPreferences
         )
     }

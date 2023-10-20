@@ -1,16 +1,16 @@
 package safronov.apps.data.repository_impl.user_login
 
-import safronov.apps.data.data_source.local.service.user_login.UserLoginService
+import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.repository.user_login.UserLoginRepository
 
 class UserLoginRepositoryImpl(
-    private val userLoginService: UserLoginService
+    private val sharedPreferencesService: SharedPreferencesService
 ): UserLoginRepository {
 
     override suspend fun userLogIn(): Boolean {
         try {
-            return userLoginService.userLogIn()
+            return sharedPreferencesService.saveBoolean(key = USER_LOGIN_KEY, value = true)
         } catch (e: Exception) {
             throw DomainException(e.message, e)
         }
@@ -18,10 +18,14 @@ class UserLoginRepositoryImpl(
 
     override suspend fun isUserLoggedIn(): Boolean {
         try {
-            return userLoginService.isUserLoggedIn()
+            return sharedPreferencesService.getBoolean(key = USER_LOGIN_KEY)
         } catch (e: Exception) {
             throw DomainException(e.message, e)
         }
+    }
+
+    companion object {
+        private const val USER_LOGIN_KEY = "UserLoginKey"
     }
 
 }
