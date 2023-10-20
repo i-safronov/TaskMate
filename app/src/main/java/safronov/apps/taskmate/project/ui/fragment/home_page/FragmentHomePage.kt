@@ -12,14 +12,12 @@ class FragmentHomePage : FragmentBase() {
     private var _binding: FragmentHomePageBinding? = null
     private val binding get() = _binding!!
 
-    override fun starting() { }
-
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun prepareArguments() { }
+    override fun setup() { }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) { }
 

@@ -10,22 +10,13 @@ import safronov.apps.taskmate.project.app.App
 
 abstract class FragmentBase(): Fragment() {
 
-    override fun onStart() {
-        super.onStart()
-        try {
-            starting()
-        } catch (e: RuntimeException) {
-            wasException(e)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return try {
-            prepareArguments()
+            setup()
             createUI(inflater, container)
         } catch (e: RuntimeException) {
             wasException(e)
@@ -51,9 +42,8 @@ abstract class FragmentBase(): Fragment() {
         super.onDestroyView()
     }
 
-    abstract fun starting()
+    abstract fun setup()
     abstract fun createUI(inflater: LayoutInflater, container: ViewGroup?): View?
-    abstract fun prepareArguments()
     abstract fun uiCreated(view: View, savedInstanceState: Bundle?)
     abstract fun handeException(e: RuntimeException)
     abstract fun removeUI()

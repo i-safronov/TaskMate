@@ -17,14 +17,12 @@ class FragmentError : FragmentBase() {
     private val binding get() = _binding!!
     private var errorMessage: String = ""
 
-    override fun starting() {  }
-
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentErrorBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun prepareArguments() {
+    override fun setup() {
         errorMessage = requireArguments().getString(ERROR_MESSAGE, "")
     }
 

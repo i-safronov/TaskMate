@@ -2,8 +2,6 @@ package safronov.apps.data.data_source.local.service.user_login
 
 import android.content.SharedPreferences
 
-//TODO перепеши на абстракцию а не на суть 
-
 class SharedPreferencesServiceImpl(
     private val sharedPreferences: SharedPreferences
 ): SharedPreferencesService {

@@ -1,12 +1,14 @@
 package safronov.apps.taskmate.project.di.module
 
 import android.content.Context
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenApp
+import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
-import javax.inject.Singleton
 
 @Module
 class AppModule(
@@ -16,8 +18,13 @@ class AppModule(
     @Provides
     fun provideAppContext() = context
 
-    @Provides @Singleton
+    @Provides
     fun provideDispatchersList(): DispatchersList = DispatchersList.Base()
+
+    @Provides
+    fun provideFullScreenApp(): FullScreenApp {
+        return FullScreenAppImpl()
+    }
 
     @Provides
     fun provideFragmentStartViewModelFactory(
