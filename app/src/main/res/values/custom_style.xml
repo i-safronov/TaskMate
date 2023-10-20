@@ -4,10 +4,12 @@
     <style name="title" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">@dimen/title_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
     <style name="text" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
     <style name="hint" parent="Widget.AppCompat.TextView">

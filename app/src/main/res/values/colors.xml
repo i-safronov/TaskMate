@@ -13,5 +13,6 @@
     <color name="text_color_in_button">#FFFFFFFF</color>
     <color name="hint">#747474</color>
     <color name="transparent_tint_for_image">#B3000000</color>
+    <color name="text_color">#FF000000</color>
 
 </resources>

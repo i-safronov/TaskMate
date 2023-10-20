@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".project.ui.fragment.error.FragmentError">
+    tools:context=".project.ui.fragment.error.FragmentError"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="@dimen/padding">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        style="@style/title"
+        android:text="@string/oops"
+        android:gravity="center" />
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/normal_icon_height"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_error" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/hint"
+        android:text="@string/lorem_ipsum"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/margin_big"
+        android:layout_marginEnd="@dimen/margin_big"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_try_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/button"
+        android:text="@string/try_again"/>
+
+</LinearLayout>

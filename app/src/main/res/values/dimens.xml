@@ -6,7 +6,7 @@
     <dimen name="margin_big">16dp</dimen>
     <dimen name="margin_very_big">32dp</dimen>
     <dimen name="padding">8dp</dimen>
-    <dimen name="title_size">16sp</dimen>
+    <dimen name="title_size">22sp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="stroke_width">1dp</dimen>
@@ -14,5 +14,6 @@
     <dimen name="default_radius">8dp</dimen>
     <dimen name="small_img_size">48dp</dimen>
     <dimen name="clickable_item_min_height">48dp</dimen>
+    <dimen name="normal_icon_height">250dp</dimen>
 
 </resources>
