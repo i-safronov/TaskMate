@@ -7,6 +7,7 @@ class UserLoginServiceImpl(
 ): UserLoginService {
 
     companion object {
+        const val SHARED_PREFERENCES_NAME = "TaskMateSharedPreferences"
         private const val USER_LOGIN = "User login"
     }
 

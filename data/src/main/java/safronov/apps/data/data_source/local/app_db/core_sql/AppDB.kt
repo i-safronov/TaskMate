@@ -5,6 +5,8 @@ import androidx.room.RoomDatabase
 import safronov.apps.data.data_source.local.app_db.dao_sql.TaskCategoryDao
 import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 
+const val APP_DB_NAME = "TaskMateAppDB.db"
+
 @Database(
     entities = [TaskCategoryEntity::class], version = 1
 )
