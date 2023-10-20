@@ -1,4 +1,4 @@
-package safronov.apps.domain.use_case.user_login
+package safronov.apps.domain.use_case.user_login.create
 
 import safronov.apps.domain.repository.user_login.UserLoginRepository
 

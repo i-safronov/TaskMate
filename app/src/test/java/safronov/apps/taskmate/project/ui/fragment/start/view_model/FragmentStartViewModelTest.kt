@@ -8,7 +8,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.repository.user_login.UserLoginRepository
-import safronov.apps.domain.use_case.user_login.IsUserLoggedInUseCase
+import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 
 class FragmentStartViewModelTest {

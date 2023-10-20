@@ -5,6 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.repository.user_login.UserLoginRepository
+import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 
 class UserLogInUseCaseTest {
 
