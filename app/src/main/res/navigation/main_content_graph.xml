@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content_graph"
-    app:startDestination="@id/fragmentStart">
+    app:startDestination="@id/fragmentHomePage">
+
 
     <fragment
-        android:id="@+id/fragmentWelcome"
-        android:name="safronov.apps.taskmate.project.ui.fragment.welcome.FragmentWelcome"
-        android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" />
-    <fragment
-        android:id="@+id/fragmentStart"
-        android:name="safronov.apps.taskmate.project.ui.fragment.start.FragmentStart"
-        android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
+        android:id="@+id/fragmentHomePage"
+        android:name="safronov.apps.taskmate.project.ui.fragment.home_page.FragmentHomePage"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" >
         <action
-            android:id="@+id/action_fragmentStart_to_fragmentWelcome"
-            app:destination="@id/fragmentWelcome" />
+            android:id="@+id/action_fragmentHomePage_to_fragmentError"
+            app:destination="@id/fragmentError" />
     </fragment>
-
+    <fragment
+        android:id="@+id/fragmentError"
+        android:name="safronov.apps.taskmate.project.ui.fragment.error.FragmentError"
+        android:label="fragment_error"
+        tools:layout="@layout/fragment_error" />
 </navigation>
