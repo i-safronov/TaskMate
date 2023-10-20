@@ -16,4 +16,8 @@ class App: Application() {
 
     fun getAppComponent(): AppComponent = appComponent
 
+    companion object {
+        const val TAG = "sfrLog"
+    }
+
 }

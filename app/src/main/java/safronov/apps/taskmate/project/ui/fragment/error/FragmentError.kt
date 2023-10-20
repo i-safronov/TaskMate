@@ -8,34 +8,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import safronov.apps.taskmate.databinding.FragmentErrorBinding
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 
-class FragmentError : Fragment() {
+class FragmentError : FragmentBase() {
 
     private var _binding: FragmentErrorBinding? = null
     private val binding get() = _binding!!
     private var errorMessage: String = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun starting() {  }
+
+    override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentErrorBinding.inflate(inflater, container, false)
-        try {
-            errorMessage = requireArguments().getString(ERROR_MESSAGE, "")
-            Log.e(TAG, errorMessage)
-        } catch (e: RuntimeException) {
-            Log.e(TAG, e.message.toString())
-        }
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            btnTryAgainOnClickListener()
-        } catch (e: RuntimeException) {
-            Log.e(TAG, e.message.toString())
-        }
+    override fun prepareArguments() {
+        errorMessage = requireArguments().getString(ERROR_MESSAGE, "")
+    }
+
+    override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        btnTryAgainOnClickListener()
+    }
+
+    override fun handeException(e: RuntimeException) {
+        goToFragmentError(e.message.toString())
+    }
+
+    override fun removeUI() {
+        _binding = null
     }
 
     private fun btnTryAgainOnClickListener() {

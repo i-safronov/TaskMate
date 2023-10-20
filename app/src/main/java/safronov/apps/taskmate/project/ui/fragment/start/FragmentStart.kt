@@ -11,11 +11,12 @@ import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
+import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModel
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
 import javax.inject.Inject
 
-class FragmentStart : Fragment() {
+class FragmentStart : FragmentBase() {
 
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
@@ -24,14 +25,26 @@ class FragmentStart : Fragment() {
     lateinit var fragmentStartViewModelFactory: FragmentStartViewModelFactory
     private var fragmentStartViewModel: FragmentStartViewModel? = null
 
-    override fun onStart() {
-        super.onStart()
-        try {
-            setup()
-        } catch (e: RuntimeException) {
-            Log.e(TAG, e.message.toString())
-            goToFragmentError("some error")
-        }
+    override fun starting() {
+        setup()
+    }
+
+    override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun prepareArguments() {  }
+
+    override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+    }
+
+    override fun handeException(e: RuntimeException) {
+        goToFragmentError(e.message.toString())
+    }
+
+    override fun removeUI() {
+        _binding = null
     }
 
     private fun setup() {
@@ -40,23 +53,9 @@ class FragmentStart : Fragment() {
             .get(FragmentStartViewModel::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentStartBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     companion object {
         @JvmStatic
         fun newInstance() = FragmentStart()
-        const val TAG = "sfrLog"
     }
 
 }
