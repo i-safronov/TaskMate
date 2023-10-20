@@ -10,4 +10,4 @@
     android:name="androidx.navigation.fragment.NavHostFragment"
     app:defaultNavHost="true"
     app:navGraph="@navigation/all_content_graph"
-    tools:layout="@layout/fragment_welcome" />
+    tools:layout="@layout/fragment_start" />
