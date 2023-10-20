@@ -8,4 +8,5 @@
     <string name="oops">Уупс...</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</string>
     <string name="try_again">Попробовать снова</string>
+    <string name="exception_description">Просим прощения, но при работе программы, что-то пошло не так, вы в этом не виноваты!</string>
 </resources>

@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".project.ui.fragment.error.FragmentError"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="@dimen/padding">
+    android:gravity="center">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
@@ -27,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/hint"
-        android:text="@string/lorem_ipsum"
+        android:layout_marginTop="@dimen/margin"
+        android:text="@string/exception_description"
         android:gravity="center"
         android:layout_marginStart="@dimen/margin_big"
         android:layout_marginEnd="@dimen/margin_big"/>
