@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentErrorBinding
 
 class FragmentError : Fragment() {
@@ -22,7 +21,7 @@ class FragmentError : Fragment() {
     ): View? {
         _binding = FragmentErrorBinding.inflate(inflater, container, false)
         try {
-            errorMessage = requireArguments().getString(EXCEPTION, "")
+            errorMessage = requireArguments().getString(ERROR_MESSAGE, "")
             Log.e(TAG, errorMessage)
         } catch (e: RuntimeException) {
             Log.e(TAG, e.message.toString())
@@ -53,7 +52,7 @@ class FragmentError : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = FragmentError()
-        const val EXCEPTION = "Exception"
+        const val ERROR_MESSAGE = "Exception"
         private const val TAG = "sfrLog"
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModel
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
@@ -29,11 +30,12 @@ class FragmentStart : Fragment() {
             setup()
         } catch (e: RuntimeException) {
             Log.e(TAG, e.message.toString())
+            goToFragmentError("some error")
         }
     }
 
     private fun setup() {
-        requireAppComponent().inject(this)
+        //requireAppComponent().inject(this)
         fragmentStartViewModel = ViewModelProvider(this, fragmentStartViewModelFactory)
             .get(FragmentStartViewModel::class.java)
     }
