@@ -8,9 +8,11 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="192.168.31.28:5555" value="120" />
                   <entry key="2.7_QVGA_API_24" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; M2006C3LI" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
