@@ -3,6 +3,19 @@
   <component name="AndroidTestResultsUserPreferences">
     <option name="androidTestResultsTableState">
       <map>
+        <entry key="-1528086303">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="2.7_QVGA_API_24" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1509774560">
           <value>
             <AndroidTestResultsTableState>
@@ -31,6 +44,36 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="116892348">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="192.168.31.28:5555" value="120" />
+                  <entry key="2.7_QVGA_API_24" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; M2006C3LI" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1136467658">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="192.168.31.28:5555" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="ONT4PRIJRG65PZZ5" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; M2006C3LI" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="1483690399">
           <value>
             <AndroidTestResultsTableState>
@@ -40,6 +83,36 @@
                   <entry key="Duration" value="90" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; M2006C3LI" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1784366498">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="1900ec947d94" value="120" />
+                  <entry key="192.168.31.28:5555" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="ONT4PRIJRG65PZZ5" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi&#10; M2006C3LI" value="120" />
+                  <entry key="Xiaomi&#10; Redmi 5" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1911320942">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="2.7_QVGA_API_24" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

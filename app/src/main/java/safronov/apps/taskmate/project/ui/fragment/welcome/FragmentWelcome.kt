@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentWelcomeBinding
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
