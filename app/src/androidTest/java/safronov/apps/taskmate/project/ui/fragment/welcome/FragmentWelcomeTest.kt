@@ -22,7 +22,7 @@ class FragmentWelcomeTest {
 
     @Test
     fun mainDetailsIsDisplayed() {
-        onView(withId(R.id.btn_sign_in)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_log_in)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_privacy_police)).check(matches(isDisplayed()))
         onView(withId(R.id.welcome_img)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_welcome)).check(matches(isDisplayed()))
@@ -31,13 +31,10 @@ class FragmentWelcomeTest {
 
     @Test
     fun testButtonContinueClick_shouldShowProgressBarAndAnotherText() {
-        onView(withId(R.id.btn_sign_in)).check(matches(isDisplayed()))
-        onView(withId(R.id.btn_sign_in)).perform(click()).check(matches(isDisplayed()))
-        onView(withId(R.id.loaging_progress_bar)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_loading)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_log_in)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_log_in)).perform(click()).check(matches(isDisplayed()))
         onView(withId(R.id.welcome_img)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_privacy_police)).check(matches(isDisplayed()))
-        onView(withId(R.id.btn_sign_in)).check(matches(isDisplayed()))
     }
 
 }

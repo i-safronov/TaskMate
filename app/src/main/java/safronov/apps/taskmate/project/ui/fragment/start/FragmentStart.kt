@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
@@ -61,7 +62,15 @@ class FragmentStart : FragmentBase() {
                 if (it) {
                     //TODO пуляй пользователя на главный экран
                 } else {
-                    findNavController().navigate(R.id.action_fragmentStart_to_fragmentWelcome)
+                    findNavController().navigate(
+                        R.id.action_fragmentStart_to_fragmentWelcome,
+                        null,
+                        navOptions = navOptions {
+                            popUpTo(R.id.fragmentStart) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
             }
         }

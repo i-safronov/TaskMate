@@ -17,6 +17,11 @@
         <item name="android:textColor">@color/hint</item>
     </style>
 
+    <style name="text_in_button" parent="text">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_color_in_button</item>
+    </style>
+
     <style name="button" parent="Widget.AppCompat.Button">
         <item name="android:padding">@dimen/padding</item>
         <item name="android:minHeight">@dimen/clickable_item_min_height</item>

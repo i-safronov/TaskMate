@@ -16,8 +16,9 @@ abstract class FragmentBase(): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return try {
+            val ui = createUI(inflater, container)
             setup()
-            createUI(inflater, container)
+            return ui
         } catch (e: RuntimeException) {
             wasException(e)
             null

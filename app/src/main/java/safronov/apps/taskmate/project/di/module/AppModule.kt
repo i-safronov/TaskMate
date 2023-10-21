@@ -4,11 +4,13 @@ import android.content.Context
 import android.util.Log
 import dagger.Module
 import dagger.Provides
+import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenApp
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModelFactory
 
 @Module
 class AppModule(
@@ -34,6 +36,17 @@ class AppModule(
         return FragmentStartViewModelFactory(
             dispatchersList = dispatchersList,
             isUserLoggedInUseCase = isUserLoggedInUseCase
+        )
+    }
+
+    @Provides
+    fun provideFragmentWelcomeViewModelFactory(
+        dispatchersList: DispatchersList,
+        userLoginUseCase: UserLogInUseCase
+    ): FragmentWelcomeViewModelFactory {
+        return FragmentWelcomeViewModelFactory(
+            dispatchersList = dispatchersList,
+            userLoginUseCase = userLoginUseCase
         )
     }
 
