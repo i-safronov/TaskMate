@@ -1,10 +1,12 @@
 package safronov.apps.taskmate.project.system_settings.extension.fragment
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.project.app.App
 import safronov.apps.taskmate.project.di.component.AppComponent
@@ -28,6 +30,20 @@ fun Fragment.goToFragmentError(errorMessage: String) {
     )
 }
 
-fun navigateTo(actionId: Int) {
+fun Fragment.navigate(actionId: Int, args: Bundle? = null) {
+    findNavController().navigate(actionId, args)
+}
 
+fun Fragment.navigateAndDeletePrevFragment(
+    actionId: Int, args: Bundle? = null, currentFragmentId: Int
+) {
+    findNavController().navigate(
+        resId = actionId,
+        args = args,
+        navOptions = navOptions {
+            popUpTo(currentFragmentId) {
+                inclusive = true
+            }
+        }
+    )
 }

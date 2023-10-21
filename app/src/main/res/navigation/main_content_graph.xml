@@ -13,9 +13,7 @@
         tools:layout="@layout/fragment_home_page" >
         <action
             android:id="@+id/action_fragmentHomePage_to_fragmentError"
-            app:destination="@id/fragmentError"
-            app:enterAnim="@anim/anim_from_left"
-            app:exitAnim="@anim/anim_to_left" />
+            app:destination="@id/fragmentError" />
     </fragment>
     <fragment
         android:id="@+id/fragmentError"

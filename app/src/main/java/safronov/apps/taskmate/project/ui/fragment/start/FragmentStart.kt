@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.navigateAndDeletePrevFragment
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModel
@@ -31,17 +30,16 @@ class FragmentStart : FragmentBase() {
     @Inject
     lateinit var dispatchersList: DispatchersList
 
+    override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun setup() {
         requireAppComponent().inject(this)
         fragmentStartViewModel = ViewModelProvider(this, fragmentStartViewModelFactory)
             .get(FragmentStartViewModel::class.java)
-    }
-
-    override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
-        _binding = FragmentStartBinding.inflate(inflater, container, false)
-        setup()
         fragmentStartViewModel?.checkIsUserLoggedIn()
-        return binding.root
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,16 +58,11 @@ class FragmentStart : FragmentBase() {
         fragmentStartViewModel?.isUserLoggedIn()?.collect {
             if (it != null) {
                 if (it) {
-                    //TODO пуляй пользователя на главный экран
+                    //TODO go to main screen
                 } else {
-                    findNavController().navigate(
-                        R.id.action_fragmentStart_to_fragmentWelcome,
-                        null,
-                        navOptions = navOptions {
-                            popUpTo(R.id.fragmentStart) {
-                                inclusive = true
-                            }
-                        }
+                    navigateAndDeletePrevFragment(
+                        actionId = R.id.action_fragmentStart_to_fragmentWelcome,
+                        currentFragmentId = R.id.fragmentStart
                     )
                 }
             }
