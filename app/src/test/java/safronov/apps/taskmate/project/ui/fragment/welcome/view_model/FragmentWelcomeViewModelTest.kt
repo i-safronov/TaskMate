@@ -22,7 +22,7 @@ class FragmentWelcomeViewModelTest {
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToSignIn()
+        fragmentWelcomeViewModel.requestToLogIn()
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == true)
@@ -31,6 +31,7 @@ class FragmentWelcomeViewModelTest {
     @Test
     fun `test, sign request that sign in, should return false`() {
         val fakeUserLoginRepository = FakeUserLoginRepository()
+        fakeUserLoginRepository.userLogin = false
         val userLoginUseCase = UserLogInUseCase(userLoginRepository = fakeUserLoginRepository)
         val fragmentWelcomeViewModel = FragmentWelcomeViewModel(
             dispatchersList = TestDispatchersList(),
@@ -39,7 +40,7 @@ class FragmentWelcomeViewModelTest {
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToSignIn()
+        fragmentWelcomeViewModel.requestToLogIn()
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(false, fragmentWelcomeViewModel.userLoggedIn().value == true)
@@ -57,9 +58,9 @@ class FragmentWelcomeViewModelTest {
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToSignIn()
+        fragmentWelcomeViewModel.requestToLogIn()
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
-        assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
+        assertEquals(true, fragmentWelcomeViewModel.wasException().value != null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == false)
     }
 

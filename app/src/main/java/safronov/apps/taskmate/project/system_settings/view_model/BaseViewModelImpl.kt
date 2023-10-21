@@ -13,9 +13,15 @@ open class BaseViewModelImpl(
 ): ViewModel(), BaseViewModel {
 
     override fun <T : Any> asyncWork(
-        doWork: suspend () -> T, showUi: (T) -> Unit, wasException: (DomainException) -> Unit
+        showUiWorkStarted: () -> Unit,
+        doWork: suspend () -> T,
+        showUi: (T) -> Unit,
+        wasException: (DomainException) -> Unit
     ): Job = viewModelScope.launch(dispatchersList.io()) {
         try {
+            withContext(dispatchersList.ui()) {
+                showUiWorkStarted.invoke()
+            }
             val result = doWork.invoke()
             withContext(dispatchersList.ui()) {
                 showUi.invoke(result)
@@ -29,6 +35,7 @@ open class BaseViewModelImpl(
 
 interface BaseViewModel {
     fun <T: Any> asyncWork(
+        showUiWorkStarted: () -> Unit,
         doWork: suspend () -> T,
         showUi: (T) -> Unit,
         wasException: (DomainException) -> Unit

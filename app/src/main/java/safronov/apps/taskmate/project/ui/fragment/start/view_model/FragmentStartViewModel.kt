@@ -19,6 +19,7 @@ class FragmentStartViewModel(
 
     fun checkIsUserLoggedIn() {
         asyncWork(
+            showUiWorkStarted = { },
             doWork = {
                 isUserLoggedInUseCase.execute()
             },
