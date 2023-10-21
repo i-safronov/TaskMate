@@ -27,3 +27,7 @@ fun Fragment.goToFragmentError(errorMessage: String) {
         )
     )
 }
+
+fun navigateTo(actionId: Int) {
+
+}

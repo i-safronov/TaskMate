@@ -17,7 +17,9 @@
         tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_fragmentStart_to_fragmentWelcome"
-            app:destination="@id/fragmentWelcome" />
+            app:destination="@id/fragmentWelcome"
+            app:enterAnim="@anim/anim_from_left"
+            app:exitAnim="@anim/anim_to_left" />
     </fragment>
 
 </navigation>
