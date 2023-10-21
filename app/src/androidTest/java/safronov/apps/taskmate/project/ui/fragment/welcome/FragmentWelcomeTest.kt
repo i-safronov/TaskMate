@@ -21,18 +21,12 @@ class FragmentWelcomeTest {
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun testButtonContinueIsVisible() {
+    fun mainDetailsIsDisplayed() {
         onView(withId(R.id.btn_sign_in)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun testPrivacyPoliceIsVisible() {
         onView(withId(R.id.tv_privacy_police)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun testWelcomeImgIsVisible() {
         onView(withId(R.id.welcome_img)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_welcome)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_app_name)).check(matches(isDisplayed()))
     }
 
     @Test
