@@ -10,4 +10,8 @@
     <string name="try_again">Попробовать снова</string>
     <string name="exception_description">Просим прощения, но при работе программы, что-то пошло не так, вы в этом не виноваты!</string>
     <string name="loading">Загрузка</string>
+    <string name="all_tasks">Все заметки</string>
+    <string name="work">Работа</string>
+    <string name="personal">Персональные</string>
+    <string name="other">Другие</string>
 </resources>

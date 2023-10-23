@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="back">#FFFFFFFF</color>
 
     <color name="light_ripple_color">#4DFFFFFF</color>
     <color name="accent_color">#1091F8</color>
@@ -14,5 +15,19 @@
     <color name="hint">#747474</color>
     <color name="transparent_tint_for_image">#B3000000</color>
     <color name="text_color">#FF000000</color>
+
+    <color name="blue">#00BCD4</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">#FF9800</color>
+    <color name="purple">#673AB7</color>
+    <color name="red">#E91E63</color>
+    <color name="yellow">#FFEB3B</color>
+
+    <color name="blue_transparent">#4D00BCD4</color>
+    <color name="green_transparent">#4D4CAF50</color>
+    <color name="orange_transparent">#4DFF9800</color>
+    <color name="purple_transparent">#4D673AB7</color>
+    <color name="red_transparent">#4DE91E63</color>
+    <color name="yellow_transparent">#4DFFEB3B</color>
 
 </resources>

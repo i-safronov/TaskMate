@@ -8,6 +8,7 @@ import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUs
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenApp
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
@@ -23,6 +24,13 @@ class AppModule(
 
     @Provides
     fun provideDispatchersList(): DispatchersList = DispatchersList.Base()
+
+    @Provides
+    fun provideDefaultTaskCategories(): DefaultTaskCategories {
+        return DefaultTaskCategories.Base(
+            context = context
+        )
+    }
 
     @Provides
     fun provideFullScreenApp(): FullScreenApp {

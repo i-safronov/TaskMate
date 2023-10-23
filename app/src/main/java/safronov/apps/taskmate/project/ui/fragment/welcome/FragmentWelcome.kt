@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentWelcomeBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
@@ -27,6 +28,9 @@ class FragmentWelcome : FragmentBase() {
 
     @Inject
     lateinit var dispatchersList: DispatchersList
+
+    @Inject
+    lateinit var defaultTaskCategories: DefaultTaskCategories
 
     @Inject
     lateinit var fragmentWelcomeViewModelFactory: FragmentWelcomeViewModelFactory
@@ -85,14 +89,16 @@ class FragmentWelcome : FragmentBase() {
         fragmentWelcomeViewModel?.userLoggedIn()?.onEach {
             if (it == true) {
                 Toast.makeText(requireContext(), "You've logged successfully", Toast.LENGTH_LONG).show()
-                //TODO go to main page
+                //TODO go to main page2
             }
         }?.collect()
     }
 
     private fun btnLogInOnClickListener() {
         binding.btnLogIn.root.setOnClickListener {
-            fragmentWelcomeViewModel?.requestToLogIn()
+            fragmentWelcomeViewModel?.requestToLogIn(
+                defaultTaskCategories = defaultTaskCategories.getDefaultTaskCategories()
+            )
         }
     }
 
