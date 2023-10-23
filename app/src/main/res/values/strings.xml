@@ -14,4 +14,8 @@
     <string name="work">Работа</string>
     <string name="personal">Персональные</string>
     <string name="other">Другие</string>
+    <string name="colors">Цвета</string>
+    <string name="view">Отображение</string>
+    <string name="search">Поиск...</string>
+    <string name="todays_not_tasks">На сегодня задач нет</string>
 </resources>

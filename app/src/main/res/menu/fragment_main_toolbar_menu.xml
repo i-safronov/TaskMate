@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/choose_category"
+        android:icon="@drawable/ic_multi_color"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="0"
+        android:title="@string/colors"
+        />
+
+    <item
+        android:id="@+id/settings"
+        app:showAsAction="never"
+        android:orderInCategory="0"
+        android:title="@string/view"
+        />
+
+</menu>
