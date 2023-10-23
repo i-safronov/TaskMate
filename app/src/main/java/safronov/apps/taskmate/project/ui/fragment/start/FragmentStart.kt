@@ -58,7 +58,10 @@ class FragmentStart : FragmentBase() {
         fragmentStartViewModel?.isUserLoggedIn()?.collect {
             if (it != null) {
                 if (it) {
-                    //TODO go to main screen
+                    navigateAndDeletePrevFragment(
+                        actionId = R.id.action_fragmentStart_to_fragmentMain,
+                        currentFragmentId = R.id.fragmentStart
+                    )
                 } else {
                     navigateAndDeletePrevFragment(
                         actionId = R.id.action_fragmentStart_to_fragmentWelcome,

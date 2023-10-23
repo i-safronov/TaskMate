@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:iconifiedByDefault="false"
-    android:background="@drawable/back_shape"
-    android:elevation="@dimen/default_elevation"
+    android:background="@drawable/search_view_shape"
     app:queryBackground="@android:color/transparent"
     app:queryHint="@string/search"
     android:layout_margin="@dimen/margin"/>

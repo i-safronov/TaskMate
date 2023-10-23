@@ -15,6 +15,7 @@ import safronov.apps.taskmate.databinding.FragmentWelcomeBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModel
@@ -88,8 +89,7 @@ class FragmentWelcome : FragmentBase() {
     private fun observeUserLoggedIn() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentWelcomeViewModel?.userLoggedIn()?.onEach {
             if (it == true) {
-                Toast.makeText(requireContext(), "You've logged successfully", Toast.LENGTH_LONG).show()
-                //TODO go to main page2
+                navigate(R.id.action_fragmentWelcome_to_fragmentMain)
             }
         }?.collect()
     }

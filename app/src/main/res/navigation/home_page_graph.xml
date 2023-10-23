@@ -9,7 +9,11 @@
         android:id="@+id/fragmentWelcome"
         android:name="safronov.apps.taskmate.project.ui.fragment.welcome.FragmentWelcome"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_fragmentWelcome_to_fragmentMain"
+            app:destination="@id/fragmentMain" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentStart"
         android:name="safronov.apps.taskmate.project.ui.fragment.start.FragmentStart"
@@ -18,6 +22,14 @@
         <action
             android:id="@+id/action_fragmentStart_to_fragmentWelcome"
             app:destination="@id/fragmentWelcome" />
+        <action
+            android:id="@+id/action_fragmentStart_to_fragmentMain"
+            app:destination="@id/fragmentMain" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentMain"
+        android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.FragmentMain"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 
 </navigation>

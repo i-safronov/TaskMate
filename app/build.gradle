@@ -73,5 +73,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
 
+    //Ripple animation
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
 
 }

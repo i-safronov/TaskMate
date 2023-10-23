@@ -49,15 +49,33 @@
         app:layout_constraintTop_toBottomOf="@+id/layout"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_add_task"
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/animate_fb_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:backgroundTint="@color/accent_color"
-        app:borderWidth="0dp"
+        android:layout_margin="@dimen/margin_big"
+        app:rb_color="@color/accent_color"
+        app:rb_radius="8dp"
+        app:rb_rippleAmount="2"
+        app:rb_duration="6000"
+        app:rb_scale="6"
+        android:gravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_pencil" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginEnd="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:backgroundTint="@color/accent_color"
+            android:elevation="0dp"
+            app:borderWidth="0dp"
+            app:srcCompat="@drawable/ic_pencil" />
+
+    </com.skyfishjy.library.RippleBackground>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
