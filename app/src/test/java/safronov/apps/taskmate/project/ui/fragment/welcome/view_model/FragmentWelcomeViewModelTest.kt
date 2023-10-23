@@ -25,10 +25,10 @@ class FragmentWelcomeViewModelTest {
     fun setup() {
         newTaskCategoriesToSave = listOf(
             TaskCategory(
-                id = 5,
-                icon = 32,
-                backgroundColor = 14,
-                categoryName = "some a",
+                id = 25,
+                icon = 325232,
+                backgroundColor = 143463,
+                categoryName = "some asda",
                 categoryType = CategoryTypes.System
             )
         )
@@ -38,14 +38,22 @@ class FragmentWelcomeViewModelTest {
     fun `test, sign request that sign in, should return true`() {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         val userLoginUseCase = UserLogInUseCase(userLoginRepository = fakeUserLoginRepository)
+        val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
+        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(
+            taskCategoryRepository = fakeTaskCategoryRepository,
+            getTaskCategoriesUseCase = GetTaskCategoriesUseCase(fakeTaskCategoryRepository)
+        )
         val fragmentWelcomeViewModel = FragmentWelcomeViewModel(
             dispatchersList = TestDispatchersList(),
-            userLoginUseCase = userLoginUseCase
+            userLoginUseCase = userLoginUseCase,
+            insertTaskCategoriesUseCase = insertTaskCategoriesUseCase
         )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToLogIn()
+        fragmentWelcomeViewModel.requestToLogIn(
+            newTaskCategoriesToSave
+        )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == true)
@@ -56,14 +64,22 @@ class FragmentWelcomeViewModelTest {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         fakeUserLoginRepository.userLogin = false
         val userLoginUseCase = UserLogInUseCase(userLoginRepository = fakeUserLoginRepository)
+        val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
+        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(
+            taskCategoryRepository = fakeTaskCategoryRepository,
+            getTaskCategoriesUseCase = GetTaskCategoriesUseCase(fakeTaskCategoryRepository)
+        )
         val fragmentWelcomeViewModel = FragmentWelcomeViewModel(
             dispatchersList = TestDispatchersList(),
-            userLoginUseCase = userLoginUseCase
+            userLoginUseCase = userLoginUseCase,
+            insertTaskCategoriesUseCase = insertTaskCategoriesUseCase
         )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToLogIn()
+        fragmentWelcomeViewModel.requestToLogIn(
+            newTaskCategoriesToSave
+        )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(false, fragmentWelcomeViewModel.userLoggedIn().value == true)
@@ -74,14 +90,22 @@ class FragmentWelcomeViewModelTest {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         fakeUserLoginRepository.isNeedToThrowException = true
         val userLoginUseCase = UserLogInUseCase(userLoginRepository = fakeUserLoginRepository)
+        val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
+        val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(
+            taskCategoryRepository = fakeTaskCategoryRepository,
+            getTaskCategoriesUseCase = GetTaskCategoriesUseCase(fakeTaskCategoryRepository)
+        )
         val fragmentWelcomeViewModel = FragmentWelcomeViewModel(
             dispatchersList = TestDispatchersList(),
-            userLoginUseCase = userLoginUseCase
+            userLoginUseCase = userLoginUseCase,
+            insertTaskCategoriesUseCase = insertTaskCategoriesUseCase
         )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == null)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == null)
-        fragmentWelcomeViewModel.requestToLogIn()
+        fragmentWelcomeViewModel.requestToLogIn(
+            newTaskCategoriesToSave
+        )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
         assertEquals(true, fragmentWelcomeViewModel.wasException().value != null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == false)
@@ -109,7 +133,7 @@ class FragmentWelcomeViewModelTest {
             defaultTaskCategories = newTaskCategoriesToSave
         )
         assertEquals(true, fragmentWelcomeViewModel.isLoading().value == false)
-        assertEquals(true, fragmentWelcomeViewModel.wasException().value != null)
+        assertEquals(true, fragmentWelcomeViewModel.wasException().value == null)
         assertEquals(true, fragmentWelcomeViewModel.userLoggedIn().value == true)
         assertEquals(true, fakeTaskCategoryRepository.dataToReturn == newTaskCategoriesToSave)
     }
@@ -119,6 +143,7 @@ class FragmentWelcomeViewModelTest {
         val fakeUserLoginRepository = FakeUserLoginRepository()
         val fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         fakeUserLoginRepository.isNeedToThrowException = true
+        fakeTaskCategoryRepository.isNeedToThrowException = true
         val userLoginUseCase = UserLogInUseCase(userLoginRepository = fakeUserLoginRepository)
         val insertTaskCategoriesUseCase = InsertTaskCategoriesUseCase(
             taskCategoryRepository = fakeTaskCategoryRepository,
