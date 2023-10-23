@@ -18,4 +18,5 @@
     <string name="view">Отображение</string>
     <string name="search">Поиск...</string>
     <string name="todays_not_tasks">На сегодня задач нет</string>
+    <string name="text">Текст</string>
 </resources>

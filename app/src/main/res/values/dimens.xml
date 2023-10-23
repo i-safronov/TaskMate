@@ -6,6 +6,7 @@
     <dimen name="margin_big">16dp</dimen>
     <dimen name="margin_very_big">32dp</dimen>
     <dimen name="padding">8dp</dimen>
+    <dimen name="padding_big">16dp</dimen>
     <dimen name="title_size">22sp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
