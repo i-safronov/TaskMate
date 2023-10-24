@@ -1,7 +1,9 @@
 package safronov.apps.domain.use_case.task.read
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -12,7 +14,7 @@ import java.lang.IllegalStateException
 class GetTasksAsFlowUseCaseTest {
 
     @Test
-    fun `test, execute, should get items`() {
+    fun `test, execute, should get items`() = runBlocking {
         val fakeGettingTaskRepository = FakeGettingTaskRepository()
         val getTasksAsFlowUseCase = GetTasksAsFlowUseCase(
             gettingTaskRepository = fakeGettingTaskRepository
@@ -21,8 +23,9 @@ class GetTasksAsFlowUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`(): Unit = runBlocking {
         val fakeGettingTaskRepository = FakeGettingTaskRepository()
+        fakeGettingTaskRepository.isNeedToThrowException = true
         val getTasksAsFlowUseCase = GetTasksAsFlowUseCase(
             gettingTaskRepository = fakeGettingTaskRepository
         )
