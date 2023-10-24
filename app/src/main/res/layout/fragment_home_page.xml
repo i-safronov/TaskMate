@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.fragment.app.FragmentContainerView
-    android:id="@+id/home_page_container"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".project.ui.fragment.home_page.FragmentHomePage"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    app:defaultNavHost="true"
-    app:navGraph="@navigation/home_page_graph"
-    />
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/included_fragment_main_toolbar"
+        layout="@layout/fragment_main_toolbar" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/home_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/home_page_graph"/>
+
+</LinearLayout>

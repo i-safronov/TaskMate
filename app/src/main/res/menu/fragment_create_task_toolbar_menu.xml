@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/choose_category"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_multi_color"
+        android:orderInCategory="0"
+        android:title="@string/colors"
+        />
+
+    <item
+        android:id="@+id/pin_task"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_not_pinned"
+        android:orderInCategory="1"
+        android:title="@string/pin"
+        />
+
+</menu>

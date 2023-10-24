@@ -5,5 +5,4 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:title="@string/app_name"
-    app:menu="@menu/fragment_main_toolbar_menu"
     />
