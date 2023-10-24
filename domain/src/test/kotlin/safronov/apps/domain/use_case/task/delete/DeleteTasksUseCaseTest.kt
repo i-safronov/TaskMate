@@ -1,5 +1,6 @@
 package safronov.apps.domain.use_case.task.delete
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -10,7 +11,7 @@ import java.lang.IllegalStateException
 class DeleteTasksUseCaseTest {
 
     @Test
-    fun `test, execute, should delete items`() {
+    fun `test, execute, should delete items`() = runBlocking {
         val fakeDeletingTaskRepository2 = FakeDeletingTaskRepository2()
         val deleteTasksUseCase = DeleteTasksUseCase(
             deletingTaskRepository = fakeDeletingTaskRepository2
@@ -23,7 +24,7 @@ class DeleteTasksUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`() = runBlocking {
         val fakeDeletingTaskRepository2 = FakeDeletingTaskRepository2()
         fakeDeletingTaskRepository2.isNeedToThrowException = true
         val deleteTasksUseCase = DeleteTasksUseCase(
