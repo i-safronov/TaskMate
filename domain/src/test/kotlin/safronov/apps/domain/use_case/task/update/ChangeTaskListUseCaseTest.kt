@@ -1,5 +1,6 @@
 package safronov.apps.domain.use_case.task.update
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -25,7 +26,7 @@ class ChangeTaskListUseCaseTest {
     )
 
     @Test
-    fun `test, execute, should change items`() {
+    fun `test, execute, should change items`() = runBlocking {
         val fakeChangingTaskRepository = FakeChangingTaskRepository1()
         val changeTaskListUseCase = ChangeTaskListUseCase(
             changingTaskRepository = fakeChangingTaskRepository
@@ -38,7 +39,7 @@ class ChangeTaskListUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`() = runBlocking {
         val fakeChangingTaskRepository = FakeChangingTaskRepository1()
         fakeChangingTaskRepository.isNeedToThrowException = true
         val changeTaskListUseCase = ChangeTaskListUseCase(
