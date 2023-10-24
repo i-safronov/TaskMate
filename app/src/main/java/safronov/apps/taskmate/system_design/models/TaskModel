@@ -23,6 +23,5 @@ sealed class Task {
     data class TaskListItem:
     1 - title
     2 - is checked
-    3 - id
 
 }
