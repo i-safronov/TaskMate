@@ -14,7 +14,7 @@ sealed class Task {
         val id: Long? = null
     ): Task()
 
-    data class ListTask(
+    data class TaskList(
         val title: String?,
         val list: List<TaskListItem>?,
         val date: String?,
