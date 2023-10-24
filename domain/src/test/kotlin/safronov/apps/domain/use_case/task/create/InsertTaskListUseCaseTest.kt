@@ -1,5 +1,6 @@
 package safronov.apps.domain.use_case.task.create
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
@@ -25,7 +26,7 @@ class InsertTaskListUseCaseTest {
     )
 
     @Test
-    fun `test, execute, should save item`() {
+    fun `test, execute, should save item`() = runBlocking {
         val fakeInsertingTask1 = FakeInsertingTask1()
         val insertTaskListUseCase = InsertTaskListUseCase(
             insertingTask = fakeInsertingTask1
@@ -38,8 +39,9 @@ class InsertTaskListUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`() = runBlocking {
         val fakeInsertingTask1 = FakeInsertingTask1()
+        fakeInsertingTask1.isNeedToThrowException = true
         val insertTaskListUseCase = InsertTaskListUseCase(
             insertingTask = fakeInsertingTask1
         )
