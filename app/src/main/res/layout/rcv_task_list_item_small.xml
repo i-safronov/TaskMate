@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding"
+    android:gravity="center|start">
+
+    <CheckBox
+        android:id="@+id/check_box_task_was_finished"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:checked="false"
+        style="@style/check_box"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        style="@style/text"
+        android:textSize="12sp"
+        tools:text="@string/lorem_ipsum" />
+
+</LinearLayout>

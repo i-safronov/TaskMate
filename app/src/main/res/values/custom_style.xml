@@ -40,4 +40,8 @@
         <item name="android:indeterminateTint">@color/accent_color</item>
     </style>
 
+    <style name="check_box" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/black</item>
+    </style>
+
 </resources>
