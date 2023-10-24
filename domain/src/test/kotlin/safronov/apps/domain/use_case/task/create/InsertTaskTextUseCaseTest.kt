@@ -21,7 +21,7 @@ class InsertTaskTextUseCaseTest {
     )
 
     @Test
-    fun `test, insert item, should saved and return item`() = runBlocking {
+    fun `test, execute, should save item`() = runBlocking {
         val fakeInsertingTask = FakeInsertingTask()
         val insertTaskTextUseCase = InsertTaskTextUseCase(
             insertingTaskRepository = fakeInsertingTask
@@ -42,7 +42,7 @@ class InsertTaskTextUseCaseTest {
 
 }
 
-class FakeInsertingTask: TaskRepository.InsertingTask {
+private class FakeInsertingTask: TaskRepository.InsertingTask {
 
     var isNeedToThrowException = false
     var dataToReturn = Task.TaskText(
