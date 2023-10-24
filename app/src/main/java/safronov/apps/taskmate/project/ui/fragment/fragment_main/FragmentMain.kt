@@ -45,6 +45,7 @@ class FragmentMain : FragmentBase() {
     }
 
     private fun setupToolBar() {
+        //TODO do refactor of this method
         val toolBar = requireActivity().findViewById<Toolbar>(R.id.included_fragment_main_toolbar)
         toolBar.inflateMenu(R.menu.fragment_main_toolbar_menu)
     }

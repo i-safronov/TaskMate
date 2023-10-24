@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText"
+    android:padding="@dimen/padding_big">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            tools:hint="@string/title"
+            android:textSize="@dimen/title_size"
+            android:gravity="center|start"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/hint"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/margin"
+                tools:text="17:36"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_date"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="@color/hint"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:background="@color/hint"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtv_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/edit_text"
+            tools:hint="@string/lorem_ipsum_normal" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

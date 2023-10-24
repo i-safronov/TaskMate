@@ -44,4 +44,13 @@
         <item name="android:buttonTint">@color/black</item>
     </style>
 
+    <style name="edit_text" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:minHeight">@dimen/clickable_item_min_height</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:gravity">start</item>
+    </style>
+
 </resources>
