@@ -30,6 +30,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
+    private var bottomSheetDialog: BottomSheetDialog? = null
 
     @Inject
     lateinit var bottomSheet: BottomSheet
@@ -70,13 +71,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     //TODO do refactor
     private fun fbAddTaskOnClickListener() {
         binding.fbAddTask.setOnClickListener {
-            val bottomSheet = BottomSheetDialog(requireContext(), R.style.bottom_sheet_dialog_theme)
+            bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.bottom_sheet_dialog_theme)
             val bottomView = BottomSheetChooseTaskTypeBinding.inflate(layoutInflater)
             bottomView.rcvTypes.adapter = rcvTaskType
             bottomView.rcvTypes.layoutManager = GridLayoutManager(requireContext(), 2)
             rcvTaskType.submitList(allTaskTypes.getTaskTypes())
-            bottomSheet.setContentView(bottomView.root)
-            bottomSheet.show()
+            bottomSheetDialog?.setContentView(bottomView.root)
+            bottomSheetDialog?.show()
         }
     }
 
@@ -89,7 +90,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
                 navigate(R.id.action_fragmentMain_to_fragmentCreateTaskList)
             }
         )
-        bottomSheet.dismissBottomSheet()
+        bottomSheetDialog?.dismiss()
     }
 
     companion object {
