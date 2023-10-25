@@ -11,6 +11,7 @@ import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenApp
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
+import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModelFactory
 
@@ -35,6 +36,11 @@ class AppModule(
     @Provides
     fun provideFullScreenApp(): FullScreenApp {
         return FullScreenAppImpl()
+    }
+
+    @Provides
+    fun provideBottomSheet(): BottomSheet {
+        return BottomSheet.Base(context = context)
     }
 
     @Provides

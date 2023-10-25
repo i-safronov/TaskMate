@@ -16,6 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import safronov.apps.taskmate.project.ui.activity.MainActivity
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.RcvTaskType
 
 @RunWith(AndroidJUnit4::class)
 class FragmentMainTest {

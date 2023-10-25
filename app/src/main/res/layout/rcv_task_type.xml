@@ -11,14 +11,14 @@
     android:layout_weight="1">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/img_text"
+        android:id="@+id/img"
         android:layout_width="@dimen/small_img_size"
         android:layout_height="@dimen/small_img_size"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_text_task_type"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_type_text"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/text"
