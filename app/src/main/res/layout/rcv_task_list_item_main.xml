@@ -7,27 +7,19 @@
     android:padding="@dimen/padding"
     android:gravity="center|start">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/lines"
+        android:layout_width="@dimen/lines_in_the_rcv_task_list_item_main_width"
+        android:layout_height="@dimen/lines_in_the_rcv_task_list_item_main_height"
+        android:src="@drawable/ic_lines" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/lines"
-            android:layout_width="@dimen/lines_in_the_rcv_task_list_item_main_width"
-            android:layout_height="@dimen/lines_in_the_rcv_task_list_item_main_height"
-            android:src="@drawable/ic_lines" />
-
-        <CheckBox
-            android:id="@+id/check_box_task_was_finished"
-            android:layout_width="@dimen/clickable_item_min_height"
-            android:layout_height="@dimen/clickable_item_min_height"
-            android:checked="false"
-            style="@style/check_box"
-            />
-
-    </LinearLayout>
+    <CheckBox
+        android:id="@+id/check_box_task_was_finished"
+        android:layout_width="@dimen/clickable_item_min_height"
+        android:layout_height="@dimen/clickable_item_min_height"
+        android:checked="false"
+        style="@style/check_box"
+        />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/tv_title"
@@ -35,7 +27,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
         style="@style/text"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/margin"
         android:background="@android:color/transparent"
         tools:text="@string/lorem_ipsum" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_cancel"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:src="@drawable/ic_close"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        />
 
 </LinearLayout>
