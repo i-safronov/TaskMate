@@ -5,66 +5,88 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText"
-    android:padding="@dimen/padding_big">
+    android:fillViewport="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edtv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/edit_text"
-            tools:hint="@string/title"
-            android:textSize="@dimen/title_size"
-            android:gravity="center|start"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"
-            />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_big"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/included_done_create_layout">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_date"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/hint"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/margin"
-                tools:text="17:36"
+                style="@style/edit_text"
+                tools:hint="@string/title"
+                android:textSize="@dimen/title_size"
+                android:gravity="center|start"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
                 />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_date"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_calendar"
-                app:tint="@color/hint"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/hint"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/margin"
+                    tools:text="17:36"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_date"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/hint"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_marginBottom="@dimen/margin"
+                android:background="@color/hint"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtv_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/edit_text"
+                tools:hint="@string/lorem_ipsum_normal" />
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/line"
+        <include
+            android:id="@+id/included_done_create_layout"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginBottom="@dimen/margin"
-            android:background="@color/hint"/>
+            android:layout_height="0dp"
+            layout="@layout/done_create_layout"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edtv_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/edit_text"
-            tools:hint="@string/lorem_ipsum_normal" />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
