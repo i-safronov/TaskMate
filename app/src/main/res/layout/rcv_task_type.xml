@@ -8,6 +8,8 @@
     android:elevation="@dimen/default_elevation"
     android:gravity="center"
     android:padding="@dimen/padding_big"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
     android:layout_weight="1">
 
     <androidx.appcompat.widget.AppCompatImageView

@@ -7,17 +7,25 @@ import safronov.apps.taskmate.R
 
 interface BottomSheet {
 
-    fun createBottomSheet(view: View): BottomSheetDialog
+    fun showBottomSheet(view: View)
+    fun dismissBottomSheet()
 
+    //TODO check, this class works correctly?
     class Base(
         private val context: Context,
         private val bottomSheetTheme: Int = R.style.bottom_sheet_dialog_theme
     ): BottomSheet {
 
-        override fun createBottomSheet(view: View): BottomSheetDialog {
-            val bottomSheet = BottomSheetDialog(context, bottomSheetTheme)
-            bottomSheet.setContentView(view)
-            return bottomSheet
+        private var bottomSheet: BottomSheetDialog? = null
+
+        override fun showBottomSheet(view: View) {
+            bottomSheet = BottomSheetDialog(context, bottomSheetTheme)
+            bottomSheet!!.setContentView(view)
+            bottomSheet!!.show()
+        }
+
+        override fun dismissBottomSheet() {
+            bottomSheet?.dismiss()
         }
 
     }

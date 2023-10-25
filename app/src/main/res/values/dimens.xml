@@ -13,6 +13,7 @@
     <dimen name="stroke_width">1dp</dimen>
     <dimen name="stroke_width_normal">2dp</dimen>
     <dimen name="default_radius">8dp</dimen>
+    <dimen name="bottom_sheet_radius">16dp</dimen>
     <dimen name="small_img_size">48dp</dimen>
     <dimen name="clickable_item_min_height">48dp</dimen>
     <dimen name="normal_icon_height">250dp</dimen>

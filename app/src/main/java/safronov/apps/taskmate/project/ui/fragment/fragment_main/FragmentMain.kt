@@ -4,24 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseTaskTypeBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
+import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.RcvTaskType
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.RcvTaskTypeInt
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import javax.inject.Inject
 
-class FragmentMain : FragmentBase() {
+class FragmentMain : FragmentBase(), RcvTaskTypeInt {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private val rcvTaskType = RcvTaskType(this)
 
     @Inject
     lateinit var bottomSheet: BottomSheet
+
+    @Inject
+    lateinit var allTaskTypes: AllTaskTypes
+
+    @Inject
+    lateinit var fragmentMainViewModelFactory: FragmentMainViewModelFactory
+    private var fragmentMainViewModel: FragmentMainViewModel? = null
 
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -30,6 +47,8 @@ class FragmentMain : FragmentBase() {
 
     override fun setup() {
         requireAppComponent().inject(this)
+        fragmentMainViewModel = ViewModelProvider(this, fragmentMainViewModelFactory)
+            .get(FragmentMainViewModel::class.java)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,12 +65,29 @@ class FragmentMain : FragmentBase() {
         _binding = null
     }
 
+    //TODO do refactor
     private fun fbAddTaskOnClickListener() {
         binding.fbAddTask.setOnClickListener {
+            val bottomSheet = BottomSheetDialog(requireContext(), R.style.bottom_sheet_dialog_theme)
             val bottomView = BottomSheetChooseTaskTypeBinding.inflate(layoutInflater)
-            val bottomSheet = bottomSheet.createBottomSheet(view = bottomView.root)
-
+            bottomView.rcvTypes.adapter = rcvTaskType
+            bottomView.rcvTypes.layoutManager = GridLayoutManager(requireContext(), 2)
+            rcvTaskType.submitList(allTaskTypes.getTaskTypes())
+            bottomSheet.setContentView(bottomView.root)
+            bottomSheet.show()
         }
+    }
+
+    override fun onTaskTypeClick(taskType: RcvTaskTypeModel) {
+        fragmentMainViewModel?.whichFragmentToGoByTaskType(
+            taskType = taskType.taskType,
+            taskText = {
+                navigate(R.id.action_fragmentMain_to_fragmentCreateTaskText)
+            }, taskList = {
+                navigate(R.id.action_fragmentMain_to_fragmentCreateTaskList)
+            }
+        )
+        bottomSheet.dismissBottomSheet()
     }
 
     companion object {
