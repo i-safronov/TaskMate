@@ -6,15 +6,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.taskmate.databinding.RcvTaskTypeBinding
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
 
-class RcvTaskType: ListAdapter<RcvTaskTypeModel, RcvTaskType.TaskTypeViewHolder>(TaskTypeDiffUtil()) {
+class RcvTaskType(
+    private val rcvTaskTypeInt: RcvTaskTypeInt
+): ListAdapter<RcvTaskTypeModel, RcvTaskType.TaskTypeViewHolder>(TaskTypeDiffUtil()) {
 
-    class TaskTypeViewHolder(
+    inner class TaskTypeViewHolder(
         private val binding: RcvTaskTypeBinding
     ): RecyclerView.ViewHolder(binding.root) {
-        fun bindView(item: RcvTaskTypeModel) {
-            binding.tvTitle.text = item.title
-            binding.img.setImageResource(item.img)
+        fun bindView(taskType: RcvTaskTypeModel) {
+            binding.tvTitle.text = taskType.title
+            binding.img.setImageResource(taskType.img)
+            itemView.setOnClickListener {
+                rcvTaskTypeInt.onTaskTypeClick(taskType = taskType)
+            }
         }
     }
 
@@ -41,12 +47,7 @@ class RcvTaskType: ListAdapter<RcvTaskTypeModel, RcvTaskType.TaskTypeViewHolder>
     }
 
     override fun onBindViewHolder(holder: TaskTypeViewHolder, position: Int) {
-        holder.bindView(item = currentList[holder.absoluteAdapterPosition])
+        holder.bindView(taskType = currentList[holder.absoluteAdapterPosition])
     }
 
 }
-
-data class RcvTaskTypeModel(
-    val title: String,
-    val img: Int
-)
