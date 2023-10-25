@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -14,10 +15,12 @@ import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentWelcomeBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
-import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
+import safronov.apps.taskmate.project.system_settings.extension.fragment.navigateAndDeletePrevFragment
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.ui.fragment.error.FragmentError
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModel
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModelFactory
 import javax.inject.Inject
@@ -57,7 +60,12 @@ class FragmentWelcome : FragmentBase() {
     }
 
     override fun handeException(e: RuntimeException) {
-        goToFragmentError(e.message.toString())
+        findNavController().navigate(
+            R.id.action_fragmentHomePage_to_fragmentError,
+            bundleOf(
+                FragmentError.ERROR_MESSAGE to e.message
+            )
+        )
     }
 
     override fun removeUI() {
@@ -89,7 +97,10 @@ class FragmentWelcome : FragmentBase() {
     private fun observeUserLoggedIn() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentWelcomeViewModel?.userLoggedIn()?.onEach {
             if (it == true) {
-                navigate(R.id.action_fragmentWelcome_to_fragmentMain)
+                navigateAndDeletePrevFragment(
+                    actionId = R.id.action_fragmentWelcome_to_fragmentHomePage,
+                    currentFragmentId = R.id.fragmentWelcome
+                )
             }
         }?.collect()
     }

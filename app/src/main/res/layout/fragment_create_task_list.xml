@@ -55,6 +55,14 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_calendar"
+                    android:layout_marginEnd="@dimen/margin"
+                    app:tint="@color/hint"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_list"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_list_task_type"
                     app:tint="@color/hint"/>
 
             </LinearLayout>

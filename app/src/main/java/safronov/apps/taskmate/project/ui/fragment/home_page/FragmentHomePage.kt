@@ -31,6 +31,7 @@ class FragmentHomePage : FragmentBase() {
         val configuration = AppBarConfiguration(
             setOf(
                 R.id.fragmentStart,
+                R.id.fragmentWelcome,
                 R.id.fragmentMain
             )
         )

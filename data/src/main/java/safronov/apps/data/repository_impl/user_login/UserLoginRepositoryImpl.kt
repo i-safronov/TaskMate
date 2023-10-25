@@ -25,7 +25,7 @@ class UserLoginRepositoryImpl(
     }
 
     companion object {
-        private const val USER_LOGIN_KEY = "UserLoginKey"
+        const val USER_LOGIN_KEY = "UserLoginKey"
     }
 
 }

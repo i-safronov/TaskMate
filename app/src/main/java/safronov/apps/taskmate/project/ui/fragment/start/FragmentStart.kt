@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
-import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigateAndDeletePrevFragment
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.ui.fragment.error.FragmentError
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModel
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
 import javax.inject.Inject
@@ -47,7 +50,12 @@ class FragmentStart : FragmentBase() {
     }
 
     override fun handeException(e: RuntimeException) {
-        goToFragmentError(e.message.toString())
+        findNavController().navigate(
+            R.id.action_fragmentHomePage_to_fragmentError,
+            bundleOf(
+                FragmentError.ERROR_MESSAGE to e.message
+            )
+        )
     }
 
     override fun removeUI() {
@@ -59,7 +67,7 @@ class FragmentStart : FragmentBase() {
             if (it != null) {
                 if (it) {
                     navigateAndDeletePrevFragment(
-                        actionId = R.id.action_fragmentStart_to_fragmentMain,
+                        actionId = R.id.action_fragmentStart_to_fragmentHomePage,
                         currentFragmentId = R.id.fragmentStart
                     )
                 } else {

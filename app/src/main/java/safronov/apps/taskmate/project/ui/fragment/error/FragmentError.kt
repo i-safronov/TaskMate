@@ -1,14 +1,12 @@
 package safronov.apps.taskmate.project.ui.fragment.error
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import safronov.apps.taskmate.databinding.FragmentErrorBinding
-import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 
 class FragmentError : FragmentBase() {
@@ -31,7 +29,7 @@ class FragmentError : FragmentBase() {
     }
 
     override fun handeException(e: RuntimeException) {
-        goToFragmentError(e.message.toString())
+        goToFragmentErrorFromHomePage(e.message.toString())
     }
 
     override fun removeUI() {

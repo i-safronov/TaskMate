@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHost
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseTaskTypeBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
-import safronov.apps.taskmate.project.system_settings.extension.fragment.findHomePageToolBar
-import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
@@ -26,7 +23,6 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTas
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class FragmentMain : FragmentBase(), RcvTaskTypeInt {
@@ -64,7 +60,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     }
 
     override fun handeException(e: RuntimeException) {
-        goToFragmentError(e.message.toString())
+        goToFragmentErrorFromHomePage(e.message.toString())
     }
 
     override fun removeUI() {

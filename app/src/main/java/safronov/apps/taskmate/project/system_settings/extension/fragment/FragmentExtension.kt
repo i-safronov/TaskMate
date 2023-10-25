@@ -2,7 +2,6 @@ package safronov.apps.taskmate.project.system_settings.extension.fragment
 
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import androidx.appcompat.widget.ToolbarWidgetWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -23,7 +22,7 @@ fun Fragment.requireMainContentNavController(): NavController {
     return topLevelHost?.navController ?: findNavController()
 }
 
-fun Fragment.goToFragmentError(errorMessage: String) {
+fun Fragment.goToFragmentErrorFromHomePage(errorMessage: String) {
     requireMainContentNavController().navigate(
         R.id.action_fragmentHomePage_to_fragmentError,
         bundleOf(

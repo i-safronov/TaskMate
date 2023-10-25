@@ -3,8 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content_graph"
-    app:startDestination="@id/fragmentHomePage">
+    app:startDestination="@id/fragmentStart">
 
+    <fragment
+        android:id="@+id/fragmentWelcome"
+        android:name="safronov.apps.taskmate.project.ui.fragment.welcome.FragmentWelcome"
+        android:label=""
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_fragmentWelcome_to_fragmentError"
+            app:destination="@id/fragmentError" />
+        <action
+            android:id="@+id/action_fragmentWelcome_to_fragmentHomePage"
+            app:destination="@id/fragmentHomePage" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentStart"
+        android:name="safronov.apps.taskmate.project.ui.fragment.start.FragmentStart"
+        android:label=""
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_fragmentStart_to_fragmentWelcome"
+            app:destination="@id/fragmentWelcome" />
+        <action
+            android:id="@+id/action_fragmentStart_to_fragmentError"
+            app:destination="@id/fragmentError" />
+        <action
+            android:id="@+id/action_fragmentStart_to_fragmentHomePage"
+            app:destination="@id/fragmentHomePage" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentHomePage"
