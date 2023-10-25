@@ -24,6 +24,7 @@
     <color name="purple">#673AB7</color>
     <color name="red">#E91E63</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="blue_too_transparent">#0D00BCD4</color>
 
     <color name="blue_transparent">#4D00BCD4</color>
     <color name="green_transparent">#4D4CAF50</color>
