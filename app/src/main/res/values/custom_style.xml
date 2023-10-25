@@ -52,5 +52,13 @@
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:gravity">start</item>
     </style>
+    
+    <style name="bottom_sheet_style" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="bottom_sheet_dialog_theme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottom_sheet_style</item>
+    </style>
 
 </resources>
