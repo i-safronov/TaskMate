@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/back_shape_gray"
+    android:background="@drawable/back_shape_blue_with_ripple"
     android:elevation="@dimen/default_elevation"
     android:gravity="center"
     android:padding="@dimen/padding_big"

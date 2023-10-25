@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center|start"
     android:padding="@dimen/padding_big"
-    android:background="@drawable/transparent_back_with_ripple">
+    android:background="@drawable/back_shape_with_gray_ripple">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_add"

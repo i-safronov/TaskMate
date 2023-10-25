@@ -27,12 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/edit_text"
-                tools:hint="@string/title"
+                android:hint="@string/title"
                 android:textSize="@dimen/title_size"
                 android:gravity="center|start"
                 android:textStyle="bold"
                 android:maxLines="1"
-                android:ellipsize="end"
                 />
 
             <LinearLayout
@@ -48,7 +47,7 @@
                     style="@style/hint"
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/margin"
-                    tools:text="17:36"
+                    android:hint="17:36"
                     />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -64,8 +63,8 @@
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/margin"
-                android:layout_marginBottom="@dimen/margin"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_big"
                 android:background="@color/hint"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -73,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="5"
+                android:splitMotionEvents="false"
                 tools:listitem="@layout/rcv_task_list_item_main" />
 
             <include
