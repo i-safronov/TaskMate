@@ -2,6 +2,7 @@ package safronov.apps.taskmate.project.system_settings.extension.fragment
 
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.ToolbarWidgetWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -49,9 +50,17 @@ fun Fragment.navigateAndDeletePrevFragment(
     )
 }
 
+fun Fragment.findHomePageToolBar(): Toolbar {
+    return requireActivity().findViewById(R.id.included_fragment_home_page_toolbar)
+}
+
 fun Fragment.inflateMenuOnHomePageToolBar(
     menuId: Int
 ) {
-    val toolBar = requireActivity().findViewById<Toolbar>(R.id.included_fragment_home_page_toolbar)
+    val toolBar = findHomePageToolBar()
     toolBar.inflateMenu(menuId)
+}
+
+fun Fragment.removeMenuFromHomePageToolBar() {
+    findHomePageToolBar().menu.clear()
 }

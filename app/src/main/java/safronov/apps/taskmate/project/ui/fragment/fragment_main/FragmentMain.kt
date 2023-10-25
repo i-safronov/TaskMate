@@ -13,6 +13,7 @@ import safronov.apps.taskmate.databinding.FragmentMainBinding
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentError
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
+import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
@@ -62,6 +63,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     }
 
     override fun removeUI() {
+        removeMenuFromHomePageToolBar()
         _binding = null
     }
 
