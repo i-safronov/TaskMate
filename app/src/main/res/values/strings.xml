@@ -24,4 +24,6 @@
     <string name="title">Заголовок</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="task_type_text">Текст</string>
+    <string name="task_type_list">Список\n</string>
 </resources>
