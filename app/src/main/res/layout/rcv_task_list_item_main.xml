@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding"
+    android:gravity="center|start">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/lines"
+            android:layout_width="@dimen/lines_in_the_rcv_task_list_item_main_width"
+            android:layout_height="@dimen/lines_in_the_rcv_task_list_item_main_height"
+            android:src="@drawable/ic_lines" />
+
+        <CheckBox
+            android:id="@+id/check_box_task_was_finished"
+            android:layout_width="@dimen/clickable_item_min_height"
+            android:layout_height="@dimen/clickable_item_min_height"
+            android:checked="false"
+            style="@style/check_box"
+            />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        style="@style/text"
+        android:background="@android:color/transparent"
+        tools:text="@string/lorem_ipsum" />
+
+</LinearLayout>

@@ -19,5 +19,7 @@
     <dimen name="default_elevation">1dp</dimen>
     <dimen name="arrow_back_width">40dp</dimen>
     <dimen name="arrow_back_height">34dp</dimen>
+    <dimen name="lines_in_the_rcv_task_list_item_main_height">18dp</dimen>
+    <dimen name="lines_in_the_rcv_task_list_item_main_width">18dp</dimen>
 
 </resources>
