@@ -12,22 +12,8 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.date.Date
 import java.lang.IllegalStateException
-
-/*
-* actions:
-* saving temp data(for example user choose color this choice need to save in ViewModel):
-*   task category, pinned or not, title, text,
-* showing temp data(for example user choose color this choice need to save in ViewModel and show in ui):
-*   task category, pinned or not
-* saving task after request and if data has been saved yet so update this data,
-*
-* so:
-* save task category, save task pinned, save title, save text,
-* show task category, show pinned task or not,
-* save task, save task(was exception), double save task(should update prev task but now save again),
-*
-* */
 
 class FragmentCreateTaskTextViewModelTest {
 
@@ -37,6 +23,7 @@ class FragmentCreateTaskTextViewModelTest {
     private lateinit var insertTaskTextUseCase: InsertTaskTextUseCase
     private lateinit var testDispatchersList: TestDispatchersList
     private lateinit var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel
+    private val currentTime = "today"
 
     @Before
     fun setup() {
@@ -50,7 +37,7 @@ class FragmentCreateTaskTextViewModelTest {
         dataToSave = Task.TaskText(
             title = "some title",
             text = "some text",
-            date = "today",
+            date = currentTime,
             taskCategoryId = 5,
             taskType = Task.TaskType.Text,
             isPinned = false,
@@ -190,16 +177,22 @@ class FragmentCreateTaskTextViewModelTest {
 
 //TODO write interface to get current date
 
+private class FakeDate: Date {
+    override fun getCurrentTime(): String {
+        return "today"
+    }
+}
+
 private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
 
     var isNeedToThrowException = false
     var dataToReturn = Task.TaskText(
-        title = "some title",
-        text = "some text",
-        date = "today",
-        taskCategoryId = 5,
+        title = "som23e title23",
+        text = "some text34",
+        date = "today5",
+        taskCategoryId = 45,
         taskType = Task.TaskType.Text,
-        isPinned = false,
+        isPinned = true,
         id = 2
     )
 
