@@ -8,6 +8,7 @@ import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
+import safronov.apps.taskmate.project.system_settings.date.Date
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenApp
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
@@ -16,6 +17,7 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.Al
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModelFactory
+import java.util.Calendar
 
 @Module
 class AppModule(
@@ -86,6 +88,18 @@ class AppModule(
             userLoginUseCase = userLoginUseCase,
             insertTaskCategoriesUseCase = insertTaskCategoriesUseCase
         )
+    }
+
+    @Provides
+    fun provideCalendar(): Calendar {
+        return Calendar.getInstance()
+    }
+
+    @Provides
+    fun provideDate(
+        calendar: Calendar
+    ): Date {
+        return Date.Base(calendar = calendar)
     }
 
 }
