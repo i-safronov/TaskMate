@@ -127,17 +127,63 @@ class FragmentCreateTaskTextViewModelTest {
 
     @Test
     fun `test, save task, should don't save task 'cause title and text is empty`() {
-
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
     }
 
     @Test
     fun `test, save task twice, should update prev task`() {
 
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
+
+        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = dataToSave.text)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn == dataToSave)
+
+        val newText = "some new text"
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = newText)
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn.text == ""))
+    }
+
+    @Test
+    fun `test, save task and request save task when nothing has been changed`() {
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
+
+        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = dataToSave.text)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn == dataToSave)
+
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn == dataToSave)
     }
 
     @Test
     fun `test, save task, should show that was exception`() {
+        fakeInsertingTaskRepository.isNeedToThrowException = true
 
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
+        assertEquals(true, fragmentCreateTaskTextViewModel.wasException()?.value == null)
+
+        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = dataToSave.text)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        assertEquals(true, fragmentCreateTaskTextViewModel.wasException()?.value != null)
+        assertEquals(true, fragmentCreateTaskTextViewModel.wasException()?.value.message == "some exception")
     }
 
 }
