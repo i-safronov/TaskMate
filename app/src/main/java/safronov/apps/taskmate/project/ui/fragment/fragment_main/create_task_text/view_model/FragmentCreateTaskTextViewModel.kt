@@ -8,6 +8,7 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
@@ -15,7 +16,8 @@ class FragmentCreateTaskTextViewModel(
     dispatchersList: DispatchersList,
     private val date: Date,
     private val insertTaskTextUseCase: InsertTaskTextUseCase,
-    private val changeTaskTextUseCase: ChangeTaskTextUseCase
+    private val changeTaskTextUseCase: ChangeTaskTextUseCase,
+    private val defaultTaskCategories: DefaultTaskCategories
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
@@ -42,7 +44,9 @@ class FragmentCreateTaskTextViewModel(
     fun getCurrentTaskText(): StateFlow<String> = _currentTaskText
     fun wasException(): StateFlow<DomainException?> = _wasException
 
-    //TODO write method to load default task category
+    fun loadDefaultTaskCategory() {
+        _taskCategory.value = defaultTaskCategories.getDefaultTaskCategory()
+    }
 
     fun saveTaskCategory(taskCategory: TaskCategory) {
         _taskCategory.value = taskCategory

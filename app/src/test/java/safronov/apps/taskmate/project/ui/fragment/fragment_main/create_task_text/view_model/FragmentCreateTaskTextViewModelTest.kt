@@ -59,7 +59,8 @@ class FragmentCreateTaskTextViewModelTest {
             dispatchersList = testDispatchersList,
             date = fakeDate,
             insertTaskTextUseCase = insertTaskTextUseCase,
-            changeTaskTextUseCase = ChangeTaskTextUseCase(changingTaskRepository = fakeChangingTaskRepository)
+            changeTaskTextUseCase = ChangeTaskTextUseCase(changingTaskRepository = fakeChangingTaskRepository),
+            defaultTaskCategories = fakeDefaultTaskCategories
         )
     }
 
@@ -67,7 +68,7 @@ class FragmentCreateTaskTextViewModelTest {
     fun `test, load default task category`() {
         assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
         assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
-        fragmentCreateTaskTextViewModel.laodDefaultTaskCategory()
+        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
         assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
         assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
     }
