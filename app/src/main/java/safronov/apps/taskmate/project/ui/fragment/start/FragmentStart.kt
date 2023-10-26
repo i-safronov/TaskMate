@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentStartBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
-import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigateAndDeletePrevFragment
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
@@ -65,17 +64,20 @@ class FragmentStart : FragmentBase() {
     private fun observeIsUserLoggedIn() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentStartViewModel?.isUserLoggedIn()?.collect {
             if (it != null) {
-                if (it) {
-                    navigateAndDeletePrevFragment(
-                        actionId = R.id.action_fragmentStart_to_fragmentHomePage,
-                        currentFragmentId = R.id.fragmentStart
-                    )
-                } else {
-                    navigateAndDeletePrevFragment(
-                        actionId = R.id.action_fragmentStart_to_fragmentWelcome,
-                        currentFragmentId = R.id.fragmentStart
-                    )
-                }
+                fragmentStartViewModel?.whichFragmentToGoByUserLoggedOrNot(
+                    isUserLogged = it,
+                    welcome = {
+                        navigateAndDeletePrevFragment(
+                            actionId = R.id.action_fragmentStart_to_fragmentWelcome,
+                            currentFragmentId = R.id.fragmentStart
+                        )
+                    }, homePage = {
+                        navigateAndDeletePrevFragment(
+                            actionId = R.id.action_fragmentStart_to_fragmentHomePage,
+                            currentFragmentId = R.id.fragmentStart
+                        )
+                    }
+                )
             }
         }
     }

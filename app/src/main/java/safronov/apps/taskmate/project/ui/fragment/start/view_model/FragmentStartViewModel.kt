@@ -1,6 +1,5 @@
 package safronov.apps.taskmate.project.ui.fragment.start.view_model
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +29,18 @@ class FragmentStartViewModel(
                 _wasException.value = it
             }
         )
+    }
+
+    fun whichFragmentToGoByUserLoggedOrNot(
+        isUserLogged: Boolean,
+        welcome: () -> Unit,
+        homePage: () -> Unit
+    ) {
+        if (isUserLogged) {
+            homePage.invoke()
+        } else {
+            welcome.invoke()
+        }
     }
 
     fun isUserLoggedIn(): StateFlow<Boolean?> = _isUserLoggedIn.asStateFlow()
