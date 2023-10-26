@@ -7,8 +7,8 @@ class InsertTaskListUseCase(
     private val insertingTask: TaskRepository.InsertingTask
 ) {
 
-    suspend fun execute(task: Task.TaskList) {
-        insertingTask.insertTaskList(task = task)
+    suspend fun execute(task: Task.TaskList): Long? {
+        return insertingTask.insertTaskList(task = task)
     }
 
 }

@@ -6,8 +6,8 @@ import safronov.apps.domain.model.task.Task
 interface TaskRepository {
 
     interface InsertingTask: TaskRepository {
-        suspend fun insertTaskText(task: Task.TaskText)
-        suspend fun insertTaskList(task: Task.TaskList)
+        suspend fun insertTaskText(task: Task.TaskText): Long?
+        suspend fun insertTaskList(task: Task.TaskList): Long?
     }
 
     interface GettingTask: TaskRepository {

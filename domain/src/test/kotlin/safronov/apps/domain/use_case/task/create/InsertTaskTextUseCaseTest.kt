@@ -31,7 +31,7 @@ class InsertTaskTextUseCaseTest {
     }
 
     @Test(expected = DomainException::class)
-    fun `test, insert item, should throw domain exception`() = runBlocking {
+    fun `test, insert item, should throw domain exception`(): Unit = runBlocking {
         val fakeInsertingTask = FakeInsertingTask()
         fakeInsertingTask.isNeedToThrowException = true
         val insertTaskTextUseCase = InsertTaskTextUseCase(
@@ -55,12 +55,13 @@ private class FakeInsertingTask: TaskRepository.InsertingTask {
         id = 2
     )
 
-    override suspend fun insertTaskText(task: Task.TaskText) {
+    override suspend fun insertTaskText(task: Task.TaskText): Long? {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = task
+        return dataToReturn.id
     }
 
-    override suspend fun insertTaskList(task: Task.TaskList) {
+    override suspend fun insertTaskList(task: Task.TaskList): Long? {
         throw IllegalStateException("don't use this method in this use case")
     }
 

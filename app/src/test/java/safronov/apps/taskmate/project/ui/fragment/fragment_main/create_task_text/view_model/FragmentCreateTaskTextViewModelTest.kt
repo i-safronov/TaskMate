@@ -236,12 +236,13 @@ private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
         id = null
     )
 
-    override suspend fun insertTaskText(task: Task.TaskText) {
+    override suspend fun insertTaskText(task: Task.TaskText): Long? {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = task
+        return dataToReturn.id
     }
 
-    override suspend fun insertTaskList(task: Task.TaskList) {
+    override suspend fun insertTaskList(task: Task.TaskList): Long? {
         throw IllegalStateException("don't use this method")
     }
 }
