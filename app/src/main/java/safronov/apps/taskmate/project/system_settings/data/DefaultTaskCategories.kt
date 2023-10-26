@@ -8,13 +8,14 @@ import safronov.apps.taskmate.R
 interface DefaultTaskCategories {
 
     fun getDefaultTaskCategories(): List<TaskCategory>
+    fun getDefaultTaskCategory(): TaskCategory
 
     class Base(
         private val context: Context
     ): DefaultTaskCategories {
 
-        override fun getDefaultTaskCategories(): List<TaskCategory> {
-            return listOf(
+        private val taskCategories by lazy {
+            listOf(
                 TaskCategory(
                     icon = R.drawable.ic_block,
                     backgroundColor = R.color.back,
@@ -58,6 +59,14 @@ interface DefaultTaskCategories {
                     categoryType = CategoryTypes.User
                 )
             )
+        }
+
+        override fun getDefaultTaskCategories(): List<TaskCategory> {
+            return taskCategories
+        }
+
+        override fun getDefaultTaskCategory(): TaskCategory {
+            return taskCategories.first()
         }
 
     }

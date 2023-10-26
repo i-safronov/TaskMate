@@ -12,7 +12,9 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
+import safronov.apps.taskmate.R
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 import java.lang.IllegalStateException
 
@@ -26,11 +28,13 @@ class FragmentCreateTaskTextViewModelTest {
     private lateinit var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel
     private lateinit var fakeDate: Date
     private lateinit var fakeChangingTaskRepository: FakeChangingTaskRepository
+    private lateinit var fakeDefaultTaskCategories: FakeDefaultTaskCategories
     private val currentTime = "today"
 
     @Before
     fun setup() {
         fakeDate = FakeDate()
+        fakeDefaultTaskCategories = FakeDefaultTaskCategories()
         taskCategory = TaskCategory(
             id = 55,
             icon = 325232,
@@ -57,6 +61,15 @@ class FragmentCreateTaskTextViewModelTest {
             insertTaskTextUseCase = insertTaskTextUseCase,
             changeTaskTextUseCase = ChangeTaskTextUseCase(changingTaskRepository = fakeChangingTaskRepository)
         )
+    }
+
+    @Test
+    fun `test, load default task category`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
+        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        fragmentCreateTaskTextViewModel.laodDefaultTaskCategory()
+        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
     }
 
     @Test
@@ -215,7 +228,24 @@ class FragmentCreateTaskTextViewModelTest {
 
 }
 
-//TODO write interface to get current date
+private class FakeDefaultTaskCategories: DefaultTaskCategories {
+
+    val taskCategoryToReturn = TaskCategory(
+        icon = 6324,
+        backgroundColor = 4343,
+        categoryName = "some name",
+        categoryType = CategoryTypes.User
+    )
+
+    override fun getDefaultTaskCategories(): List<TaskCategory> {
+        throw IllegalStateException("don't use this method")
+    }
+
+    override fun getDefaultTaskCategory(): TaskCategory {
+        return taskCategoryToReturn
+    }
+
+}
 
 private class FakeDate: Date {
     override fun getCurrentTime(): String {
