@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseTaskTypeBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
@@ -17,6 +16,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.removeM
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
+import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.RcvTaskType
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.RcvTaskTypeInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
@@ -30,13 +30,15 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
-    private var bottomSheetDialog: BottomSheetDialog? = null
 
     @Inject
     lateinit var bottomSheet: BottomSheet
 
     @Inject
     lateinit var allTaskTypes: AllTaskTypes
+
+    @Inject
+    lateinit var recyclerViewBuilder: RecyclerViewBuilder
 
     @Inject
     lateinit var fragmentMainViewModelFactory: FragmentMainViewModelFactory
@@ -68,14 +70,12 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
         _binding = null
     }
 
-    //TODO do refactor
     private fun fbAddTaskOnClickListener() {
         binding.fbAddTask.setOnClickListener {
             val bottomView = BottomSheetChooseTaskTypeBinding.inflate(layoutInflater)
-            bottomView.rcvTypes.adapter = rcvTaskType
-            bottomView.rcvTypes.layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskType, GridLayoutManager(requireContext(), RCV_TYPES_SPAN_COUNT))
             rcvTaskType.submitList(allTaskTypes.getTaskTypes())
-            bottomSheet.showBottomSheet(bottomView.root, actContext = requireContext())
+            bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
         }
     }
 
@@ -94,6 +94,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     companion object {
         @JvmStatic
         fun newInstance() = FragmentMain()
+        private const val RCV_TYPES_SPAN_COUNT = 2
     }
 
 }
