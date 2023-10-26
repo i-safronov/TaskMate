@@ -49,17 +49,17 @@ fun Fragment.navigateAndDeletePrevFragment(
     )
 }
 
-fun Fragment.findHomePageToolBar(): Toolbar {
+fun Fragment.requireHomePageToolBar(): Toolbar {
     return requireActivity().findViewById(R.id.included_fragment_home_page_toolbar)
 }
 
 fun Fragment.inflateMenuOnHomePageToolBar(
     menuId: Int
 ) {
-    val toolBar = findHomePageToolBar()
+    val toolBar = requireHomePageToolBar()
     toolBar.inflateMenu(menuId)
 }
 
 fun Fragment.removeMenuFromHomePageToolBar() {
-    findHomePageToolBar().menu.clear()
+    requireHomePageToolBar().menu.clear()
 }

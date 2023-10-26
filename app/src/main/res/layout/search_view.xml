@@ -6,5 +6,8 @@
     app:iconifiedByDefault="false"
     android:background="@drawable/search_view_shape"
     app:queryBackground="@android:color/transparent"
+    app:autoShowKeyboard="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:queryHint="@string/search"
     android:layout_margin="@dimen/margin"/>

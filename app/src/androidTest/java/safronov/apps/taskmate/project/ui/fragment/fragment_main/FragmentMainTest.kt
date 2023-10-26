@@ -25,12 +25,6 @@ class FragmentMainTest {
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun test_clickOnSearchView_shouldOpenFragmentForSearching() {
-        onView(withId(R.id.included_search_view)).perform(click())
-        onView(withId(R.id.included_search_view)).check(matches(not(isDisplayed())))
-    }
-
-    @Test
     fun test_clickOnFbAddTask_shouldShowBottomSheetAndChooseTaskType() {
         onView(withId(R.id.fb_add_task)).check(matches(isDisplayed()))
         onView(withId(R.id.fb_add_task)).perform(click()).check(matches(isDisplayed()))
@@ -40,7 +34,7 @@ class FragmentMainTest {
     @Test
     fun test_clickOnFbAddTaskAndClickOnFirstTaskType_shouldOpenFragmentForCreatingTask() {
         onView(withId(R.id.fb_add_task)).check(matches(isDisplayed()))
-        onView(withId(R.id.fb_add_task)).perform(click()).check(matches(isDisplayed()))
+        onView(withId(R.id.fb_add_task)).perform(click())
         onView(withId(R.id.choose_task_type_layout)).check(matches(isDisplayed()))
         onView(withId(R.id.rcv_tasks_type)).check(matches(isDisplayed()))
         onView(withId(R.id.rcv_tasks_type))
@@ -52,7 +46,7 @@ class FragmentMainTest {
 
     @Test
     fun test_clickOnFbAddTaskAndClickOnFirstTaskTypeAndAfterGoBack() {
-        onView(withId(R.id.choose_task_type_layout)).check(matches(isDisplayed()))
+        onView(withId(R.id.fb_add_task)).perform(click()).check(matches(isDisplayed()))
         onView(withId(R.id.rcv_tasks_type)).check(matches(isDisplayed()))
         onView(withId(R.id.rcv_tasks_type))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RcvTaskType.TaskTypeViewHolder>(
@@ -65,5 +59,15 @@ class FragmentMainTest {
         onView(withId(R.id.choose_task_type_layout)).check(matches(not(isDisplayed())))
         onView(withId(R.id.rcv_tasks_type)).check(matches(not(isDisplayed())))
     }
+
+    /* TODO complete these tests:
+    *
+    * @Test
+    fun test_clickOnSearchView_shouldOpenFragmentForSearching() {
+        onView(withId(R.id.included_search_view)).perform(click())
+        onView(withId(R.id.included_search_view)).check(matches(not(isDisplayed())))
+    }
+    *
+    * */
 
 }

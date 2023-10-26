@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavHost
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentHomePageBinding
-import safronov.apps.taskmate.project.system_settings.extension.fragment.findHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import java.lang.IllegalStateException
 
