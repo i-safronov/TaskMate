@@ -22,20 +22,11 @@ class FragmentHomePage : FragmentBase() {
         return binding.root
     }
 
-    //TODO do refactor of this code
     override fun setup() {
         val navHostFragment = childFragmentManager.findFragmentById(R.id.home_page_container)
                 as NavHost?
-        val configuration = AppBarConfiguration(
-            setOf(
-                R.id.fragmentStart,
-                R.id.fragmentWelcome,
-                R.id.fragmentMain
-            )
-        )
         binding.includedFragmentHomePageToolbar.root.setupWithNavController(
             navController = navHostFragment?.navController ?: throw IllegalStateException("don't found nav controller"),
-            configuration = configuration
         )
     }
 
