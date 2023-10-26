@@ -65,6 +65,7 @@ interface DefaultTaskCategories {
             return taskCategories
         }
 
+        //TODO save default task category when user first opened app or user changed default task category in app settings
         override fun getDefaultTaskCategory(): TaskCategory {
             return taskCategories.first()
         }
