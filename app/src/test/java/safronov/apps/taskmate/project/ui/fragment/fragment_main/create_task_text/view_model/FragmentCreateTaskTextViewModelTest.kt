@@ -4,9 +4,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Test
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
+import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
+import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import java.lang.IllegalStateException
 
@@ -28,21 +32,117 @@ import java.lang.IllegalStateException
 class FragmentCreateTaskTextViewModelTest {
 
     private lateinit var dataToSave: Task.TaskText
+    private lateinit var taskCategory: TaskCategory
+    private lateinit var fakeInsertingTaskRepository: FakeInsertingTaskRepository
+    private lateinit var insertTaskTextUseCase: InsertTaskTextUseCase
+    private lateinit var testDispatchersList: TestDispatchersList
+    private lateinit var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel
 
     @Before
     fun setup() {
+        taskCategory = TaskCategory(
+            id = 55,
+            icon = 325232,
+            backgroundColor = 143463,
+            categoryName = "some asda",
+            categoryType = CategoryTypes.System
+        )
         dataToSave = Task.TaskText(
-            title = "some title3",
-            text = "some tex2t",
-            date = "today1",
-            taskCategoryId = 55,
+            title = "some title",
+            text = "some text",
+            date = "today",
+            taskCategoryId = 5,
             taskType = Task.TaskType.Text,
-            isPinned = true,
-            id = 1
+            isPinned = false,
+            id = 2
+        )
+        fakeInsertingTaskRepository = FakeInsertingTaskRepository()
+        insertTaskTextUseCase = InsertTaskTextUseCase(insertingTaskRepository = fakeInsertingTaskRepository)
+        testDispatchersList = TestDispatchersList()
+        fragmentCreateTaskTextViewModel = FragmentCreateTaskTextViewModel(
+            dispatchersList = testDispatchersList,
+            insertTaskTextUseCase = insertTaskTextUseCase
         )
     }
 
+    @Test
+    fun `test, save task category`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value?.first() != taskCategory)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(
+            taskCategory = taskCategory
+        )
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value?.first() == taskCategory)
+    }
+
+    @Test
+    fun `test, save task pin`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value?.first() != true)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value?.first() == true)
+    }
+
+    @Test
+    fun `test, save title`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value.isEmpty())
+        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = "some title")
+        assertEquals(false, fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value.isEmpty())
+    }
+
+    @Test
+    fun `test, save text`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getCurrentTaskText().value.isEmpty())
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = "some title")
+        assertEquals(false, fragmentCreateTaskTextViewModel.getCurrentTaskText().value.isEmpty())
+    }
+
+    @Test
+    fun `test, show task category `() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value?.first() != taskCategory)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(
+            taskCategory = taskCategory
+        )
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value?.first() == taskCategory)
+    }
+
+    @Test
+    fun `test, show task pin`() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value?.first() != true)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value?.first() == true)
+    }
+
+    @Test
+    fun `test, save task, should save task`() {
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
+
+        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
+        fragmentCreateTaskTextViewModel.saveCurrentTaskText(title = dataToSave.text)
+        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentCreateTaskTextViewModel.pinCurrentTask()
+
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+
+        assertEquals(true, fakeInsertingTaskRepository.dataToReturn == dataToSave)
+    }
+
+    @Test
+    fun `test, save task, should don't save task 'cause title and text is empty`() {
+
+    }
+
+    @Test
+    fun `test, save task twice, should update prev task`() {
+
+    }
+
+    @Test
+    fun `test, save task, should show that was exception`() {
+
+    }
+
 }
+
+//TODO write interface to get current date
 
 private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
 
