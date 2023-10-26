@@ -56,7 +56,6 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
-        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_main_toolbar_menu)
         binding.animateFbAddTask.startRippleAnimation()
         fbAddTaskOnClickListener()
     }
@@ -65,8 +64,17 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
         goToFragmentErrorFromHomePage(e.message.toString())
     }
 
-    override fun removeUI() {
+    override fun onStart() {
+        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_main_toolbar_menu)
+        super.onStart()
+    }
+
+    override fun onStop() {
         removeMenuFromHomePageToolBar()
+        super.onStop()
+    }
+
+    override fun removeUI() {
         _binding = null
     }
 
