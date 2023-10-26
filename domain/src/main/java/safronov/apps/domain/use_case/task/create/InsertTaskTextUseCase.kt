@@ -7,6 +7,7 @@ class InsertTaskTextUseCase(
     private val insertingTaskRepository: TaskRepository.InsertingTask
 ) {
 
+    //TODO this method should return saved task ID
     suspend fun execute(task: Task.TaskText) {
         insertingTaskRepository.insertTaskText(task = task)
     }

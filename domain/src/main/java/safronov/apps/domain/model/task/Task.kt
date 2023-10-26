@@ -3,12 +3,12 @@ package safronov.apps.domain.model.task
 sealed class Task {
 
     data class TaskText(
-        val title: String?,
-        val text: String?,
-        val date: String?,
-        val taskCategoryId: Long?,
+        var title: String?,
+        var text: String?,
+        var date: String?,
+        var taskCategoryId: Long?,
         val taskType: TaskType?,
-        val isPinned: Boolean?,
+        var isPinned: Boolean?,
         val id: Long? = null
     ): Task()
 
