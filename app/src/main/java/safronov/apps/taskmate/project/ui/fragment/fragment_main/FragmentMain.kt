@@ -65,13 +65,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     }
 
     override fun onStart() {
-        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_main_toolbar_menu)
         super.onStart()
+        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_main_toolbar_menu)
     }
 
     override fun onStop() {
-        removeMenuFromHomePageToolBar()
         super.onStop()
+        removeMenuFromHomePageToolBar()
     }
 
     override fun removeUI() {

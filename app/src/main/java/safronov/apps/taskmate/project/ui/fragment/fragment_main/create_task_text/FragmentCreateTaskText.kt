@@ -30,13 +30,13 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     override fun onStart() {
-        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
         super.onStart()
+        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
     }
 
     override fun onStop() {
-        removeMenuFromHomePageToolBar()
         super.onStop()
+        removeMenuFromHomePageToolBar()
     }
 
     override fun handeException(e: RuntimeException) {
