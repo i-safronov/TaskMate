@@ -43,7 +43,7 @@ class AppModule(
 
     @Provides
     fun provideBottomSheet(): BottomSheet {
-        return BottomSheet.Base(context = context)
+        return BottomSheet.Base(context = context.applicationContext)
     }
 
     @Provides
