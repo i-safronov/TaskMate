@@ -14,7 +14,7 @@ sealed class Task {
 
     data class TaskList(
         var title: String?,
-        val list: List<TaskListItem>?,
+        var list: List<TaskListItem>?,
         var date: String?,
         var taskCategoryId: Long?,
         val taskType: TaskType?,

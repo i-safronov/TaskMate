@@ -14,17 +14,18 @@ import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelIm
 
 class FragmentCreateTaskListViewModel(
     dispatchersList: DispatchersList,
-    private val date: Date,
+    date: Date,
     private val insertTaskListUseCase: InsertTaskListUseCase,
     private val changeTaskListUseCase: ChangeTaskListUseCase,
     private val defaultTaskCategories: DefaultTaskCategories
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _currentTaskTitle = MutableStateFlow("")
-    private val _isCurrentTaskPin = MutableStateFlow(false)
     private val _taskIsPin = MutableStateFlow(false)
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
     private val _wasException = MutableStateFlow<DomainException?>(null)
+    private val _taskSaved = MutableStateFlow<Boolean?>(null)
+    private var taskSaved = false
 
     private val currentTaskList = Task.TaskList(
         title = _currentTaskTitle.value,
@@ -32,7 +33,7 @@ class FragmentCreateTaskListViewModel(
         date = "",
         taskCategoryId = _taskCategory.value?.id,
         taskType = Task.TaskType.List,
-        isPinned = _isCurrentTaskPin.value
+        isPinned = _taskIsPin.value
     )
 
     init {
@@ -40,9 +41,10 @@ class FragmentCreateTaskListViewModel(
     }
 
     fun getCurrentTaskTitle(): StateFlow<String> = _currentTaskTitle
-    fun getIsCurrentTaskPin(): StateFlow<Boolean> = _isCurrentTaskPin
+    fun getIsCurrentTaskPin(): StateFlow<Boolean> = _taskIsPin
     fun getCurrentTaskCategory(): StateFlow<TaskCategory?> = _taskCategory
     fun isWasException(): StateFlow<DomainException?> = _wasException
+    fun getTaskSaved(): StateFlow<Boolean?> = _taskSaved
 
     fun saveCurrentTaskTitle(title: String) {
         _currentTaskTitle.value = title
@@ -69,7 +71,28 @@ class FragmentCreateTaskListViewModel(
     }
 
     fun saveCurrentTask(taskListItems: List<Task.TaskListItem>) {
-        //TODO save current task
+        asyncWork(
+            showUiWorkStarted = {},
+            doWork = {
+                if (taskListItems.isEmpty() && _currentTaskTitle.value.isEmpty()) {
+                    return@asyncWork false
+                }
+                currentTaskList.list = taskListItems
+                if (taskSaved) {
+                    changeTaskListUseCase.execute(currentTaskList)
+                } else {
+                    insertTaskListUseCase.execute(currentTaskList)
+                    taskSaved = true
+                }
+                true
+            },
+            showUi = {
+                _taskSaved.value = it
+                _taskSaved.value = null
+            }, wasException = {
+                _wasException.value = it
+            }
+        )
     }
 
     fun getCurrentTime(): String {

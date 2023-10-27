@@ -181,7 +181,7 @@ class FragmentCreateTaskListViewModelTest {
         assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
         fragmentCreateTaskListViewModel.saveCurrentTaskTitle(title = taskTitle)
         assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
-        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value == taskTitle)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value == taskTitle)
     }
 
     @Test
@@ -243,6 +243,22 @@ class FragmentCreateTaskListViewModelTest {
         assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
         fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = emptyList<Task.TaskListItem>())
         assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
+    }
+
+    @Test
+    fun `test, task saved after insert item, shoul be null`() {
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        assertEquals(true, fragmentCreateTaskListViewModel.getTaskSaved().value == null)
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getTaskSaved().value == null)
     }
 
 }
