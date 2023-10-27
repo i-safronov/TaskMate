@@ -15,6 +15,10 @@ interface TaskRepository {
         suspend fun getTasks(): List<Task>
     }
 
+    interface GettingTaskByParameters: TaskRepository {
+        suspend fun getTasksByText(text: String)
+    }
+
     interface ChangingTask: TaskRepository {
         suspend fun changeTaskText(task: Task.TaskText)
         suspend fun changeTaskList(task: Task.TaskList)
