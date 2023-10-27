@@ -12,7 +12,6 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
-import safronov.apps.taskmate.R
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
@@ -215,7 +214,7 @@ class FragmentCreateTaskTextViewModelTest {
         fakeInsertingTaskRepository.isNeedToThrowException = true
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
-        assertEquals(true, fragmentCreateTaskTextViewModel.wasException().value == null)
+        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value == null)
 
         fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
         fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = dataToSave.text)
@@ -223,8 +222,8 @@ class FragmentCreateTaskTextViewModelTest {
         fragmentCreateTaskTextViewModel.pinCurrentTask()
 
         fragmentCreateTaskTextViewModel.saveCurrentTask()
-        assertEquals(true, fragmentCreateTaskTextViewModel.wasException().value != null)
-        assertEquals(true, fragmentCreateTaskTextViewModel.wasException().value?.message == "some exception")
+        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value != null)
+        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value?.message == "some exception")
     }
 
 }

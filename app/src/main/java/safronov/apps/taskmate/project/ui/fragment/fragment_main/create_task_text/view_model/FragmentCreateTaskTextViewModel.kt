@@ -20,8 +20,10 @@ class FragmentCreateTaskTextViewModel(
     private val defaultTaskCategories: DefaultTaskCategories
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
+    //TODO add logic for showing current time in UI
+
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
-    private val _taskIsPin = MutableStateFlow<Boolean>(false)
+    private val _taskIsPin = MutableStateFlow(false)
     private val _currentTaskTitle = MutableStateFlow("")
     private val _currentTaskText = MutableStateFlow("")
     private val _wasException = MutableStateFlow<DomainException?>(null)
@@ -42,7 +44,7 @@ class FragmentCreateTaskTextViewModel(
     fun getIsTaskPin(): StateFlow<Boolean> = _taskIsPin
     fun getCurrentTaskTitle(): StateFlow<String> = _currentTaskTitle
     fun getCurrentTaskText(): StateFlow<String> = _currentTaskText
-    fun wasException(): StateFlow<DomainException?> = _wasException
+    fun isWasException(): StateFlow<DomainException?> = _wasException
 
     fun loadDefaultTaskCategory() {
         _taskCategory.value = defaultTaskCategories.getDefaultTaskCategory()
