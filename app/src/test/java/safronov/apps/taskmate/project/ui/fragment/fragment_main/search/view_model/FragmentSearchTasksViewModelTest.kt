@@ -1,5 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -7,6 +9,7 @@ import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
+import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 
 class FragmentSearchTasksViewModelTest {
 
@@ -19,34 +22,35 @@ class FragmentSearchTasksViewModelTest {
         fakeGettingTasksByParametersRepository = FakeGettingTasksByParametersRepository()
         getTasksByTextUseCase = GetTasksByTextUseCase(gettingTasksByParametersRepository = fakeGettingTasksByParametersRepository)
         fragmentSearchTasksViewModel = FragmentSearchTasksViewModel(
+            dispatchersList = TestDispatchersList(),
             getTasksByTextUseCase = getTasksByTextUseCase
         )
     }
 
     @Test
     fun `test, search by text, should return data`() {
-        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
         fragmentSearchTasksViewModel.getTasksByText(text = "some text")
-        assertEquals(false, fragmentSearchTasksViewModel.tasks().value.isEmpty())
-        assertEquals(false, fragmentSearchTasksViewModel.tasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
+        assertEquals(false, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
     }
 
     @Test
     fun `test, search by text, should return data and don't exception`() {
-        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
         assertEquals(true, fragmentSearchTasksViewModel.isWasException().value == null)
         fragmentSearchTasksViewModel.getTasksByText(text = "some text")
-        assertEquals(false, fragmentSearchTasksViewModel.tasks().value.isEmpty())
-        assertEquals(false, fragmentSearchTasksViewModel.tasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
+        assertEquals(false, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
         assertEquals(true, fragmentSearchTasksViewModel.isWasException().value == null)
     }
 
     @Test
     fun `test, search by text, should return empty list`() {
         fakeGettingTasksByParametersRepository.isNeedEmptyList = true
-        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
         fragmentSearchTasksViewModel.getTasksByText(text = "some text")
-        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.getTasks().value.isEmpty())
     }
 
     @Test
@@ -55,7 +59,7 @@ class FragmentSearchTasksViewModelTest {
         fakeGettingTasksByParametersRepository.isNeedToThrowException = true
         fragmentSearchTasksViewModel.getTasksByText(text = "some text")
         assertEquals(false, fragmentSearchTasksViewModel.isWasException().value == null)
-        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value.message == fakeGettingTasksByParametersRepository.messageException)
+        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value?.message == fakeGettingTasksByParametersRepository.messageException)
     }
 
 }
@@ -88,4 +92,16 @@ private class FakeGettingTasksByParametersRepository: TaskRepository.GettingTask
         return dataToReturn
     }
 
+}
+
+private class TestDispatchersList(
+    private val testCoroutineDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+): DispatchersList {
+    override fun io(): CoroutineDispatcher {
+        return testCoroutineDispatcher
+    }
+
+    override fun ui(): CoroutineDispatcher {
+        return testCoroutineDispatcher
+    }
 }
