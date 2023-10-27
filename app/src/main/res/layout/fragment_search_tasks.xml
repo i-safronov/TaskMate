@@ -6,6 +6,15 @@
     tools:context=".project.ui.fragment.fragment_main.search.FragmentSearchTasks"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/included_search_view"
+        layout="@layout/search_view" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="3"
+        tools:listitem="@layout/rcv_task_list" />
 
 </LinearLayout>
