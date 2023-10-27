@@ -76,7 +76,7 @@ class FragmentCreateTaskTextViewModel(
                 if (isTaskSaved) {
                     changeTaskTextUseCase.execute(currentTask)
                 } else {
-                    insertTaskTextUseCase.execute(currentTask)
+                    currentTask.id = insertTaskTextUseCase.execute(currentTask)
                     isTaskSaved = true
                 }
             },

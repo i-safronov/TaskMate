@@ -9,7 +9,7 @@ sealed class Task {
         var taskCategoryId: Long?,
         val taskType: TaskType?,
         var isPinned: Boolean?,
-        val id: Long? = null
+        var id: Long? = null
     ): Task()
 
     data class TaskList(
