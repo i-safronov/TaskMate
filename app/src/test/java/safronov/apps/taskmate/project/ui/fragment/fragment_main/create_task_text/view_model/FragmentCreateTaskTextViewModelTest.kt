@@ -226,6 +226,13 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value?.message == "some exception")
     }
 
+    @Test
+    fun `test, save task when nothing has been changed`() {
+        assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
+        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
+    }
+
 }
 
 private class FakeDefaultTaskCategories: DefaultTaskCategories {
@@ -256,6 +263,7 @@ private class FakeDate: Date {
 private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
 
     var isNeedToThrowException = false
+    var countOfRequest = 0
     var dataToReturn = Task.TaskText(
         title = "som23e title23",
         text = "some text34",
@@ -269,6 +277,7 @@ private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
     override suspend fun insertTaskText(task: Task.TaskText): Long? {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = task
+        countOfRequest++
         return dataToReturn.id
     }
 
