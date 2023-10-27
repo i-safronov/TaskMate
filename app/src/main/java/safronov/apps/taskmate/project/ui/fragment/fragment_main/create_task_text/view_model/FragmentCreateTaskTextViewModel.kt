@@ -70,6 +70,8 @@ class FragmentCreateTaskTextViewModel(
         currentTask.text = _currentTaskText.value
     }
 
+    //TODO write unit tests to check if title and text is null, should not save task
+
     fun saveCurrentTask() {
         asyncWork(
             showUiWorkStarted = {},

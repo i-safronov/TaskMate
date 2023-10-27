@@ -38,6 +38,7 @@ class FragmentCreateTaskListViewModelTest {
     private lateinit var fragmentCreateTaskListViewModel: FragmentCreateTaskListViewModel
     private lateinit var insertTaskListUseCase: InsertTaskListUseCase
     private lateinit var changeTaskListUseCase: ChangeTaskListUseCase
+    private lateinit var taskCategory: TaskCategory
 
     @Before
     fun setUp() {
@@ -45,6 +46,13 @@ class FragmentCreateTaskListViewModelTest {
         fakeChangingTaskRepository = FakeChangingTaskRepository()
         fakeDefaultTaskCategories = FakeDefaultTaskCategories()
         fakeDate = FakeDate()
+        taskCategory = TaskCategory(
+            id = 55,
+            icon = 325232,
+            backgroundColor = 143463,
+            categoryName = "some asda",
+            categoryType = CategoryTypes.System
+        )
         testDispatchersList = TestDispatchersList()
         insertTaskListUseCase = InsertTaskListUseCase(insertingTask = fakeInsertingTaskRepository)
         changeTaskListUseCase = ChangeTaskListUseCase(changingTaskRepository = fakeChangingTaskRepository)
@@ -58,82 +66,182 @@ class FragmentCreateTaskListViewModelTest {
 
     @Test
     fun `test, save task title`() {
-
-    }
-
-    @Test
-    fun `test, add task list item`() {
-
+        val taskTitle = "some title 123"
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTaskTitle(title = taskTitle)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
     }
 
     @Test
     fun `test, save task pin`() {
+        assertEquals(false, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
+        fragmentCreateTaskListViewModel.pinCurrentTask()
+        assertEquals(true, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
+    }
 
+    @Test
+    fun `test, save task pin twice, should pin is be false`() {
+        assertEquals(false, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
+        fragmentCreateTaskListViewModel.pinCurrentTask()
+        assertEquals(true, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
+        fragmentCreateTaskListViewModel.pinCurrentTask()
+        assertEquals(false, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
     }
 
     @Test
     fun `test, save task category`() {
-
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
+        fragmentCreateTaskListViewModel.saveCurrentTaksCategory(taskCategory = taskCategory)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == taskCategory)
     }
 
     @Test
     fun `test, load default task category`() {
-
-    }
-
-    @Test
-    fun `test, change task list item`() {
-
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
+        fragmentCreateTaskListViewModel.loadDefaultCurrentTaskCategory()
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == fakeDefaultTaskCategories.taskCategoryToReturn)
     }
 
     @Test
     fun `test, save current task`() {
+        val taskListItems = listOf(
+            Task.TaskListItem(
+                title = "some title",
+                isChecked = false
+            )
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+    }
 
+    @Test
+    fun `test, get current task items after saved current task`() {
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
     }
 
     @Test
     fun `test, save current task twice, should update prev item`() {
 
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+
+        taskItem.isChecked = true
+        taskItem.title = "some new title"
+
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+
     }
 
     @Test
     fun `test, save current task and save again current task when nothing has been changed`() {
-
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
     }
 
     @Test
     fun `test, get task title`() {
-
+        val taskTitle = "some title 123"
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTaskTitle(title = taskTitle)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value.isEmpty())
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskTitle().value == taskTitle)
     }
 
     @Test
     fun `test, get task list items`() {
-
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
     }
 
     @Test
     fun `test, get is task pinned`() {
-
+        assertEquals(false, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
+        fragmentCreateTaskListViewModel.pinCurrentTask()
+        assertEquals(true, fragmentCreateTaskListViewModel.getIsCurrentTaskPin().value)
     }
 
     @Test
     fun `test, get task category`() {
-
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
+        fragmentCreateTaskListViewModel.saveCurrentTaksCategory(taskCategory = taskCategory)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == taskCategory)
     }
 
     @Test
     fun `test, get current time`() {
-
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTime() == fakeDate.getCurrentTime())
     }
 
     @Test
-    fun `test, get is was exception`() {
-
+    fun `test, get is was exception, should return null`() {
+        assertEquals(true, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
     }
 
     @Test
-    fun `test, delete task list item`() {
+    fun `test, get is was exception, should return domain exception`() {
+        fakeInsertingTaskRepository.isNeedToThrowException = true
+        val taskItem = Task.TaskListItem(
+            title = "some title",
+            isChecked = false
+        )
+        val taskListItems = listOf(
+            taskItem
+        )
+        assertEquals(true, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
+        assertEquals(false, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
+    }
 
+    @Test
+    fun `test, save current task when title and list is empty`() {
+        assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
+        fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = emptyList<Task.TaskListItem>())
+        assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
     }
 
 }
@@ -141,6 +249,7 @@ class FragmentCreateTaskListViewModelTest {
 private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
 
     var isNeedToThrowException = false
+    var countOfRequest = 0
     var dataToReturn = Task.TaskList(
         title = "some title",
         list = listOf(
@@ -163,6 +272,7 @@ private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
     override suspend fun insertTaskList(task: Task.TaskList): Long? {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = task
+        countOfRequest++
         return dataToReturn.id
     }
 

@@ -23,7 +23,7 @@ sealed class Task {
     ): Task()
 
     data class TaskListItem(
-        val title: String?,
+        var title: String?,
         var isChecked: Boolean?
     )
 
