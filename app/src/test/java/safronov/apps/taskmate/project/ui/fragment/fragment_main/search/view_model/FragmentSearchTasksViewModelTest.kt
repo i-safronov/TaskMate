@@ -1,12 +1,91 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model
 
 import org.junit.Assert.*
-
-/*
-* actions:
-* search by title, text, task list item
-* */
+import org.junit.Before
+import org.junit.Test
+import safronov.apps.domain.exception.DomainException
+import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.repository.task.TaskRepository
+import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 
 class FragmentSearchTasksViewModelTest {
+
+    private lateinit var fakeGettingTasksByParametersRepository: FakeGettingTasksByParametersRepository
+    private lateinit var getTasksByTextUseCase: GetTasksByTextUseCase
+    private lateinit var fragmentSearchTasksViewModel: FragmentSearchTasksViewModel
+
+    @Before
+    fun setUp() {
+        fakeGettingTasksByParametersRepository = FakeGettingTasksByParametersRepository()
+        getTasksByTextUseCase = GetTasksByTextUseCase(gettingTasksByParametersRepository = fakeGettingTasksByParametersRepository)
+        fragmentSearchTasksViewModel = FragmentSearchTasksViewModel(
+            getTasksByTextUseCase = getTasksByTextUseCase
+        )
+    }
+
+    @Test
+    fun `test, search by text, should return data`() {
+        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        fragmentSearchTasksViewModel.getTasksByText(text = "some text")
+        assertEquals(false, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(false, fragmentSearchTasksViewModel.tasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
+    }
+
+    @Test
+    fun `test, search by text, should return data and don't exception`() {
+        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value == null)
+        fragmentSearchTasksViewModel.getTasksByText(text = "some text")
+        assertEquals(false, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        assertEquals(false, fragmentSearchTasksViewModel.tasks().value == fakeGettingTasksByParametersRepository.dataToReturn)
+        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value == null)
+    }
+
+    @Test
+    fun `test, search by text, should return empty list`() {
+        fakeGettingTasksByParametersRepository.isNeedEmptyList = true
+        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+        fragmentSearchTasksViewModel.getTasksByText(text = "some text")
+        assertEquals(true, fragmentSearchTasksViewModel.tasks().value.isEmpty())
+    }
+
+    @Test
+    fun `test, search by text, should show that was exception`() {
+        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value == null)
+        fakeGettingTasksByParametersRepository.isNeedToThrowException = true
+        fragmentSearchTasksViewModel.getTasksByText(text = "some text")
+        assertEquals(false, fragmentSearchTasksViewModel.isWasException().value == null)
+        assertEquals(true, fragmentSearchTasksViewModel.isWasException().value.message == fakeGettingTasksByParametersRepository.messageException)
+    }
+
+}
+
+private class FakeGettingTasksByParametersRepository: TaskRepository.GettingTaskByParameters {
+
+    val messageException = "some exception"
+    var isNeedToThrowException = false
+    var isNeedEmptyList = false
+    val dataToReturn = listOf(
+        Task.TaskList(
+            title = "some title1",
+            list = listOf(
+                Task.TaskListItem(
+                    title = "some title2",
+                    isChecked = true
+                )
+            ),
+            date = "todayw",
+            taskCategoryId = 545,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 3
+        )
+    )
+
+    override suspend fun getTasksByText(text: String): List<Task> {
+        if (isNeedToThrowException) throw DomainException(messageException)
+        if (isNeedEmptyList) return emptyList()
+        return dataToReturn
+    }
 
 }
