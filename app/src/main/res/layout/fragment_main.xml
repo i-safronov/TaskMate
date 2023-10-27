@@ -18,9 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <include
-            android:id="@+id/included_search_view"
-            layout="@layout/search_view" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/edit_text"
+            android:gravity="center|start"
+            android:background="@drawable/search_view_shape"
+            app:queryBackground="@android:color/transparent"
+            android:paddingStart="20dp"
+            android:text="@string/search"
+            android:textColor="@color/hint"
+            android:drawablePadding="12dp"
+            android:drawableStart="@drawable/ic_search"
+            android:layout_margin="@dimen/margin"/>
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseTaskTypeBinding
@@ -58,6 +59,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         binding.animateFbAddTask.startRippleAnimation()
         fbAddTaskOnClickListener()
+        searchOnClickListener()
     }
 
     override fun handeException(e: RuntimeException) {
@@ -84,6 +86,12 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
             recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskType, GridLayoutManager(requireContext(), RCV_TYPES_SPAN_COUNT))
             rcvTaskType.submitList(allTaskTypes.getTaskTypes())
             bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
+        }
+    }
+
+    private fun searchOnClickListener() {
+        binding.search.setOnClickListener {
+            navigate(R.id.action_fragmentMain_to_fragmentSearchTasks)
         }
     }
 

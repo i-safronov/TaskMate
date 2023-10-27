@@ -5,7 +5,7 @@
     android:id="@+id/home_page_graph"
     app:startDestination="@id/fragmentMain">
 
-    <fragment
+      <fragment
         android:id="@+id/fragmentMain"
         android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.FragmentMain"
         android:label="@string/app_name"
@@ -16,7 +16,10 @@
         <action
             android:id="@+id/action_fragmentMain_to_fragmentCreateTaskList"
             app:destination="@id/fragmentCreateTaskList" />
-    </fragment>
+          <action
+              android:id="@+id/action_fragmentMain_to_fragmentSearchTasks"
+              app:destination="@id/fragmentSearchTasks" />
+      </fragment>
     <fragment
         android:id="@+id/fragmentCreateTaskText"
         android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText"
@@ -27,5 +30,10 @@
         android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList"
         android:label="@string/empty"
         tools:layout="@layout/fragment_create_task_list" />
+    <fragment
+        android:id="@+id/fragmentSearchTasks"
+        android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.search.FragmentSearchTasks"
+        android:label="@string/empty"
+        tools:layout="@layout/fragment_search_tasks" />
 
 </navigation>
