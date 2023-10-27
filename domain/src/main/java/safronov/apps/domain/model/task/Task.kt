@@ -13,12 +13,12 @@ sealed class Task {
     ): Task()
 
     data class TaskList(
-        val title: String?,
+        var title: String?,
         val list: List<TaskListItem>?,
-        val date: String?,
-        val taskCategoryId: Long?,
+        var date: String?,
+        var taskCategoryId: Long?,
         val taskType: TaskType?,
-        val isPinned: Boolean?,
+        var isPinned: Boolean?,
         val id: Long? = null
     ): Task()
 

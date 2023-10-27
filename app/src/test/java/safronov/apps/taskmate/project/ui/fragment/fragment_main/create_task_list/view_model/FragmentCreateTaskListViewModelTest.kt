@@ -60,7 +60,8 @@ class FragmentCreateTaskListViewModelTest {
             dispatchersList = testDispatchersList,
             date = fakeDate,
             insertTaskListUseCase = insertTaskListUseCase,
-            changeTaskListUseCase = changeTaskListUseCase
+            changeTaskListUseCase = changeTaskListUseCase,
+            defaultTaskCategories = fakeDefaultTaskCategories
         )
     }
 
@@ -90,10 +91,10 @@ class FragmentCreateTaskListViewModelTest {
 
     @Test
     fun `test, save task category`() {
-        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
-        fragmentCreateTaskListViewModel.saveCurrentTaksCategory(taskCategory = taskCategory)
-        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
-        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == taskCategory)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == null)
+        fragmentCreateTaskListViewModel.saveCurrentTaskCategory(taskCategory = taskCategory)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == taskCategory)
     }
 
     @Test
@@ -207,7 +208,7 @@ class FragmentCreateTaskListViewModelTest {
     @Test
     fun `test, get task category`() {
         assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
-        fragmentCreateTaskListViewModel.saveCurrentTaksCategory(taskCategory = taskCategory)
+        fragmentCreateTaskListViewModel.saveCurrentTaskCategory(taskCategory = taskCategory)
         assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == null)
         assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory()?.value == taskCategory)
     }
@@ -219,7 +220,7 @@ class FragmentCreateTaskListViewModelTest {
 
     @Test
     fun `test, get is was exception, should return null`() {
-        assertEquals(true, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.isWasException()?.value == null)
     }
 
     @Test
@@ -232,9 +233,9 @@ class FragmentCreateTaskListViewModelTest {
         val taskListItems = listOf(
             taskItem
         )
-        assertEquals(true, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.isWasException()?.value == null)
         fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
-        assertEquals(false, fragmentCreateTaskListViewModel.isWasExceptino()?.value == null)
+        assertEquals(false, fragmentCreateTaskListViewModel.isWasException()?.value == null)
     }
 
     @Test
