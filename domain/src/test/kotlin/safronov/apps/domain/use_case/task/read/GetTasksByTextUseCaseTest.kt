@@ -1,5 +1,6 @@
 package safronov.apps.domain.use_case.task.read
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -21,15 +22,15 @@ class GetTasksByTextUseCaseTest {
     }
 
     @Test
-    fun `test, execute, should return data`() {
-        val result: List<Task> = getTasksByTextUseCase.execute()
+    fun `test, execute, should return data`() = runBlocking {
+        val result: List<Task> = getTasksByTextUseCase.execute(text = "some text")
         assertEquals(true, result == fakeGettingTasksByParametersRepository.dataToReturn)
     }
 
     @Test(expected = DomainException::class)
-    fun `test, execute, should throw domain exception`() {
+    fun `test, execute, should throw domain exception`(): Unit = runBlocking {
         fakeGettingTasksByParametersRepository.isNeedToThrowException = true
-        getTasksByTextUseCase.execute()
+        getTasksByTextUseCase.execute(text = "some text")
     }
 
 }
