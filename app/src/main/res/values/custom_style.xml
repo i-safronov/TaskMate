@@ -61,4 +61,11 @@
         <item name="bottomSheetStyle">@style/bottom_sheet_style</item>
     </style>
 
+    <style name="nested_scroll_bar_style">
+        <item name="android:scrollbarFadeDuration">2</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fillViewport">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
 </resources>
