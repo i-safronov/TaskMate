@@ -1,6 +1,9 @@
 package safronov.apps.taskmate.project.system_settings.extension.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -51,6 +54,12 @@ fun Fragment.navigateAndDeletePrevFragment(
 
 fun Fragment.requireHomePageToolBar(): Toolbar {
     return requireActivity().findViewById(R.id.included_fragment_home_page_toolbar)
+}
+
+fun Fragment.focusOnViewAndShowKeyboard(view: View) {
+    view.requestFocus()
+    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm?.showSoftInput(view, InputMethodManager.SHOW_FORCED)
 }
 
 fun Fragment.inflateMenuOnHomePageToolBar(
