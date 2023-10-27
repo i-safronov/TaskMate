@@ -233,6 +233,11 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
     }
 
+    @Test
+    fun `test, get current time`() {
+        assertEquals(true, fakeDate.getCurrentTime() == fragmentCreateTaskTextViewModel.getCurrentTime())
+    }
+
 }
 
 private class FakeDefaultTaskCategories: DefaultTaskCategories {

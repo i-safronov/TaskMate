@@ -46,6 +46,10 @@ class FragmentCreateTaskListViewModel(
     fun isWasException(): StateFlow<DomainException?> = _wasException
     fun getTaskSaved(): StateFlow<Boolean?> = _taskSaved
 
+    fun getCurrentTime(): String {
+        return currentTaskList.date.toString()
+    }
+
     fun saveCurrentTaskTitle(title: String) {
         _currentTaskTitle.value = title
         currentTaskList.title = _currentTaskTitle.value
@@ -84,7 +88,7 @@ class FragmentCreateTaskListViewModel(
                     insertTaskListUseCase.execute(currentTaskList)
                     taskSaved = true
                 }
-                true
+                return@asyncWork true
             },
             showUi = {
                 _taskSaved.value = it
@@ -93,10 +97,6 @@ class FragmentCreateTaskListViewModel(
                 _wasException.value = it
             }
         )
-    }
-
-    fun getCurrentTime(): String {
-        return currentTaskList.date.toString()
     }
 
 }

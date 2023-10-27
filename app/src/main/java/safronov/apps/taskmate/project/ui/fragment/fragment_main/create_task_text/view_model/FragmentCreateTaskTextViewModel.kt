@@ -20,8 +20,6 @@ class FragmentCreateTaskTextViewModel(
     private val defaultTaskCategories: DefaultTaskCategories
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
-    //TODO add logic for showing current time in UI
-
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
     private val _taskIsPin = MutableStateFlow(false)
     private val _currentTaskTitle = MutableStateFlow("")
@@ -40,11 +38,19 @@ class FragmentCreateTaskTextViewModel(
 
     private var isTaskSaved = false
 
+    init {
+        currentTask.date = date.getCurrentTime()
+    }
+
     fun getTaskCategory(): StateFlow<TaskCategory?> = _taskCategory
     fun getIsTaskPin(): StateFlow<Boolean> = _taskIsPin
     fun getCurrentTaskTitle(): StateFlow<String> = _currentTaskTitle
     fun getCurrentTaskText(): StateFlow<String> = _currentTaskText
     fun isWasException(): StateFlow<DomainException?> = _wasException
+
+    fun getCurrentTime(): String {
+        return currentTask.date.toString()
+    }
 
     fun loadDefaultTaskCategory() {
         _taskCategory.value = defaultTaskCategories.getDefaultTaskCategory()
@@ -70,12 +76,13 @@ class FragmentCreateTaskTextViewModel(
         currentTask.text = _currentTaskText.value
     }
 
-    //TODO write unit tests to check if title and text is null, should not save task
-
     fun saveCurrentTask() {
         asyncWork(
             showUiWorkStarted = {},
             doWork = {
+                if (_currentTaskTitle.value.isEmpty() && _currentTaskText.value.isEmpty()) {
+                    return@asyncWork false
+                }
                 currentTask.date = date.getCurrentTime()
                 if (isTaskSaved) {
                     changeTaskTextUseCase.execute(currentTask)
@@ -83,6 +90,7 @@ class FragmentCreateTaskTextViewModel(
                     currentTask.id = insertTaskTextUseCase.execute(currentTask)
                     isTaskSaved = true
                 }
+                return@asyncWork true
             },
             showUi = {
                 _taskSaved.value = true
