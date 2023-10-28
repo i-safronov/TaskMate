@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_add"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:src="@drawable/ic_add"
         android:layout_marginEnd="@dimen/margin_big"/>
 

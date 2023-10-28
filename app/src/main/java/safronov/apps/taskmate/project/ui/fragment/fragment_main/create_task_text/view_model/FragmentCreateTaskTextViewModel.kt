@@ -14,7 +14,7 @@ import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelIm
 
 class FragmentCreateTaskTextViewModel(
     dispatchersList: DispatchersList,
-    private val date: Date,
+    date: Date,
     private val insertTaskTextUseCase: InsertTaskTextUseCase,
     private val changeTaskTextUseCase: ChangeTaskTextUseCase,
     private val defaultTaskCategories: DefaultTaskCategories
@@ -83,7 +83,6 @@ class FragmentCreateTaskTextViewModel(
                 if (_currentTaskTitle.value.isEmpty() && _currentTaskText.value.isEmpty()) {
                     return@asyncWork false
                 }
-                currentTask.date = date.getCurrentTime()
                 if (isTaskSaved) {
                     changeTaskTextUseCase.execute(currentTask)
                 } else {
