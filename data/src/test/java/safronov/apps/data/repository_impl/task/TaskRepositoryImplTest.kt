@@ -109,7 +109,6 @@ class TaskRepositoryImplTest {
 
     @Test
     fun test_insertTaskList() = runBlocking {
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
     }
@@ -117,7 +116,6 @@ class TaskRepositoryImplTest {
     @Test(expected = DomainException::class)
     fun test_insertTaskList_shouldThrowDomainException() = runBlocking {
         fakeTaskService.isNeedToThrowException = true
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
     }

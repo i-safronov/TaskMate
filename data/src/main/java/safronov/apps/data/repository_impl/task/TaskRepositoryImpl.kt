@@ -15,15 +15,20 @@ class TaskRepositoryImpl(
 
     override suspend fun insertTaskText(task: Task.TaskText): Long? {
         try {
-            val save = taskEntityConverter.convertTaskTextToTaskEntity(task)
-            return taskService.insertTask(save)
+            val taskEntity = taskEntityConverter.convertTaskTextToTaskEntity(task)
+            return taskService.insertTask(taskEntity)
         } catch (e: Exception) {
             throw DomainException(e.message, e)
         }
     }
 
     override suspend fun insertTaskList(task: Task.TaskList): Long? {
-        TODO("Not yet implemented")
+        try {
+            val taskEntity = taskEntityConverter.convertTaskListToTaskEntity(task)
+            return taskService.insertTask(taskEntity)
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
     }
 
     override suspend fun getTasksAsFlow(): Flow<List<Task>> {
