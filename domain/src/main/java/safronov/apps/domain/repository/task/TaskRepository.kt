@@ -31,6 +31,6 @@ interface TaskRepository {
         suspend fun deleteTasks(tasks: List<Task>)
     }
 
-    interface TaskRepositoryMutable: InsertingTask, GettingTask, ChangingTask, DeletingTask
+    interface TaskRepositoryMutable: InsertingTask, GettingTask, ChangingTask, DeletingTask, GettingTaskByParameters
 
 }
