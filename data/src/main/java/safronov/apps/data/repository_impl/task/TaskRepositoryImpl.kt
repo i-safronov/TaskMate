@@ -49,23 +49,39 @@ class TaskRepositoryImpl(
     }
 
     override suspend fun getTasks(): List<Task> {
-        return taskService.getTasks().map {
-            getTaskByTaskType(it)
+        try {
+            return taskService.getTasks().map {
+                getTaskByTaskType(it)
+            }
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
         }
     }
 
     override suspend fun getTasksByText(text: String): List<Task> {
-        return taskService.getTasksByText(text).map {
-            getTaskByTaskType(it)
+        try {
+            return taskService.getTasksByText(text).map {
+                getTaskByTaskType(it)
+            }
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
         }
     }
 
     override suspend fun changeTaskText(task: Task.TaskText) {
-        taskService.changeTask(taskEntityConverter.convertTaskTextToTaskEntity(task))
+        try {
+            taskService.changeTask(taskEntityConverter.convertTaskTextToTaskEntity(task))
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
     }
 
     override suspend fun changeTaskList(task: Task.TaskList) {
-        TODO("Not yet implemented")
+        try {
+            taskService.changeTask(taskEntityConverter.convertTaskListToTaskEntity(task))
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
     }
 
     override suspend fun changeTasks(tasks: List<Task>) {

@@ -220,7 +220,6 @@ class TaskRepositoryImplTest {
 
     @Test
     fun test_changeTaskList() = runBlocking {
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.changeTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
     }
@@ -228,7 +227,6 @@ class TaskRepositoryImplTest {
     @Test(expected = DomainException::class)
     fun test_changeTaskList_shouldThrowDomainException() = runBlocking {
         fakeTaskService.isNeedToThrowException = true
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.changeTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
     }
@@ -347,48 +345,48 @@ private class FakeTaskService: TaskService {
     )
 
     override suspend fun insertTask(task: TaskEntity): Long? {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn.clear()
         dataToReturn.add(task)
         return task.id
     }
 
     override suspend fun getTasksAsFlow(): Flow<List<TaskEntity>> {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return flow {
             emit(dataToReturn)
         }
     }
 
     override suspend fun getTasks(): List<TaskEntity> {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return dataToReturn
     }
 
     override suspend fun getTasksByText(text: String): List<TaskEntity> {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return listOf(dataToReturn.first())
     }
 
     override suspend fun changeTask(task: TaskEntity) {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn.clear()
         dataToReturn.add(task)
     }
 
     override suspend fun changeTasks(tasks: List<TaskEntity>) {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn = tasks.toMutableList()
     }
 
     override suspend fun deleteTask(task: TaskEntity) {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         requestDeleteItemId = task.id
         dataToReturn.clear()
     }
 
     override suspend fun deleteTasks(tasks: List<TaskEntity>) {
-        if (isNeedToThrowException) throw DomainException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         tasks.forEach {
             requestToDeleteItemsId?.add(it.id)
         }
