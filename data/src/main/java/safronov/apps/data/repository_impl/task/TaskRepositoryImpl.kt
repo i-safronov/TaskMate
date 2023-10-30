@@ -35,20 +35,20 @@ class TaskRepositoryImpl(
 
     override suspend fun getTasksAsFlow(): Flow<List<Task>> {
         try {
-            return taskService.getTasksAsFlow().map {
-                val mutable = mutableListOf<Task>()
+            return taskService.getTasksAsFlow().map { taskEntities ->
+                val tasks = mutableListOf<Task>()
 
-                it.forEach {
+                taskEntities.forEach {
                     if (it.taskType == Task.TaskType.Text) {
-                        mutable.add(taskEntityConverter.convertTaskEntityToTaskText(it))
+                        tasks.add(taskEntityConverter.convertTaskEntityToTaskText(it))
                     } else if (it.taskType == Task.TaskType.List) {
-                        mutable.add(taskEntityConverter.convertTaskEntityToTaskList(it))
+                        tasks.add(taskEntityConverter.convertTaskEntityToTaskList(it))
                     } else {
                         throw IllegalStateException("task type didn't found")
                     }
                 }
 
-                mutable
+                tasks
             }
         } catch (e: Exception) {
             throw DomainException(e.message, e)
