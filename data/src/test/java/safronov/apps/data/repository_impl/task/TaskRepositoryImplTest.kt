@@ -1,43 +1,349 @@
 package safronov.apps.data.repository_impl.task
 
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
+import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverterImpl
 import safronov.apps.data.data_source.local.model.task.TaskEntity
 import safronov.apps.data.data_source.local.service.task.TaskService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
-
-/*
-*
-* 1 - добавление
-* 2 - получение флоу
-* 3 - получение
-* 4 - получение по тексту
-* 5 - изменение
-* 6 - изменение списка
-* 7 - удаление
-* 8 - удаление списка
-* 9 - ошибка при добавлении
-* 10 - ошибка при получении флоу
-* 11 - ошибка при получении
-* 12 - ошибка при получении по тексту
-* 13 - ошибка при изменении
-* 14 = ошибка при изменении списка
-* 15 - ошибка при удалении
-* 16 - ошибка при удалении списка
-*
-* */
+import safronov.apps.domain.repository.task.TaskRepository
+import java.lang.IllegalStateException
 
 class TaskRepositoryImplTest {
 
+    private lateinit var taskRepository: TaskRepository
+    private lateinit var fakeTaskService: FakeTaskService
+    private lateinit var taskEntityConverter: TaskEntityConverter
 
+    private lateinit var taskText: Task.TaskText
+    private lateinit var taskEntityText: TaskEntity
+    private lateinit var taskEntityList: TaskEntity
+    private lateinit var taskList: Task.TaskList
+    private lateinit var listOfTaskEntityText: List<TaskEntity>
+    private lateinit var listOfTaskEntityList: List<TaskEntity>
+    private lateinit var listOfTaskText: List<Task.TaskText>
+    private lateinit var listOfTaskList: List<Task.TaskList>
+
+    @Before
+    fun setUp() {
+        fakeTaskService = FakeTaskService()
+        taskEntityConverter = TaskEntityConverterImpl(Gson())
+        taskRepository = TaskRepositoryImpl(
+            taskService = fakeTaskService
+        )
+        taskEntityText = TaskEntity(
+            title = "something",
+            content = "context",
+            date = "date",
+            taskCategoryId = 4,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32
+        )
+        taskEntityList = TaskEntity(
+            title = "something",
+            content = Gson().toJson(listOf<Task.TaskListItem>(
+                Task.TaskListItem(
+                    title = "some title",
+                    isChecked = true
+                )
+            )),
+            date = "date",
+            taskCategoryId = 4,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32
+        )
+        taskText = Task.TaskText(
+            title = "something",
+            text = "context",
+            date = "date",
+            taskCategoryId = 4,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32
+        )
+        taskList = Task.TaskList(
+            title = "something",
+            list = listOf<Task.TaskListItem>(
+                Task.TaskListItem(
+                    title = "some title",
+                    isChecked = true
+                )
+            ),
+            date = "date",
+            taskCategoryId = 4,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32
+        )
+        listOfTaskEntityText = listOf(taskEntityText)
+        listOfTaskEntityList = listOf(taskEntityList)
+        listOfTaskText = listOf(taskText)
+        listOfTaskList = listOf(taskList)
+    }
+
+    @Test
+    fun test_insertTaskText() = runBlocking {
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_insertTaskText_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test
+    fun test_insertTaskList() {
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_insertTaskList_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test
+    fun test_getTasksAsFlow() {
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksAsFlow().first().first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_getTasksAsFlow_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksAsFlow().first().first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test
+    fun test_getTasks() {
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasks().first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_getTasks_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasks().first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test
+    fun test_getTasksByText() {
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksByText("text").first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_getTasksByText_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.insertTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksByText("text").first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskText == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test
+    fun test_changeTaskText() {
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.changeTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_changeTaskText_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+        taskRepository.changeTaskText(taskText)
+        assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test
+    fun test_changeTaskList() {
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.changeTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_changeTaskList_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        taskRepository.changeTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+    }
+
+    @Test
+    fun test_changeTasks() {
+        val oldData = fakeTaskService.dataToReturn
+        assertEquals(true, oldData == fakeTaskService.dataToReturn)
+        taskRepository.changeTasks(listOfTaskEntityText)
+        assertEquals(false, oldData == fakeTaskService.dataToReturn)
+        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskList(fakeTaskService.dataToReturn)
+        assertEquals(true, resultList == listOfTaskEntityList)
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_changeTasks_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        val oldData = fakeTaskService.dataToReturn
+        assertEquals(true, oldData == fakeTaskService.dataToReturn)
+        taskRepository.changeTasks(listOfTaskEntityText)
+        assertEquals(false, oldData == fakeTaskService.dataToReturn)
+        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskList(fakeTaskService.dataToReturn)
+        assertEquals(true, resultList == listOfTaskEntityList)
+    }
+
+    @Test
+    fun test_deleteTaskText() {
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId != taskText.id)
+        taskRepository.deleteTaskText(taskText)
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId == taskText.id)
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_deleteTaskText_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId != taskText.id)
+        taskRepository.deleteTaskText(taskText)
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId == taskText.id)
+    }
+
+    @Test
+    fun test_deleteTaskList() {
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId != taskList.id)
+        taskRepository.deleteTaskList(taskList)
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId == taskList.id)
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_deleteTaskList_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId != taskList.id)
+        taskRepository.deleteTaskList(taskList)
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestDeleteItemId == taskList.id)
+    }
+
+    @Test
+    fun test_deleteTasks() {
+        val listDeletedItemsId = mutableListOf<Long?>()
+        listOfTaskEntityText.forEach {
+            listDeletedItemsId.add(it.id)
+        }
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId != listDeletedItemsId)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId == null)
+
+        taskRepository.deleteTasks(listOfTaskEntityText)
+
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId == listDeletedItemsId)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId != null)
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_deleteTasks_shouldThrowDomainException() {
+        fakeTaskService.isNeedToThrowException = true
+        val listDeletedItemsId = mutableListOf<Long?>()
+        listOfTaskEntityText.forEach {
+            listDeletedItemsId.add(it.id)
+        }
+        assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId != listDeletedItemsId)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId == null)
+
+        taskRepository.deleteTasks(listOfTaskEntityText)
+
+        assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId == listDeletedItemsId)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId != null)
+    }
 
 }
 
 private class FakeTaskService: TaskService {
     
     var isNeedToThrowException = false
+    var requestDeleteItemId: Long? = null
+    var requestToDeleteItemsId: MutableList<Long?>? = null
     var dataToReturn = mutableListOf(
         TaskEntity(
             title = "some title",
@@ -76,18 +382,27 @@ private class FakeTaskService: TaskService {
 
     override suspend fun changeTask(task: TaskEntity) {
         if (isNeedToThrowException) throw DomainException("some exception")
+        dataToReturn.clear()
+        dataToReturn.add(task)
     }
 
     override suspend fun changeTasks(tasks: List<TaskEntity>) {
         if (isNeedToThrowException) throw DomainException("some exception")
+        dataToReturn = tasks.toMutableList()
     }
 
     override suspend fun deleteTask(task: TaskEntity) {
         if (isNeedToThrowException) throw DomainException("some exception")
+        requestDeleteItemId = task.id
+        dataToReturn.clear()
     }
 
     override suspend fun deleteTasks(tasks: List<TaskEntity>) {
         if (isNeedToThrowException) throw DomainException("some exception")
+        tasks.forEach {
+            requestToDeleteItemsId?.add(it.id)
+        }
+        dataToReturn.clear()
     }
 
 }
