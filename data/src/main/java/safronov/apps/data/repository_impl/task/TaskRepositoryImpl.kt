@@ -54,6 +54,12 @@ class TaskRepositoryImpl(
         }
     }
 
+    override suspend fun getTasksByText(text: String): List<Task> {
+        return taskService.getTasksByText(text).map {
+            getTaskByTaskType(it)
+        }
+    }
+
     override suspend fun changeTaskText(task: Task.TaskText) {
         TODO("Not yet implemented")
     }
@@ -75,10 +81,6 @@ class TaskRepositoryImpl(
     }
 
     override suspend fun deleteTasks(tasks: List<Task>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getTasksByText(text: String): List<Task> {
         TODO("Not yet implemented")
     }
 

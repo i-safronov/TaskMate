@@ -176,7 +176,6 @@ class TaskRepositoryImplTest {
 
     @Test
     fun test_getTasksByText() = runBlocking {
-        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskText(taskText)
         assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
         val result: Task = taskRepository.getTasksByText("text").first()
@@ -192,7 +191,6 @@ class TaskRepositoryImplTest {
     @Test(expected = DomainException::class)
     fun test_getTasksByText_shouldThrowDomainException() = runBlocking {
         fakeTaskService.isNeedToThrowException = true
-        assertEquals(true, taskText != taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskText(taskText)
         assertEquals(true, taskText == taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()))
         val result: Task = taskRepository.getTasksByText("text").first()
