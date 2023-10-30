@@ -177,4 +177,29 @@ class TaskEntityConverterTest {
         assertEquals(true, result.id == taskList.id)
     }
 
+    @Test
+    fun test_convertListOfTasksToListOfTaskEntityList() {
+        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskList))
+        assertEquals(true, result.title == taskList.title)
+        val list = Gson().fromJson(result.content, Array<Task.TaskListItem>::class.java).asList()
+        assertEquals(true, list == taskList.list)
+        assertEquals(true, result.date == taskList.date)
+        assertEquals(true, result.taskCategoryId == taskList.taskCategoryId)
+        assertEquals(true, result.taskType == taskList.taskType)
+        assertEquals(true, result.isPinned == taskList.isPinned)
+        assertEquals(true, result.id == taskList.id)
+    }
+
+    @Test
+    fun test_convertListOfTasksToListOfTaskEntityText() {
+        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskText))
+        assertEquals(true, result.title == taskText.title)
+        assertEquals(true, result.content == taskText.text)
+        assertEquals(true, result.date == taskText.date)
+        assertEquals(true, result.taskCategoryId == taskText.taskCategoryId)
+        assertEquals(true, result.taskType == taskText.taskType)
+        assertEquals(true, result.isPinned == taskText.isPinned)
+        assertEquals(true, result.id == taskText.id)
+    }
+
 }
