@@ -3,6 +3,7 @@ package safronov.apps.data.data_source.local.model.converter.task
 import com.google.gson.Gson
 import safronov.apps.data.data_source.local.model.task.TaskEntity
 import safronov.apps.domain.model.task.Task
+import java.lang.IllegalStateException
 
 class TaskEntityConverterImpl(
     private val gson: Gson
@@ -84,6 +85,20 @@ class TaskEntityConverterImpl(
         val mList = mutableListOf<TaskEntity>()
         list.forEach {
             mList.add(convertTaskListToTaskEntity(it))
+        }
+        return mList
+    }
+
+    override fun convertListOfTaskToListOfTaskEntity(list: List<Task>): List<TaskEntity> {
+        val mList = mutableListOf<TaskEntity>()
+        list.forEach {
+            if (it is Task.TaskText) {
+                mList.add(convertTaskTextToTaskEntity(it))
+            } else if (it is Task.TaskList) {
+                mList.add(convertTaskListToTaskEntity(it))
+            } else {
+                throw IllegalStateException("didn't found this type of task")
+            }
         }
         return mList
     }

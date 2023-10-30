@@ -179,7 +179,7 @@ class TaskEntityConverterTest {
 
     @Test
     fun test_convertListOfTasksToListOfTaskEntityList() {
-        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskList))
+        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskList).first())
         assertEquals(true, result.title == taskList.title)
         val list = Gson().fromJson(result.content, Array<Task.TaskListItem>::class.java).asList()
         assertEquals(true, list == taskList.list)
@@ -192,7 +192,7 @@ class TaskEntityConverterTest {
 
     @Test
     fun test_convertListOfTasksToListOfTaskEntityText() {
-        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskText))
+        val result: TaskEntity = (taskEntityConverter.convertListOfTaskToListOfTaskEntity(list = listOfTaskText).first())
         assertEquals(true, result.title == taskText.title)
         assertEquals(true, result.content == taskText.text)
         assertEquals(true, result.date == taskText.date)

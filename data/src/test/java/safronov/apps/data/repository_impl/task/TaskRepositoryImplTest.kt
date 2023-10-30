@@ -234,22 +234,20 @@ class TaskRepositoryImplTest {
     @Test
     fun test_changeTasks() = runBlocking {
         val oldData = fakeTaskService.dataToReturn
-        assertEquals(true, oldData == fakeTaskService.dataToReturn)
         taskRepository.changeTasks(listOfTaskText)
         assertEquals(false, oldData == fakeTaskService.dataToReturn)
-        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskList(fakeTaskService.dataToReturn)
-        assertEquals(true, resultList == listOfTaskEntityList)
+        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskText(fakeTaskService.dataToReturn)
+        assertEquals(true, resultList == listOfTaskText)
     }
 
     @Test(expected = DomainException::class)
     fun test_changeTasks_shouldThrowDomainException() = runBlocking {
         fakeTaskService.isNeedToThrowException = true
         val oldData = fakeTaskService.dataToReturn
-        assertEquals(true, oldData == fakeTaskService.dataToReturn)
         taskRepository.changeTasks(listOfTaskText)
         assertEquals(false, oldData == fakeTaskService.dataToReturn)
-        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskList(fakeTaskService.dataToReturn)
-        assertEquals(true, resultList == listOfTaskEntityList)
+        val resultList = taskEntityConverter.convertListOfTaskEntityToListOfTaskText(fakeTaskService.dataToReturn)
+        assertEquals(true, resultList == listOfTaskText)
     }
 
     @Test

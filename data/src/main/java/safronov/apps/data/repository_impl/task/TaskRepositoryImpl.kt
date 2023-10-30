@@ -86,7 +86,7 @@ class TaskRepositoryImpl(
 
     override suspend fun changeTasks(tasks: List<Task>) {
         try {
-            taskService.changeTasks(taskEntityConverter.convertListOfTaskListToListOfTaskEntity())
+            taskService.changeTasks(taskEntityConverter.convertListOfTaskToListOfTaskEntity(tasks))
         } catch (e: Exception) {
             throw DomainException(e.message, e)
         }
@@ -104,6 +104,7 @@ class TaskRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    //TODO move [getTaskByTaskType] to [TaskEntityConverter]
     private fun getTaskByTaskType(task: TaskEntity): Task {
         if (task.taskType == Task.TaskType.Text) {
             return taskEntityConverter.convertTaskEntityToTaskText(task)
