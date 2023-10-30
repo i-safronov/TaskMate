@@ -1,12 +1,14 @@
 package safronov.apps.data.repository_impl.task
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
 import safronov.apps.data.data_source.local.service.task.TaskService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.repository.task.TaskRepository
 import java.lang.Exception
+import java.lang.IllegalStateException
 
 class TaskRepositoryImpl(
     private val taskService: TaskService,
@@ -32,7 +34,25 @@ class TaskRepositoryImpl(
     }
 
     override suspend fun getTasksAsFlow(): Flow<List<Task>> {
-        TODO("Not yet implemented")
+        try {
+            return taskService.getTasksAsFlow().map {
+                val mutable = mutableListOf<Task>()
+
+                it.forEach {
+                    if (it.taskType == Task.TaskType.Text) {
+                        mutable.add(taskEntityConverter.convertTaskEntityToTaskText(it))
+                    } else if (it.taskType == Task.TaskType.List) {
+                        mutable.add(taskEntityConverter.convertTaskEntityToTaskList(it))
+                    } else {
+                        throw IllegalStateException("task type didn't found")
+                    }
+                }
+
+                mutable
+            }
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
     }
 
     override suspend fun getTasks(): List<Task> {

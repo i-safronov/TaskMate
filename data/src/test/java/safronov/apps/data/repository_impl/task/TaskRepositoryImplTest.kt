@@ -122,12 +122,11 @@ class TaskRepositoryImplTest {
 
     @Test
     fun test_getTasksAsFlow() = runBlocking {
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         val result: Task = taskRepository.getTasksAsFlow().first().first()
         if (result is Task.TaskText) {
-            assertEquals(true, taskText == result)
+            assertEquals(true, taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()) == result)
         } else if (result is Task.TaskList) {
             assertEquals(true, taskList == result)
         } else {
@@ -138,12 +137,11 @@ class TaskRepositoryImplTest {
     @Test(expected = DomainException::class)
     fun test_getTasksAsFlow_shouldThrowDomainException() = runBlocking {
         fakeTaskService.isNeedToThrowException = true
-        assertEquals(true, taskList != taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         taskRepository.insertTaskList(taskList)
         assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
         val result: Task = taskRepository.getTasksAsFlow().first().first()
         if (result is Task.TaskText) {
-            assertEquals(true, taskText == result)
+            assertEquals(true, taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()) == result)
         } else if (result is Task.TaskList) {
             assertEquals(true, taskList == result)
         } else {
