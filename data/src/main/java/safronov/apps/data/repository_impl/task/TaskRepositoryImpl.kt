@@ -3,6 +3,7 @@ package safronov.apps.data.repository_impl.task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
+import safronov.apps.data.data_source.local.model.task.TaskEntity
 import safronov.apps.data.data_source.local.service.task.TaskService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
@@ -37,17 +38,9 @@ class TaskRepositoryImpl(
         try {
             return taskService.getTasksAsFlow().map { taskEntities ->
                 val tasks = mutableListOf<Task>()
-
                 taskEntities.forEach {
-                    if (it.taskType == Task.TaskType.Text) {
-                        tasks.add(taskEntityConverter.convertTaskEntityToTaskText(it))
-                    } else if (it.taskType == Task.TaskType.List) {
-                        tasks.add(taskEntityConverter.convertTaskEntityToTaskList(it))
-                    } else {
-                        throw IllegalStateException("task type didn't found")
-                    }
+                    tasks.add(getTaskByTaskType(it))
                 }
-
                 tasks
             }
         } catch (e: Exception) {
@@ -56,7 +49,9 @@ class TaskRepositoryImpl(
     }
 
     override suspend fun getTasks(): List<Task> {
-        TODO("Not yet implemented")
+        return taskService.getTasks().map {
+            getTaskByTaskType(it)
+        }
     }
 
     override suspend fun changeTaskText(task: Task.TaskText) {
@@ -85,6 +80,16 @@ class TaskRepositoryImpl(
 
     override suspend fun getTasksByText(text: String): List<Task> {
         TODO("Not yet implemented")
+    }
+
+    private fun getTaskByTaskType(task: TaskEntity): Task {
+        if (task.taskType == Task.TaskType.Text) {
+            return taskEntityConverter.convertTaskEntityToTaskText(task)
+        } else if (task.taskType == Task.TaskType.List) {
+            return taskEntityConverter.convertTaskEntityToTaskList(task)
+        } else {
+            throw IllegalStateException("task type didn't found")
+        }
     }
 
 }
