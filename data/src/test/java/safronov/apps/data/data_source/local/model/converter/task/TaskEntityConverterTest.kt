@@ -141,8 +141,9 @@ class TaskEntityConverterTest {
 
     @Test
     fun test_convertListOfTaskEntityToListOfTaskText() {
-        val result: Task.TaskText = (taskEntityConverter.convertListOfTaskEntityToListOfTaskText(list = listOfTaskEntityList).first())
+        val result: Task.TaskText = (taskEntityConverter.convertListOfTaskEntityToListOfTaskText(list = listOfTaskEntityText).first())
         assertEquals(true, result.title == taskEntityText.title)
+        println("1: ${result.text}, 2: ${taskEntityText.content}")
         assertEquals(true, result.text == taskEntityText.content)
         assertEquals(true, result.date == taskEntityText.date)
         assertEquals(true, result.taskCategoryId == taskEntityText.taskCategoryId)
