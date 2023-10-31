@@ -26,6 +26,9 @@ class FragmentCreateTaskText : FragmentBase() {
     private val binding get() = _binding!!
 
     @Inject
+    lateinit var textWatcher: safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
+
+    @Inject
     lateinit var fragmentCreateTaskTextViewModelFactory: FragmentCreateTaskTextViewModelFactory
     private var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel? = null
 
@@ -46,26 +49,14 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     private fun addTextWatcherToEdtvTitle() {
-        binding.edtvTitle.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun afterTextChanged(p0: Editable?) {
-                fragmentCreateTaskTextViewModel?.saveCurrentTaskTitle(p0.toString())
-            }
+        textWatcher.addTextWatcherToView(binding.edtvTitle, afterTextChanged = {
+            fragmentCreateTaskTextViewModel?.saveCurrentTaskTitle(it)
         })
     }
 
     private fun addTextWatcherToEdtvText() {
-        binding.edtvText.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun afterTextChanged(p0: Editable?) {
-                fragmentCreateTaskTextViewModel?.saveCurrentTaskText(p0.toString())
-            }
+        textWatcher.addTextWatcherToView(binding.edtvText, afterTextChanged = {
+            fragmentCreateTaskTextViewModel?.saveCurrentTaskText(it)
         })
     }
 
