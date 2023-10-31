@@ -42,6 +42,7 @@ class FragmentCreateTaskText : FragmentBase() {
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         addTextWatcherToEdtvTitle()
+        addTextWatcherToEdtvText()
     }
 
     private fun addTextWatcherToEdtvTitle() {
@@ -52,6 +53,19 @@ class FragmentCreateTaskText : FragmentBase() {
 
             override fun afterTextChanged(p0: Editable?) {
                 fragmentCreateTaskTextViewModel?.saveCurrentTaskTitle(p0.toString())
+            }
+        })
+    }
+
+    private fun addTextWatcherToEdtvText() {
+        binding.edtvText.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun afterTextChanged(p0: Editable?) {
+                fragmentCreateTaskTextViewModel?.saveCurrentTaskText(p0.toString())
+                Log.d("sfrLog", "Data: ${fragmentCreateTaskTextViewModel?.getCurrentTaskText()?.value}")
             }
         })
     }
