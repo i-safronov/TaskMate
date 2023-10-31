@@ -9,12 +9,12 @@ import safronov.apps.domain.model.task.Task
 @Entity(tableName = TaskEntity.TASK_ENTITY_TABLE_NAME)
 data class TaskEntity(
     @ColumnInfo val title: String?,
-    @ColumnInfo val content: String?,
+    @ColumnInfo var content: String?,
     @ColumnInfo val date: String?,
     @ColumnInfo val taskCategoryId: Long?,
     @ColumnInfo val taskType: Task.TaskType?,
     @ColumnInfo val isPinned: Boolean?,
-    @PrimaryKey(autoGenerate = true) val id: Long?
+    @PrimaryKey(autoGenerate = true) var id: Long?
 ) {
 
     companion object {

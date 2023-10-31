@@ -16,6 +16,7 @@ import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEnti
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import java.io.IOException
 
+
 @RunWith(AndroidJUnit4::class)
 class TaskCategoryDaoTest {
 
