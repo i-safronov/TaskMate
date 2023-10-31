@@ -93,9 +93,11 @@ class TaskServiceImplTest {
     fun test_getTasksByText() = runBlocking {
         assertEquals(true, fakeTaskDao.dataToReturn.first() != dataToInsert)
         taskService.insertTask(dataToInsert)
+        val textToSearch = "some text"
         assertEquals(true, fakeTaskDao.dataToReturn.first() == dataToInsert)
-        val data = taskService.getTasksByText("some text").first()
+        val data = taskService.getTasksByText(textToSearch).first()
         assertEquals(true, data == dataToInsert)
+        assertEquals(true, textToSearch == fakeTaskDao.textToGetTask)
     }
 
     @Test(expected = DataException::class)
@@ -188,6 +190,7 @@ private class FakeTaskDao: TaskDao {
 
     var isNeedToThrowException = false
     var deletedItemId: Long? = null
+    var textToGetTask = ""
     var deletedItemIds = mutableListOf<Long?>()
     var dataToReturn = mutableListOf(
         TaskEntity(
@@ -222,6 +225,7 @@ private class FakeTaskDao: TaskDao {
 
     override fun getTasksByText(text: String): List<TaskEntity> {
         if (isNeedToThrowException) throw IllegalStateException("some exception")
+        textToGetTask = text
         return dataToReturn
     }
 

@@ -35,7 +35,11 @@ class TaskServiceImpl(
     }
 
     override suspend fun getTasksByText(text: String): List<TaskEntity> {
-        TODO("Not yet implemented")
+        try {
+            return taskDao.getTasksByText(text)
+        } catch (e: Exception) {
+            throw DataException(e.message, e)
+        }
     }
 
     override suspend fun changeTask(task: TaskEntity) {
