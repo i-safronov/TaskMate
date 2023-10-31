@@ -4,7 +4,9 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
+import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
+import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
@@ -16,6 +18,7 @@ import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreen
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
@@ -118,6 +121,23 @@ class AppModule(
             date = date,
             insertTaskListUseCase = insertTaskListUseCase,
             changeTaskListUseCase = changeTaskListUseCase,
+            defaultTaskCategories = defaultTaskCategories
+        )
+    }
+
+    @Provides
+    fun provideFragmentCreateTaskTextViewModelFactory(
+        dispatchersList: DispatchersList,
+        date: Date,
+        insertTaskTextUseCase: InsertTaskTextUseCase,
+        changeTaskTextUseCase: ChangeTaskTextUseCase,
+        defaultTaskCategories: DefaultTaskCategories
+    ): FragmentCreateTaskTextViewModelFactory {
+        return FragmentCreateTaskTextViewModelFactory(
+            dispatchersList = dispatchersList,
+            date = date,
+            insertTaskTextUseCase = insertTaskTextUseCase,
+            changeTaskTextUseCase = changeTaskTextUseCase,
             defaultTaskCategories = defaultTaskCategories
         )
     }
