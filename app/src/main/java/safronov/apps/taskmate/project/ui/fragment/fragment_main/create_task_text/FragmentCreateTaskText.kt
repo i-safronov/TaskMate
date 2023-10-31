@@ -65,7 +65,6 @@ class FragmentCreateTaskText : FragmentBase() {
 
             override fun afterTextChanged(p0: Editable?) {
                 fragmentCreateTaskTextViewModel?.saveCurrentTaskText(p0.toString())
-                Log.d("sfrLog", "Data: ${fragmentCreateTaskTextViewModel?.getCurrentTaskText()?.value}")
             }
         })
     }
