@@ -229,4 +229,31 @@ class TaskEntityConverterTest {
         assertEquals(true, result.id == taskList.id)
     }
 
+    @Test
+    fun test_getTaskByTaskEntityText() {
+        val result: Task.TaskText = taskEntityConverter.getTaskByTaskEntity(taskEntityText)
+        assertEquals(true, result.title == taskEntityText.title)
+        assertEquals(true, result.text == taskEntityText.content)
+        assertEquals(true, result.date == taskEntityText.date)
+        assertEquals(true, result.taskCategoryId == taskEntityText.taskCategoryId)
+        assertEquals(true, result.taskType == taskEntityText.taskType)
+        assertEquals(true, result.isPinned == taskEntityText.isPinned)
+        assertEquals(true, result.id == taskEntityText.id)
+    }
+
+    @Test
+    fun test_getTaskByTaskEntityList() {
+        val result: Task.TaskList = taskEntityConverter.getTaskByTaskEntity(taskEntityList)
+        assertEquals(true, result.title == taskEntityList.title)
+        val list = Gson().fromJson(taskEntityList.content, Array<Task.TaskListItem>::class.java).asList()
+        assertEquals(true, list.isNotEmpty())
+        assertEquals(true, list.get(0).title == "some title")
+        assertEquals(true, list.get(0).isChecked == true)
+        assertEquals(true, result.date == taskEntityList.date)
+        assertEquals(true, result.taskCategoryId == taskEntityList.taskCategoryId)
+        assertEquals(true, result.taskType == taskEntityList.taskType)
+        assertEquals(true, result.isPinned == taskEntityList.isPinned)
+        assertEquals(true, result.id == taskEntityList.id)
+    }
+
 }
