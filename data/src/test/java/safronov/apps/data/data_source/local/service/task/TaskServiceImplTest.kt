@@ -13,6 +13,7 @@ import safronov.apps.data.data_source.local.model.task.TaskEntity
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import java.lang.IllegalStateException
 
 class TaskServiceImplTest {
 
@@ -201,48 +202,48 @@ private class FakeTaskDao: TaskDao {
     )
 
     override fun insertTask(task: TaskEntity): Long? {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn.clear()
         dataToReturn.add(task)
         return task.id
     }
 
     override fun getTasksAsFlow(): Flow<List<TaskEntity>> {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return flow {
             emit(dataToReturn)
         }
     }
 
     override fun getTasks(): List<TaskEntity> {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return dataToReturn
     }
 
     override fun getTasksByText(text: String): List<TaskEntity> {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         return dataToReturn
     }
 
     override fun changeTask(task: TaskEntity) {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn.clear()
         dataToReturn.add(task)
     }
 
     override fun changeTasks(tasks: List<TaskEntity>) {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         dataToReturn = tasks.toMutableList()
     }
 
     override fun deleteTask(task: TaskEntity) {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         deletedItemId = task.id
         dataToReturn.clear()
     }
 
     override fun deleteTasks(tasks: List<TaskEntity>) {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
         tasks.forEach {
             deletedItemIds.add(it.id)
         }
