@@ -10,7 +10,7 @@ import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEnti
 const val APP_DB_NAME = "TaskMateAppDB.db"
 
 @Database(
-    entities = [TaskCategoryEntity::class, TaskEntity::class], version = 2
+    entities = [TaskCategoryEntity::class, TaskEntity::class], version = 2, exportSchema = false
 )
 abstract class AppDB(): RoomDatabase() {
     abstract fun getTaskCategoryDao(): TaskCategoryDao
