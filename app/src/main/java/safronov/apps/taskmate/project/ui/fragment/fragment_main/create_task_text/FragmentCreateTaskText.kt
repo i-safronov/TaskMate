@@ -1,9 +1,13 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentCreateTaskTextBinding
@@ -37,7 +41,19 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        addTextWatcherToEdtvTitle()
+    }
 
+    private fun addTextWatcherToEdtvTitle() {
+        binding.edtvTitle.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun afterTextChanged(p0: Editable?) {
+                fragmentCreateTaskTextViewModel?.saveCurrentTaskTitle(p0.toString())
+            }
+        })
     }
 
     override fun onStart() {
