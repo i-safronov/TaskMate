@@ -39,7 +39,7 @@ class TaskRepositoryImpl(
             return taskService.getTasksAsFlow().map { taskEntities ->
                 val tasks = mutableListOf<Task>()
                 taskEntities.forEach {
-                    tasks.add(getTaskByTaskType(it))
+                    tasks.add(taskEntityConverter.getTaskByTaskEntity(it))
                 }
                 tasks
             }
@@ -51,7 +51,7 @@ class TaskRepositoryImpl(
     override suspend fun getTasks(): List<Task> {
         try {
             return taskService.getTasks().map {
-                getTaskByTaskType(it)
+                taskEntityConverter.getTaskByTaskEntity(it)
             }
         } catch (e: Exception) {
             throw DomainException(e.message, e)
@@ -61,7 +61,7 @@ class TaskRepositoryImpl(
     override suspend fun getTasksByText(text: String): List<Task> {
         try {
             return taskService.getTasksByText(text).map {
-                getTaskByTaskType(it)
+                taskEntityConverter.getTaskByTaskEntity(it)
             }
         } catch (e: Exception) {
             throw DomainException(e.message, e)
@@ -113,17 +113,6 @@ class TaskRepositoryImpl(
             taskService.deleteTasks(taskEntityConverter.convertListOfTaskToListOfTaskEntity(tasks))
         } catch (e: Exception) {
             throw DomainException(e.message, e)
-        }
-    }
-
-    //TODO move [getTaskByTaskType] to [TaskEntityConverter]
-    private fun getTaskByTaskType(task: TaskEntity): Task {
-        if (task.taskType == Task.TaskType.Text) {
-            return taskEntityConverter.convertTaskEntityToTaskText(task)
-        } else if (task.taskType == Task.TaskType.List) {
-            return taskEntityConverter.convertTaskEntityToTaskList(task)
-        } else {
-            throw IllegalStateException("task type didn't found")
         }
     }
 
