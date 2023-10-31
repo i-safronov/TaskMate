@@ -92,15 +92,19 @@ class TaskEntityConverterImpl(
     override fun convertListOfTaskToListOfTaskEntity(list: List<Task>): List<TaskEntity> {
         val mList = mutableListOf<TaskEntity>()
         list.forEach {
-            if (it is Task.TaskText) {
-                mList.add(convertTaskTextToTaskEntity(it))
-            } else if (it is Task.TaskList) {
-                mList.add(convertTaskListToTaskEntity(it))
-            } else {
-                throw IllegalStateException("didn't found this type of task")
-            }
+            mList.add(getTaskEntityByTask(it))
         }
         return mList
+    }
+
+    override fun getTaskEntityByTask(task: Task): TaskEntity {
+        if (task is Task.TaskText) {
+            return convertTaskTextToTaskEntity(task)
+        } else if (task is Task.TaskList) {
+            return convertTaskListToTaskEntity(task)
+        } else {
+            throw IllegalStateException("didn't found this type of task")
+        }
     }
 
 }
