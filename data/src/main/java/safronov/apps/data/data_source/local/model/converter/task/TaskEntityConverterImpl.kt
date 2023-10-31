@@ -107,4 +107,14 @@ class TaskEntityConverterImpl(
         }
     }
 
+    override fun getTaskByTaskEntity(taskEntity: TaskEntity): Task {
+        if (taskEntity.taskType == Task.TaskType.Text) {
+            return convertTaskEntityToTaskText(taskEntity)
+        } else if (taskEntity.taskType == Task.TaskType.List) {
+            return convertTaskEntityToTaskList(taskEntity)
+        } else {
+            throw IllegalStateException("task type didn't found")
+        }
+    }
+
 }

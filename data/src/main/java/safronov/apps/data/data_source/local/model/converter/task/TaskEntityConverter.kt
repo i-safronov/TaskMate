@@ -19,5 +19,6 @@ interface TaskEntityConverter {
     fun convertListOfTaskToListOfTaskEntity(list: List<Task>): List<TaskEntity>
 
     fun getTaskEntityByTask(task: Task): TaskEntity
+    fun getTaskByTaskEntity(taskEntity: TaskEntity): Task
 
 }

@@ -41,7 +41,7 @@ class TaskEntityConverterTest {
             )),
             date = "date",
             taskCategoryId = 4,
-            taskType = Task.TaskType.Text,
+            taskType = Task.TaskType.List,
             isPinned = true,
             id = 32
         )
@@ -231,7 +231,9 @@ class TaskEntityConverterTest {
 
     @Test
     fun test_getTaskByTaskEntityText() {
-        val result: Task.TaskText = taskEntityConverter.getTaskByTaskEntity(taskEntityText)
+        val result: Task = taskEntityConverter.getTaskByTaskEntity(taskEntityText)
+        assert(result is Task.TaskText)
+        result as Task.TaskText
         assertEquals(true, result.title == taskEntityText.title)
         assertEquals(true, result.text == taskEntityText.content)
         assertEquals(true, result.date == taskEntityText.date)
@@ -243,7 +245,10 @@ class TaskEntityConverterTest {
 
     @Test
     fun test_getTaskByTaskEntityList() {
-        val result: Task.TaskList = taskEntityConverter.getTaskByTaskEntity(taskEntityList)
+        val result: Task = taskEntityConverter.getTaskByTaskEntity(taskEntityList)
+        println("Result: ${result}")
+        assert(result is Task.TaskList)
+        result as Task.TaskList
         assertEquals(true, result.title == taskEntityList.title)
         val list = Gson().fromJson(taskEntityList.content, Array<Task.TaskListItem>::class.java).asList()
         assertEquals(true, list.isNotEmpty())
