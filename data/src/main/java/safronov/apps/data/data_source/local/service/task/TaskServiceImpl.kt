@@ -59,7 +59,11 @@ class TaskServiceImpl(
     }
 
     override suspend fun deleteTask(task: TaskEntity) {
-        TODO("Not yet implemented")
+        try {
+            taskDao.deleteTask(task)
+        } catch (e: Exception) {
+            throw DataException(e.message, e)
+        }
     }
 
     override suspend fun deleteTasks(tasks: List<TaskEntity>) {
