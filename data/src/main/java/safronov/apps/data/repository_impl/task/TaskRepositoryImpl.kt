@@ -109,7 +109,11 @@ class TaskRepositoryImpl(
     }
 
     override suspend fun deleteTasks(tasks: List<Task>) {
-        TODO("Not yet implemented")
+        try {
+            taskService.deleteTasks(taskEntityConverter.convertListOfTaskToListOfTaskEntity(tasks))
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
     }
 
     //TODO move [getTaskByTaskType] to [TaskEntityConverter]

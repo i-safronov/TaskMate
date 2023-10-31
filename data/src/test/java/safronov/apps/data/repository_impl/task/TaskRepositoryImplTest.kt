@@ -296,13 +296,12 @@ class TaskRepositoryImplTest {
         }
         assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
         assertEquals(true, fakeTaskService.requestToDeleteItemsId != listDeletedItemsId)
-        assertEquals(true, fakeTaskService.requestToDeleteItemsId == null)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId.isEmpty())
 
         taskRepository.deleteTasks(listOfTaskText)
-
         assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
         assertEquals(true, fakeTaskService.requestToDeleteItemsId == listDeletedItemsId)
-        assertEquals(true, fakeTaskService.requestToDeleteItemsId != null)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId.isNotEmpty())
     }
 
     @Test(expected = DomainException::class)
@@ -314,13 +313,13 @@ class TaskRepositoryImplTest {
         }
         assertEquals(false, fakeTaskService.dataToReturn.isEmpty())
         assertEquals(true, fakeTaskService.requestToDeleteItemsId != listDeletedItemsId)
-        assertEquals(true, fakeTaskService.requestToDeleteItemsId == null)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId.isEmpty())
 
         taskRepository.deleteTasks(listOfTaskText)
 
         assertEquals(true, fakeTaskService.dataToReturn.isEmpty())
         assertEquals(true, fakeTaskService.requestToDeleteItemsId == listDeletedItemsId)
-        assertEquals(true, fakeTaskService.requestToDeleteItemsId != null)
+        assertEquals(true, fakeTaskService.requestToDeleteItemsId.isNotEmpty())
     }
 
 }
@@ -329,7 +328,7 @@ private class FakeTaskService: TaskService {
     
     var isNeedToThrowException = false
     var requestDeleteItemId: Long? = null
-    var requestToDeleteItemsId: MutableList<Long?>? = null
+    var requestToDeleteItemsId: MutableList<Long?> = mutableListOf()
     var dataToReturn = mutableListOf(
         TaskEntity(
             title = "some title",
@@ -386,7 +385,7 @@ private class FakeTaskService: TaskService {
     override suspend fun deleteTasks(tasks: List<TaskEntity>) {
         if (isNeedToThrowException) throw IllegalStateException("some exception")
         tasks.forEach {
-            requestToDeleteItemsId?.add(it.id)
+            requestToDeleteItemsId.add(it.id)
         }
         dataToReturn.clear()
     }
