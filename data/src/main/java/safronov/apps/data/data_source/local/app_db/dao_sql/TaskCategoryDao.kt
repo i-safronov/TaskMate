@@ -23,5 +23,3 @@ interface TaskCategoryDao {
     fun clearTaskCategories()
 
 }
-
-class TaskCategoryDaoImpl
