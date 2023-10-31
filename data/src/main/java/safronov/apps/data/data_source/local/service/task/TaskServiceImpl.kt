@@ -19,7 +19,11 @@ class TaskServiceImpl(
     }
 
     override suspend fun getTasksAsFlow(): Flow<List<TaskEntity>> {
-        TODO("Not yet implemented")
+        try {
+            return taskDao.getTasksAsFlow()
+        } catch (e: Exception) {
+            throw DataException(e.message, e)
+        }
     }
 
     override suspend fun getTasks(): List<TaskEntity> {
