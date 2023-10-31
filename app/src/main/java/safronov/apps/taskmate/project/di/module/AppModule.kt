@@ -17,6 +17,7 @@ import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreen
 import safronov.apps.taskmate.project.system_settings.full_screen_app.FullScreenAppImpl
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
+import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
@@ -41,6 +42,11 @@ class AppModule(
         return DefaultTaskCategories.Base(
             context = context
         )
+    }
+
+    @Provides
+    fun provideTextWatcher(): TextWatcher {
+        return TextWatcher.Base()
     }
 
     @Provides
