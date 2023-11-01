@@ -1,13 +1,10 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -19,6 +16,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.removeM
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireHomePageToolBar
+import safronov.apps.taskmate.project.system_settings.extension.fragment.setOnMenuItemClickListenerOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
@@ -56,19 +54,15 @@ class FragmentCreateTaskText : FragmentBase() {
         addTextWatcherToEdtvText()
     }
 
-    //TODO refactor this code
     private fun addItemMenuClickListenerOnHomePageToolBar() {
-        requireHomePageToolBar().setOnMenuItemClickListener {
-            var handled = false
-            if (it.itemId == R.id.pin_task) {
+        setOnMenuItemClickListenerOnHomePageToolBar(
+            pinTask = {
                 fragmentCreateTaskTextViewModel?.pinCurrentTask()
-                handled = true
-            } else if (it.itemId == R.id.choose_category) {
+            },
+            chooseTaskCategory = {
                 //TODO something
-                handled = true
             }
-            handled
-        }
+        )
     }
 
     private fun addTextWatcherToEdtvTitle() {
@@ -92,13 +86,11 @@ class FragmentCreateTaskText : FragmentBase() {
     //TODO refactor this code
     private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentCreateTaskTextViewModel?.getIsTaskPin()?.collect {
-            //TODO show user that task pinned
             if (it) {
                 requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_pinned)
             } else {
                 requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_not_pinned)
             }
-            Log.d("sfrLog", "Data is: ${it}")
         }
     }
 

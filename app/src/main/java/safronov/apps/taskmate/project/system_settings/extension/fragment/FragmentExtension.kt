@@ -57,6 +57,23 @@ fun Fragment.requireHomePageToolBar(): Toolbar {
     return requireActivity().findViewById(R.id.included_fragment_home_page_toolbar)
 }
 
+fun Fragment.setOnMenuItemClickListenerOnHomePageToolBar(
+    pinTask: () -> Unit,
+    chooseTaskCategory: () -> Unit
+) {
+    requireHomePageToolBar().setOnMenuItemClickListener {
+        var handled = false
+        if (it.itemId == R.id.pin_task) {
+            pinTask.invoke()
+            handled = true
+        } else if (it.itemId == R.id.choose_category) {
+            chooseTaskCategory.invoke()
+            handled = true
+        }
+        handled
+    }
+}
+
 fun Fragment.focusOnViewAndShowKeyboard(currentView: SearchView) {
     currentView.requestFocus()
     val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
