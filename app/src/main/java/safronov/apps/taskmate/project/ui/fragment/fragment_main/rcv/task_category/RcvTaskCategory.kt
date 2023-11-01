@@ -19,7 +19,6 @@ class RcvTaskCategory(
         private val binding: RcvItemTaskCategoryBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: TaskCategory) {
-            binding.linearLayout.setBackgroundColor(binding.root.context.getColor(item.backgroundColor ?: R.color.back))
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
             binding.tvTitle.text = item.categoryName
             binding.imgIsPinned.visibility =

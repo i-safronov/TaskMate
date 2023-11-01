@@ -5,10 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/back_shape_with_ripple"
-    android:layout_marginTop="@dimen/margin"
-    android:layout_marginStart="@dimen/margin"
-    android:layout_marginEnd="@dimen/margin">
+    android:background="@drawable/back_shape_with_stroke_and_ripple"
+    android:layout_marginTop="@dimen/margin">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,10 +15,10 @@
         android:gravity="start|center"
         android:orientation="horizontal"
         android:padding="@dimen/padding"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/green_transparent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img"
@@ -35,7 +33,6 @@
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             tools:text="Другое" />
 
     </LinearLayout>
@@ -45,10 +42,9 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginEnd="@dimen/margin"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:src="@drawable/task_category_pinned"
-        android:layout_marginStart="@dimen/margin"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/task_category_pinned" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

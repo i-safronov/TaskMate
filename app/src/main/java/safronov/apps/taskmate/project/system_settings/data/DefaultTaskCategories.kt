@@ -20,43 +20,50 @@ interface DefaultTaskCategories {
                     icon = R.drawable.ic_multi_color,
                     backgroundColor = R.color.back,
                     categoryName = context.getString(R.string.all_tasks),
-                    categoryType = CategoryTypes.System
+                    categoryType = CategoryTypes.System,
+                    id = 0
                 ),
                 TaskCategory(
                     icon = R.drawable.green_task_category,
                     backgroundColor = R.color.green_transparent,
                     categoryName = context.getString(R.string.work),
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 1
                 ),
                 TaskCategory(
                     icon = R.drawable.orange_task_category,
                     backgroundColor = R.color.orange_transparent,
                     categoryName = context.getString(R.string.personal),
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 2
                 ),
                 TaskCategory(
                     icon = R.drawable.blue_task_category,
                     backgroundColor = R.color.blue_transparent,
                     categoryName = context.getString(R.string.other),
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 3
                 ),
                 TaskCategory(
                     icon = R.drawable.red_task_category,
                     backgroundColor = R.color.red_transparent,
                     categoryName = "",
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 4
                 ),
                 TaskCategory(
                     icon = R.drawable.yellow_task_category,
                     backgroundColor = R.color.yellow_transparent,
                     categoryName = "",
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 5
                 ),
                 TaskCategory(
                     icon = R.drawable.purple_task_category,
                     backgroundColor = R.color.purple_transparent,
                     categoryName = "",
-                    categoryType = CategoryTypes.User
+                    categoryType = CategoryTypes.User,
+                    id = 6
                 )
             )
         }
