@@ -1,7 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +51,7 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentCreateTaskTextViewModel?.loadDefaultTaskCategory()
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
@@ -85,11 +85,18 @@ class FragmentCreateTaskText : FragmentBase() {
         super.onStart()
         inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
         observeTaskPin()
+        observeTaskCategory()
     }
 
     private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentCreateTaskTextViewModel?.getIsTaskPin()?.collect {
             homePageToolBarService.changePinTaskIconByParam(toolBar = requireHomePageToolBar(), isPinned = it)
+        }
+    }
+
+    private fun observeTaskCategory() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentCreateTaskTextViewModel?.getTaskCategory()?.collect {
+            homePageToolBarService.changeTaskCategoryIcon(toolBar = requireHomePageToolBar(), taskCategory = it)
         }
     }
 

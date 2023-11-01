@@ -29,6 +29,7 @@
             tools:src="@drawable/green_task_category" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
