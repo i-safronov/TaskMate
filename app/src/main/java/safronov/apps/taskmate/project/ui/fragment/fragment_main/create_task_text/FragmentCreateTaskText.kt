@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.FragmentCreateTaskTextBinding
+import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
+import safronov.apps.taskmate.project.system_settings.extension.fragment.requireHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
@@ -32,6 +36,9 @@ class FragmentCreateTaskText : FragmentBase() {
     lateinit var fragmentCreateTaskTextViewModelFactory: FragmentCreateTaskTextViewModelFactory
     private var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel? = null
 
+    @Inject
+    lateinit var dispatchersList: DispatchersList
+
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentCreateTaskTextBinding.inflate(inflater, container, false)
         return binding.root
@@ -44,8 +51,24 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
+    }
+
+    //TODO refactor this code
+    private fun addItemMenuClickListenerOnHomePageToolBar() {
+        requireHomePageToolBar().setOnMenuItemClickListener {
+            var handled = false
+            if (it.itemId == R.id.pin_task) {
+                fragmentCreateTaskTextViewModel?.pinCurrentTask()
+                handled = true
+            } else if (it.itemId == R.id.choose_category) {
+                //TODO something
+                handled = true
+            }
+            handled
+        }
     }
 
     private fun addTextWatcherToEdtvTitle() {
@@ -63,6 +86,20 @@ class FragmentCreateTaskText : FragmentBase() {
     override fun onStart() {
         super.onStart()
         inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
+        observeTaskPin()
+    }
+
+    //TODO refactor this code
+    private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentCreateTaskTextViewModel?.getIsTaskPin()?.collect {
+            //TODO show user that task pinned
+            if (it) {
+                requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_pinned)
+            } else {
+                requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_not_pinned)
+            }
+            Log.d("sfrLog", "Data is: ${it}")
+        }
     }
 
     override fun onStop() {
