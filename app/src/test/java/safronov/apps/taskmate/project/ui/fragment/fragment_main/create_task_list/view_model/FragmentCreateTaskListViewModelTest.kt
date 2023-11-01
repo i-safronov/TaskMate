@@ -94,6 +94,12 @@ class FragmentCreateTaskListViewModelTest {
     }
 
     @Test
+    fun test_getTaskCategories() {
+        val categories = fragmentCreateTaskListViewModel.getTaskCategories()
+        assertEquals(true, fakeDefaultTaskCategories.taskCategoriesToReturn == categories)
+    }
+
+    @Test
     fun test_loadDefaultTaskCategoryWhenCategoryExists() {
         assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == null)
         assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
@@ -339,9 +345,17 @@ private class FakeDefaultTaskCategories: DefaultTaskCategories {
         categoryName = "some name",
         categoryType = CategoryTypes.User
     )
+    val taskCategoriesToReturn = listOf(
+        TaskCategory(
+            icon = 6324,
+            backgroundColor = 4343,
+            categoryName = "some name",
+            categoryType = CategoryTypes.User
+        )
+    )
 
     override fun getDefaultTaskCategories(): List<TaskCategory> {
-        throw IllegalStateException("don't use this method")
+        return taskCategoriesToReturn
     }
 
     override fun getDefaultTaskCategory(): TaskCategory {
