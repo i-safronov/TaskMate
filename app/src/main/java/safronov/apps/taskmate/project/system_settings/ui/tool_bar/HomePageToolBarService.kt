@@ -1,6 +1,6 @@
 package safronov.apps.taskmate.project.system_settings.ui.tool_bar
 
-import android.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import safronov.apps.taskmate.R
 
 interface HomePageToolBarService {

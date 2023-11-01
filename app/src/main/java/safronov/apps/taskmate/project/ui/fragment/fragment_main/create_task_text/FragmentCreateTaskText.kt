@@ -16,8 +16,8 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.removeM
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireHomePageToolBar
-import safronov.apps.taskmate.project.system_settings.extension.fragment.setOnMenuItemClickListenerOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
 import javax.inject.Inject
@@ -37,6 +37,9 @@ class FragmentCreateTaskText : FragmentBase() {
     @Inject
     lateinit var dispatchersList: DispatchersList
 
+    @Inject
+    lateinit var homePageToolBarService: HomePageToolBarService
+
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentCreateTaskTextBinding.inflate(inflater, container, false)
         return binding.root
@@ -55,7 +58,8 @@ class FragmentCreateTaskText : FragmentBase() {
     }
 
     private fun addItemMenuClickListenerOnHomePageToolBar() {
-        setOnMenuItemClickListenerOnHomePageToolBar(
+        homePageToolBarService.setOnMenuItemClickListener(
+            toolBar = requireHomePageToolBar(),
             pinTask = {
                 fragmentCreateTaskTextViewModel?.pinCurrentTask()
             },
@@ -83,14 +87,9 @@ class FragmentCreateTaskText : FragmentBase() {
         observeTaskPin()
     }
 
-    //TODO refactor this code
     private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentCreateTaskTextViewModel?.getIsTaskPin()?.collect {
-            if (it) {
-                requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_pinned)
-            } else {
-                requireHomePageToolBar().menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_not_pinned)
-            }
+            homePageToolBarService.changePinTaskIconByParam(toolBar = requireHomePageToolBar(), isPinned = it)
         }
     }
 
