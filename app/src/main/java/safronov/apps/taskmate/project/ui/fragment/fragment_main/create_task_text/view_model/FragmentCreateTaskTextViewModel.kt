@@ -2,6 +2,7 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_tex
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
@@ -47,6 +48,7 @@ class FragmentCreateTaskTextViewModel(
     fun getCurrentTaskTitle(): StateFlow<String> = _currentTaskTitle
     fun getCurrentTaskText(): StateFlow<String> = _currentTaskText
     fun isWasException(): StateFlow<DomainException?> = _wasException
+    fun getTaskSaved(): StateFlow<Boolean?> = _taskSaved
 
     fun getCurrentTime(): String {
         return currentTask.date.toString()
@@ -94,8 +96,8 @@ class FragmentCreateTaskTextViewModel(
                 return@asyncWork true
             },
             showUi = {
-                _taskSaved.value = true
                 _taskSaved.value = null
+                _taskSaved.value = true
             },
             wasException = {
                 _wasException.value = it

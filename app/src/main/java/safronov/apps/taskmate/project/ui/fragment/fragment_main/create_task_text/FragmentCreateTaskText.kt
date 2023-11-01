@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
@@ -72,6 +73,9 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
+        includedDoneCreateLayoutOnClickListener()
+        observeTaskSaved()
+        binding.tvDate.text = fragmentCreateTaskTextViewModel?.getCurrentTime()
     }
 
     private fun addItemMenuClickListenerOnHomePageToolBar() {
@@ -102,11 +106,29 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         })
     }
 
+    private fun includedDoneCreateLayoutOnClickListener() {
+        binding.includedDoneCreateLayout.btnDone.setOnClickListener {
+            fragmentCreateTaskTextViewModel?.saveCurrentTask()
+        }
+    }
+
+    private fun observeTaskSaved() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentCreateTaskTextViewModel?.getTaskSaved()?.collect {
+            if (it == true) {
+                Snackbar.make(requireView(), getString(R.string.saved), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
-        inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
-        observeTaskPin()
-        observeTaskCategory()
+        try {
+            inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_create_task_toolbar_menu)
+            observeTaskPin()
+            observeTaskCategory()
+        } catch (e: RuntimeException) {
+            handeException(e)
+        }
     }
 
     private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
@@ -122,11 +144,12 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     }
 
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
-        fragmentCreateTaskTextViewModel?.saveTaskCategory(taskCategory)
         bottomSheet.dismissBottomSheet()
+        fragmentCreateTaskTextViewModel?.saveTaskCategory(taskCategory)
     }
 
     override fun onStop() {
+        fragmentCreateTaskTextViewModel?.saveCurrentTask()
         super.onStop()
         removeMenuFromHomePageToolBar()
     }
