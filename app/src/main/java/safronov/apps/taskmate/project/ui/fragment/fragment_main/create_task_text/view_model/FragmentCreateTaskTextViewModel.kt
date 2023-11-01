@@ -53,7 +53,9 @@ class FragmentCreateTaskTextViewModel(
     }
 
     fun loadDefaultTaskCategory() {
-        _taskCategory.value = defaultTaskCategories.getDefaultTaskCategory()
+        if (_taskCategory.value == null) {
+            saveTaskCategory(defaultTaskCategories.getDefaultTaskCategory())
+        }
     }
 
     fun saveTaskCategory(taskCategory: TaskCategory) {

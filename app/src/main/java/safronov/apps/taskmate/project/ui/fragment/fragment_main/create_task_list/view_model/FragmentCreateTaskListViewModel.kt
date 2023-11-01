@@ -50,6 +50,12 @@ class FragmentCreateTaskListViewModel(
         return currentTaskList.date.toString()
     }
 
+    fun loadDefaultCurrentTaskCategory() {
+        if (_taskCategory.value == null) {
+            saveCurrentTaskCategory(defaultTaskCategories.getDefaultTaskCategory())
+        }
+    }
+
     fun saveCurrentTaskTitle(title: String) {
         _currentTaskTitle.value = title
         currentTaskList.title = _currentTaskTitle.value
@@ -62,11 +68,6 @@ class FragmentCreateTaskListViewModel(
 
     fun saveCurrentTaskCategory(taskCategory: TaskCategory) {
         _taskCategory.value = taskCategory
-        currentTaskList.taskCategoryId = _taskCategory.value?.id
-    }
-
-    fun loadDefaultCurrentTaskCategory() {
-        _taskCategory.value = defaultTaskCategories.getDefaultTaskCategory()
         currentTaskList.taskCategoryId = _taskCategory.value?.id
     }
 

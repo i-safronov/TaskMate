@@ -17,17 +17,6 @@ import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 import java.lang.IllegalStateException
 
-/*
-* actions:
-* save:
-* save title, save added item in list, save pin, save task category, save item changed(changed text, checked and etc),
-* save current task to storage, save item twice(should update prev item if it needs)
-* get:
-* get title, get items in list, get task is pinned, get task category, get current time, get was exception or not,
-* delete:
-* delete task list item
-* */
-
 class FragmentCreateTaskListViewModelTest {
 
     private lateinit var fakeInsertingTaskRepository: FakeInsertingTaskRepository
