@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="start|center"
         android:orientation="horizontal"
-        android:padding="@dimen/padding"
+        android:padding="@dimen/padding_big"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +22,9 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img"
-            android:layout_width="@dimen/small_img_size"
-            android:layout_height="@dimen/small_img_size"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginEnd="@dimen/margin"
-            android:padding="@dimen/padding"
             tools:src="@drawable/green_task_category" />
 
         <androidx.appcompat.widget.AppCompatTextView
