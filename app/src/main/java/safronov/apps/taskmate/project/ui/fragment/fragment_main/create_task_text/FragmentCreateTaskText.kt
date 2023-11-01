@@ -122,7 +122,8 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     }
 
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
-        //TODO save current task category
+        fragmentCreateTaskTextViewModel?.saveTaskCategory(taskCategory)
+        bottomSheet.dismissBottomSheet()
     }
 
     override fun onStop() {
