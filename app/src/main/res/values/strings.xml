@@ -25,4 +25,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="task_type_text">Текст</string>
     <string name="task_type_list">Список</string>
+    <string name="choose">Выбрать</string>
 </resources>

@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
+import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentCreateTaskTextBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
@@ -16,18 +20,28 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.inflate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
+import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
+import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.FragmentMain
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
 import javax.inject.Inject
 
-class FragmentCreateTaskText : FragmentBase() {
+class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
 
     private var _binding: FragmentCreateTaskTextBinding? = null
     private val binding get() = _binding!!
+    private val rcvTaskCategory = RcvTaskCategory(this)
 
     @Inject
-    lateinit var textWatcher: safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
+    lateinit var textWatcher: TextWatcher
+
+    @Inject
+    lateinit var bottomSheet: BottomSheet
 
     @Inject
     lateinit var fragmentCreateTaskTextViewModelFactory: FragmentCreateTaskTextViewModelFactory
@@ -38,6 +52,9 @@ class FragmentCreateTaskText : FragmentBase() {
 
     @Inject
     lateinit var homePageToolBarService: HomePageToolBarService
+
+    @Inject
+    lateinit var recyclerViewBuilder: RecyclerViewBuilder
 
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentCreateTaskTextBinding.inflate(inflater, container, false)
@@ -64,7 +81,11 @@ class FragmentCreateTaskText : FragmentBase() {
                 fragmentCreateTaskTextViewModel?.pinCurrentTask()
             },
             chooseTaskCategory = {
-                //TODO something
+                val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
+                bottomView.tvTitle.text = getString(R.string.choose)
+                recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
+                rcvTaskCategory.submitList(fragmentCreateTaskTextViewModel?.getTaskCategories() ?: emptyList())
+                bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }
         )
     }
@@ -98,6 +119,10 @@ class FragmentCreateTaskText : FragmentBase() {
         fragmentCreateTaskTextViewModel?.getTaskCategory()?.collect {
             homePageToolBarService.changeTaskCategoryIcon(toolBar = requireHomePageToolBar(), taskCategory = it)
         }
+    }
+
+    override fun onTaskCategoryClick(taskCategory: TaskCategory) {
+        //TODO save current task category
     }
 
     override fun onStop() {

@@ -8,21 +8,24 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.RcvItemTaskCategoryBinding
 
-class RcvTaskCategory: RecyclerView.Adapter<RcvTaskCategory.TaskCategoryViewHolder>() {
+class RcvTaskCategory(
+    private val rcvTaskCategoryInt: RcvTaskCategoryInt
+): RecyclerView.Adapter<RcvTaskCategory.TaskCategoryViewHolder>() {
 
-    private var categories = mutableListOf<TaskCategory>()
+    private var categories = listOf<TaskCategory>()
     private var selectedTaskCategory: TaskCategory? = null
 
     inner class TaskCategoryViewHolder(
         private val binding: RcvItemTaskCategoryBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: TaskCategory) {
-            binding.linearLayout.setBackgroundColor(item.backgroundColor ?: R.color.back)
+            binding.linearLayout.setBackgroundColor(binding.root.context.getColor(item.backgroundColor ?: R.color.back))
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
             binding.tvTitle.text = item.categoryName
             binding.imgIsPinned.visibility =
                 if (item.id == selectedTaskCategory?.id) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
+                rcvTaskCategoryInt.onTaskCategoryClick(item)
                 saveSelectedItem(item)
             }
         }
@@ -40,6 +43,11 @@ class RcvTaskCategory: RecyclerView.Adapter<RcvTaskCategory.TaskCategoryViewHold
 
     override fun onBindViewHolder(holder: TaskCategoryViewHolder, position: Int) {
         holder.bindView(categories[position])
+    }
+
+    fun submitList(list: List<TaskCategory>) {
+        categories = list
+        notifyDataSetChanged()
     }
 
     fun setSelectedTaskCategory(item: TaskCategory) {

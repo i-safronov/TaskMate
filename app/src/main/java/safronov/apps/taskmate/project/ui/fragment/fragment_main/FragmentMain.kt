@@ -83,6 +83,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     private fun fbAddTaskOnClickListener() {
         binding.fbAddTask.setOnClickListener {
             val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
+            bottomView.tvTitle.text = getString(R.string.add)
             recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskType, GridLayoutManager(requireContext(), RCV_TYPES_SPAN_COUNT))
             rcvTaskType.submitList(allTaskTypes.getTaskTypes())
             bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
