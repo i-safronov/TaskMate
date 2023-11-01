@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import safronov.apps.taskmate.R
-import safronov.apps.taskmate.databinding.BottomSheetChooseTaskTypeBinding
+import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
@@ -82,7 +82,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
 
     private fun fbAddTaskOnClickListener() {
         binding.fbAddTask.setOnClickListener {
-            val bottomView = BottomSheetChooseTaskTypeBinding.inflate(layoutInflater)
+            val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
             recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskType, GridLayoutManager(requireContext(), RCV_TYPES_SPAN_COUNT))
             rcvTaskType.submitList(allTaskTypes.getTaskTypes())
             bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)

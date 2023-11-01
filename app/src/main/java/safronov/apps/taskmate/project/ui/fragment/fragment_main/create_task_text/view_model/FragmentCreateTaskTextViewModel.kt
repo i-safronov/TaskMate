@@ -103,4 +103,8 @@ class FragmentCreateTaskTextViewModel(
         )
     }
 
+    fun getTaskCategories(): List<TaskCategory> {
+        return defaultTaskCategories.getDefaultTaskCategories()
+    }
+
 }
