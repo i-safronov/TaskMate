@@ -17,7 +17,7 @@ interface DefaultTaskCategories {
         private val taskCategories by lazy {
             listOf(
                 TaskCategory(
-                    icon = R.drawable.ic_block,
+                    icon = R.drawable.ic_multi_color,
                     backgroundColor = R.color.back,
                     categoryName = context.getString(R.string.all_tasks),
                     categoryType = CategoryTypes.System

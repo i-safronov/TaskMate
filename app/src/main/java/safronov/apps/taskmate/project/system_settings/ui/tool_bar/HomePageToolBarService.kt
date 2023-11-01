@@ -1,6 +1,7 @@
 package safronov.apps.taskmate.project.system_settings.ui.tool_bar
 
 import androidx.appcompat.widget.Toolbar
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 
 interface HomePageToolBarService {
@@ -13,6 +14,11 @@ interface HomePageToolBarService {
     fun changePinTaskIconByParam(
         toolBar: Toolbar,
         isPinned: Boolean
+    )
+    fun changeTaskCategoryIcon(
+        toolBar: Toolbar,
+        taskCategory: TaskCategory?,
+        defaultTaskCategoryIcon: Int = R.drawable.ic_multi_color
     )
 
     class Base: HomePageToolBarService {
@@ -41,6 +47,15 @@ interface HomePageToolBarService {
                 toolBar.menu.findItem(R.id.pin_task).setIcon(R.drawable.ic_not_pinned)
             }
         }
+
+        override fun changeTaskCategoryIcon(
+            toolBar: Toolbar,
+            taskCategory: TaskCategory?,
+            defaultTaskCategoryIcon: Int
+        ) {
+            toolBar.menu.findItem(R.id.choose_category).setIcon(taskCategory?.icon ?: defaultTaskCategoryIcon)
+        }
+
     }
 
 }
