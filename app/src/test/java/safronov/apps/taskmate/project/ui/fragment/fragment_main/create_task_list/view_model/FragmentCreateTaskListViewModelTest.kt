@@ -105,6 +105,19 @@ class FragmentCreateTaskListViewModelTest {
     }
 
     @Test
+    fun test_loadDefaultTaskCategoryWhenCategoryExists() {
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == null)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 0)
+        fragmentCreateTaskListViewModel.loadDefaultCurrentTaskCategory()
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
+        assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        fragmentCreateTaskListViewModel.loadDefaultCurrentTaskCategory()
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
+    }
+
+    @Test
     fun `test, save current task`() {
         val taskListItems = listOf(
             Task.TaskListItem(
@@ -330,6 +343,7 @@ private class FakeChangingTaskRepository: TaskRepository.ChangingTask {
 
 private class FakeDefaultTaskCategories: DefaultTaskCategories {
 
+    var countOfRequestToGetDefaultTaskCategory = 0
     val taskCategoryToReturn = TaskCategory(
         icon = 6324,
         backgroundColor = 4343,
@@ -342,6 +356,7 @@ private class FakeDefaultTaskCategories: DefaultTaskCategories {
     }
 
     override fun getDefaultTaskCategory(): TaskCategory {
+        countOfRequestToGetDefaultTaskCategory++
         return taskCategoryToReturn
     }
 

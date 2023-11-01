@@ -67,9 +67,24 @@ class FragmentCreateTaskTextViewModelTest {
     fun `test, load default task category`() {
         assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
         assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 0)
         fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
         assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
         assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+    }
+
+    @Test
+    fun test_loadDefaultTaskCategoryWhenCategoryExists() {
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
+        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 0)
+        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
+        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
+        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
     }
 
     @Test
@@ -242,6 +257,7 @@ class FragmentCreateTaskTextViewModelTest {
 
 private class FakeDefaultTaskCategories: DefaultTaskCategories {
 
+    var countOfRequestToGetDefaultTaskCategory = 0
     val taskCategoryToReturn = TaskCategory(
         icon = 6324,
         backgroundColor = 4343,
@@ -254,6 +270,7 @@ private class FakeDefaultTaskCategories: DefaultTaskCategories {
     }
 
     override fun getDefaultTaskCategory(): TaskCategory {
+        countOfRequestToGetDefaultTaskCategory++
         return taskCategoryToReturn
     }
 
