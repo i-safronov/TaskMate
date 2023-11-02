@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.databinding.RcvTaskListItemMainBinding
@@ -45,13 +46,17 @@ class RcvTaskListItem(
                     binding.btnCancel.visibility = View.VISIBLE
                     binding.btnCancel.setOnClickListener {
                         taskListItems.removeAt(position)
-                        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
-                        notifyDataSetChanged()
+                        updated()
                     }
                 } else {
                     binding.tvTitle.removeTextChangedListener(textWatcher)
                     binding.btnCancel.visibility = View.GONE
                 }
+            }
+            binding.checkBoxTaskWasFinished.setOnCheckedChangeListener { compoundButton, isChecked: Boolean ->
+                item.isChecked = isChecked
+                updated()
+                Log.d("sfrLog", "Size: ${taskListItems.size}, position: ${position}")
             }
         }
     }
@@ -73,11 +78,16 @@ class RcvTaskListItem(
     fun submitList(items: MutableList<Task.TaskListItem>) {
         taskListItems = items
         rcvTaskListItemInt.taskListItemsChanged(taskListItems)
-        notifyDataSetChanged()
+        updated()
     }
 
     fun addTaskListItem(item: Task.TaskListItem) {
         taskListItems.add(item)
+        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
+        updated()
+    }
+
+    private fun updated() {
         rcvTaskListItemInt.taskListItemsChanged(taskListItems)
         notifyDataSetChanged()
     }

@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             style="@style/edit_text"
             android:hint="@string/title"
-            android:textSize="@dimen/title_size"
+            android:textSize="@dimen/title_big_size"
             android:gravity="center|start"
             android:textStyle="bold"
             android:maxLines="1"
@@ -36,7 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_date"
