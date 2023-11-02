@@ -18,4 +18,12 @@
         android:title="@string/pin"
         />
 
+    <item
+        android:id="@+id/save_task"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_done2"
+        android:orderInCategory="1"
+        android:title="@string/pin"
+        />
+
 </menu>

@@ -26,10 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
-        style="@style/text"
         android:layout_weight="1"
         android:layout_marginEnd="@dimen/margin"
-        android:background="@android:color/transparent"
+        android:textSize="@dimen/text_size"
+        android:backgroundTint="@color/hint"
         tools:text="@string/lorem_ipsum" />
 
     <androidx.appcompat.widget.AppCompatImageView

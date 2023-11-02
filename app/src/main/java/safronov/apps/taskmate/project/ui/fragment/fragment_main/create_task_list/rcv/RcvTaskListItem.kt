@@ -10,16 +10,11 @@ import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.databinding.RcvTaskListItemMainBinding
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 
-//TODO change task checked by checkbox
-
-//TODO fix bug when adding new task list item
-
 interface RcvTaskListItemInt {
     fun taskListItemsChanged(list: List<Task.TaskListItem>)
 }
 
 class RcvTaskListItem(
-    private val textWatcher: TextWatcher,
     private val rcvTaskListItemInt: RcvTaskListItemInt
 ): RecyclerView.Adapter<RcvTaskListItem.TaskListItemViewHolder>() {
 
@@ -51,6 +46,7 @@ class RcvTaskListItem(
                     binding.btnCancel.setOnClickListener {
                         taskListItems.removeAt(position)
                         rcvTaskListItemInt.taskListItemsChanged(taskListItems)
+                        notifyDataSetChanged()
                     }
                 } else {
                     binding.tvTitle.removeTextChangedListener(textWatcher)

@@ -74,7 +74,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
         requireAppComponent().inject(this)
         fragmentCreateTaskListViewModel = ViewModelProvider(this, fragmentCreateTaskListViewModelFactory)
             .get(FragmentCreateTaskListViewModel::class.java)
-        rcvTaskListItem = RcvTaskListItem(textWatcher = textWatcher, rcvTaskListItemInt = this)
+        rcvTaskListItem = RcvTaskListItem(rcvTaskListItemInt = this)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,12 +129,6 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
     //TODO refactor this code
     private fun includedAddButtonLayoutOnClickListener() {
         binding.includedAddButtonLayout.root.setOnClickListener {
-            val inputManager =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            inputManager!!.hideSoftInputFromWindow(
-                requireActivity().getCurrentFocus()?.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
             rcvTaskListItem?.addTaskListItem(item = Task.TaskListItem(title = "", isChecked = false))
         }
     }
