@@ -71,7 +71,6 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
-        includedDoneCreateLayoutOnClickListener()
         observeTaskSaved()
         observeWasException()
         binding.tvDate.text = fragmentCreateTaskTextViewModel?.getCurrentTime()
@@ -89,6 +88,8 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
                 recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
                 rcvTaskCategory.submitList(fragmentCreateTaskTextViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
+            }, saveTask = {
+                fragmentCreateTaskTextViewModel?.saveCurrentTask()
             }
         )
     }
@@ -103,12 +104,6 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         textWatcher.addTextWatcherToView(binding.edtvText, afterTextChanged = {
             fragmentCreateTaskTextViewModel?.saveCurrentTaskText(it)
         })
-    }
-
-    private fun includedDoneCreateLayoutOnClickListener() {
-        binding.includedDoneCreateLayout.btnDone.setOnClickListener {
-            fragmentCreateTaskTextViewModel?.saveCurrentTask()
-        }
     }
 
     private fun observeTaskSaved() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {

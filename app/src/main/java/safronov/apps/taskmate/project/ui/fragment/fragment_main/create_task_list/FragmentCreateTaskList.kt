@@ -100,6 +100,8 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
                 recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
                 rcvTaskCategory.submitList(fragmentCreateTaskListViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
+            }, saveTask = {
+                //TODO save current task
             }
         )
     }

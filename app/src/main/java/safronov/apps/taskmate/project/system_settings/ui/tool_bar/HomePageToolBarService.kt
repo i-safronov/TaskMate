@@ -9,7 +9,8 @@ interface HomePageToolBarService {
     fun setOnMenuItemClickListener(
         toolBar: Toolbar,
         pinTask: () -> Unit,
-        chooseTaskCategory: () -> Unit
+        chooseTaskCategory: () -> Unit,
+        saveTask: () -> Unit
     )
     fun changePinTaskIconByParam(
         toolBar: Toolbar,
@@ -25,7 +26,8 @@ interface HomePageToolBarService {
         override fun setOnMenuItemClickListener(
             toolBar: Toolbar,
             pinTask: () -> Unit,
-            chooseTaskCategory: () -> Unit
+            chooseTaskCategory: () -> Unit,
+            saveTask: () -> Unit
         ) {
             toolBar.setOnMenuItemClickListener {
                 var handled = false
@@ -34,6 +36,9 @@ interface HomePageToolBarService {
                     handled = true
                 } else if (it.itemId == R.id.choose_category) {
                     chooseTaskCategory.invoke()
+                    handled = true
+                } else if (it.itemId == R.id.save_task) {
+                    saveTask.invoke()
                     handled = true
                 }
                 handled
