@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/back_shape_with_gray_ripple">
+    android:background="@color/back">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_done"

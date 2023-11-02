@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -25,7 +24,6 @@ import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomShee
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.FragmentMain
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
@@ -75,6 +73,7 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         addTextWatcherToEdtvText()
         includedDoneCreateLayoutOnClickListener()
         observeTaskSaved()
+        observeWasException()
         binding.tvDate.text = fragmentCreateTaskTextViewModel?.getCurrentTime()
     }
 
@@ -116,6 +115,14 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         fragmentCreateTaskTextViewModel?.getTaskSaved()?.collect {
             if (it == true) {
                 Snackbar.make(requireView(), getString(R.string.saved), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun observeWasException() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentCreateTaskTextViewModel?.isWasException()?.collect {
+            if (it != null) {
+                handeException(it)
             }
         }
     }

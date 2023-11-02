@@ -1,5 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -97,7 +98,7 @@ class FragmentCreateTaskTextViewModel(
             },
             showUi = {
                 _taskSaved.value = null
-                _taskSaved.value = true
+                _taskSaved.value = it
             },
             wasException = {
                 _wasException.value = it
