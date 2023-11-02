@@ -147,6 +147,9 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     private fun observeTaskCategory() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentCreateTaskTextViewModel?.getTaskCategory()?.collect {
             homePageToolBarService.changeTaskCategoryIcon(toolBar = requireHomePageToolBar(), taskCategory = it)
+            it?.let {
+                rcvTaskCategory.setSelectedTaskCategory(it)
+            }
         }
     }
 
