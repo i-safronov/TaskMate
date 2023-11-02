@@ -1,16 +1,13 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
@@ -36,9 +33,6 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
 import javax.inject.Inject
-
-
-//TODO add empty task list item by click on button to add item
 
 class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListItemInt {
 
@@ -87,6 +81,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
         includedAddButtonLayoutOnClickListener()
         recyclerViewBuilder.setupRcv(binding.rcvListTasks, rcvTaskListItem!!, LinearLayoutManager(requireContext()))
         binding.tvDate.text = fragmentCreateTaskListViewModel?.getCurrentTime()
+        rcvTaskListItem?.submitList(fragmentCreateTaskListViewModel?.getCurrentTaskListItems()?.toMutableList() ?: mutableListOf())
     }
 
     private fun addItemMenuClickListenerOnHomePageToolBar() {
@@ -116,7 +111,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
     private fun observeTaskSaved() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentCreateTaskListViewModel?.getTaskSaved()?.collect {
             if (it == true) {
-                Snackbar.make(requireView(), getString(R.string.saved), Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show()
             }
         }
     }

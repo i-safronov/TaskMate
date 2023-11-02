@@ -70,13 +70,15 @@ class RcvTaskListItem(
         holder.bindView(item = taskListItems[holder.absoluteAdapterPosition], holder.absoluteAdapterPosition)
     }
 
-    fun submitList(list: MutableList<Task.TaskListItem>) {
-        taskListItems = list
+    fun submitList(items: MutableList<Task.TaskListItem>) {
+        taskListItems = items
+        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
         notifyDataSetChanged()
     }
 
     fun addTaskListItem(item: Task.TaskListItem) {
         taskListItems.add(item)
+        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
         notifyDataSetChanged()
     }
 

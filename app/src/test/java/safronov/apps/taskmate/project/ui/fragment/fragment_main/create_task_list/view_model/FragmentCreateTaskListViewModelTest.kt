@@ -95,7 +95,7 @@ class FragmentCreateTaskListViewModelTest {
                 isChecked = true
             )
         )
-        fragmentCreateTaskListViewModel.saveCurrentTaskListeItems(
+        fragmentCreateTaskListViewModel.saveCurrentTaskListItems(
             list = list
         )
         assertEquals(false, fragmentCreateTaskListViewModel.getCurrentTaskListItems().isEmpty())
@@ -282,7 +282,7 @@ class FragmentCreateTaskListViewModelTest {
         assertEquals(true, fragmentCreateTaskListViewModel.getTaskSaved().value == null)
         fragmentCreateTaskListViewModel.saveCurrentTask(taskListItems = taskListItems)
         assertEquals(true, fragmentCreateTaskListViewModel.getCurrentTaskListItems() == taskListItems)
-        assertEquals(true, fragmentCreateTaskListViewModel.getTaskSaved().value == null)
+        assertEquals(true, fragmentCreateTaskListViewModel.getTaskSaved().value == true)
     }
 
 }

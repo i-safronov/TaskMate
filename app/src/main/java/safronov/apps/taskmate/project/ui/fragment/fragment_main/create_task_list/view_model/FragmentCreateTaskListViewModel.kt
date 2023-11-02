@@ -75,7 +75,11 @@ class FragmentCreateTaskListViewModel(
         return currentTaskList.list ?: emptyList()
     }
 
-    fun saveCurrentTaskListItems(taskListItems: List<Task.TaskListItem>) {
+    fun saveCurrentTaskListItems(list: List<Task.TaskListItem>) {
+        currentTaskList.list = list
+    }
+
+    fun saveCurrentTask(taskListItems: List<Task.TaskListItem>) {
         asyncWork(
             showUiWorkStarted = {},
             doWork = {
@@ -92,8 +96,8 @@ class FragmentCreateTaskListViewModel(
                 return@asyncWork true
             },
             showUi = {
-                _taskSaved.value = it
                 _taskSaved.value = null
+                _taskSaved.value = it
             }, wasException = {
                 _wasException.value = it
             }
