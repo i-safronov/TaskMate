@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
@@ -24,17 +25,22 @@ import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomShee
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.rcv.RcvTaskListItem
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.rcv.RcvTaskListItemInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
 import javax.inject.Inject
 
-class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt {
+//TODO add empty task list item by click on button to add item
+
+class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListItemInt {
 
     private var _binding: FragmentCreateTaskListBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskCategory = RcvTaskCategory(this)
+    private var rcvTaskListItem: RcvTaskListItem? = null
 
     @Inject
     lateinit var textWatcher: TextWatcher
@@ -64,6 +70,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt {
         requireAppComponent().inject(this)
         fragmentCreateTaskListViewModel = ViewModelProvider(this, fragmentCreateTaskListViewModelFactory)
             .get(FragmentCreateTaskListViewModel::class.java)
+        rcvTaskListItem = RcvTaskListItem(textWatcher = textWatcher, rcvTaskListItemInt = this)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,6 +79,8 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt {
         addTextWatcherToEdtvTitle()
         observeTaskSaved()
         observeWasException()
+        includedAddButtonLayoutOnClickListener()
+        recyclerViewBuilder.setupRcv(binding.rcvListTasks, rcvTaskListItem!!, LinearLayoutManager(requireContext()))
         binding.tvDate.text = fragmentCreateTaskListViewModel?.getCurrentTime()
     }
 
@@ -113,6 +122,12 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt {
         }
     }
 
+    private fun includedAddButtonLayoutOnClickListener() {
+        binding.includedAddButtonLayout.root.setOnClickListener {
+            rcvTaskListItem?.addTaskListItem(item = Task.TaskListItem(title = "", isChecked = false))
+        }
+    }
+
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
         bottomSheet.dismissBottomSheet()
         fragmentCreateTaskListViewModel?.saveCurrentTaskCategory(taskCategory)
@@ -120,6 +135,10 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt {
 
     override fun handeException(e: RuntimeException) {
         goToFragmentErrorFromHomePage(e.message.toString())
+    }
+
+    override fun taskListItemsChanged(list: List<Task.TaskListItem>) {
+        fragmentCreateTaskListViewModel?.saveCurrentTaskListItems(list)
     }
 
     override fun onStart() {

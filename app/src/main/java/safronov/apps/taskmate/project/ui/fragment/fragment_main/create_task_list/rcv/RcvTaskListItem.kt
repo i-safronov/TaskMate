@@ -9,7 +9,7 @@ import safronov.apps.taskmate.databinding.RcvTaskListItemMainBinding
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 
 interface RcvTaskListItemInt {
-    fun listChanged(list: List<Task.TaskListItem>)
+    fun taskListItemsChanged(list: List<Task.TaskListItem>)
 }
 
 class RcvTaskListItem(
@@ -25,20 +25,22 @@ class RcvTaskListItem(
         fun bindView(item: Task.TaskListItem, position: Int) {
             binding.tvTitle.setText(item.title)
             binding.checkBoxTaskWasFinished.isChecked = item.isChecked == true
-            if (binding.tvTitle.isFocused) {
-                binding.btnCancel.visibility = View.VISIBLE
-                binding.btnCancel.setOnClickListener {
-                    taskListItems.removeAt(position)
-                    rcvTaskListItemInt.listChanged(taskListItems)
-                    notifyItemChanged(position)
+            binding.tvTitle.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    binding.btnCancel.visibility = View.VISIBLE
+                    binding.btnCancel.setOnClickListener {
+                        taskListItems.removeAt(position)
+                        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
+                        notifyDataSetChanged()
+                    }
+                } else {
+                    binding.btnCancel.visibility = View.GONE
+                    binding.btnCancel.setOnClickListener(null)
                 }
-            } else {
-                binding.btnCancel.visibility = View.GONE
-                binding.btnCancel.setOnClickListener(null)
             }
             textWatcher.addTextWatcherToView(binding.tvTitle, afterTextChanged = {
                 item.title = it
-                rcvTaskListItemInt.listChanged(taskListItems)
+                rcvTaskListItemInt.taskListItemsChanged(taskListItems)
             })
         }
     }
@@ -59,6 +61,11 @@ class RcvTaskListItem(
 
     fun submitList(list: MutableList<Task.TaskListItem>) {
         taskListItems = list
+        notifyDataSetChanged()
+    }
+
+    fun addTaskListItem(item: Task.TaskListItem) {
+        taskListItems.add(item)
         notifyDataSetChanged()
     }
 
