@@ -18,6 +18,7 @@ import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentCreateTaskListBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import safronov.apps.taskmate.project.system_settings.extension.fragment.clearFocusAndHideKeyboard
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
@@ -128,9 +129,9 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
         }
     }
 
-    //TODO refactor this code
     private fun includedAddButtonLayoutOnClickListener() {
         binding.includedAddButtonLayout.root.setOnClickListener {
+            clearFocusAndHideKeyboard()
             rcvTaskListItem?.addTaskListItem(item = Task.TaskListItem(title = "", isChecked = false))
         }
     }

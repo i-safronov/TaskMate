@@ -69,6 +69,15 @@ fun Fragment.focusOnViewAndShowKeyboard(currentView: SearchView) {
     }
 }
 
+fun Fragment.clearFocusAndHideKeyboard() {
+    val inputManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
+            as InputMethodManager?
+    inputManager!!.hideSoftInputFromWindow(
+        requireActivity().currentFocus?.windowToken,
+        InputMethodManager.HIDE_NOT_ALWAYS
+    )
+}
+
 fun Fragment.showInputMethod(view: View) {
     val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.showSoftInput(view, 0)
