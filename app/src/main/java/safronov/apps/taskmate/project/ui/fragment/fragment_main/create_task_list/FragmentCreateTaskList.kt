@@ -1,9 +1,12 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +35,7 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
 import javax.inject.Inject
+
 
 //TODO add empty task list item by click on button to add item
 
@@ -122,8 +126,15 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
         }
     }
 
+    //TODO refactor this code
     private fun includedAddButtonLayoutOnClickListener() {
         binding.includedAddButtonLayout.root.setOnClickListener {
+            val inputManager =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            inputManager!!.hideSoftInputFromWindow(
+                requireActivity().getCurrentFocus()?.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
             rcvTaskListItem?.addTaskListItem(item = Task.TaskListItem(title = "", isChecked = false))
         }
     }

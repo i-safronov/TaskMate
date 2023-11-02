@@ -1,5 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.rcv
 
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.databinding.RcvTaskListItemMainBinding
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
+
+//TODO change task checked by checkbox
+
+//TODO fix bug when adding new task list item
 
 interface RcvTaskListItemInt {
     fun taskListItemsChanged(list: List<Task.TaskListItem>)
@@ -25,23 +31,32 @@ class RcvTaskListItem(
         fun bindView(item: Task.TaskListItem, position: Int) {
             binding.tvTitle.setText(item.title)
             binding.checkBoxTaskWasFinished.isChecked = item.isChecked == true
+            val textWatcher = object: android.text.TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    item.title = p0.toString()
+                }
+            }
             binding.tvTitle.setOnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
+                    binding.tvTitle.addTextChangedListener(textWatcher)
                     binding.btnCancel.visibility = View.VISIBLE
                     binding.btnCancel.setOnClickListener {
                         taskListItems.removeAt(position)
                         rcvTaskListItemInt.taskListItemsChanged(taskListItems)
-                        notifyDataSetChanged()
                     }
                 } else {
+                    binding.tvTitle.removeTextChangedListener(textWatcher)
                     binding.btnCancel.visibility = View.GONE
-                    binding.btnCancel.setOnClickListener(null)
                 }
             }
-            textWatcher.addTextWatcherToView(binding.tvTitle, afterTextChanged = {
-                item.title = it
-                rcvTaskListItemInt.taskListItemsChanged(taskListItems)
-            })
         }
     }
 
@@ -56,7 +71,7 @@ class RcvTaskListItem(
     }
 
     override fun onBindViewHolder(holder: TaskListItemViewHolder, position: Int) {
-        holder.bindView(item = taskListItems[position], position)
+        holder.bindView(item = taskListItems[holder.absoluteAdapterPosition], holder.absoluteAdapterPosition)
     }
 
     fun submitList(list: MutableList<Task.TaskListItem>) {
