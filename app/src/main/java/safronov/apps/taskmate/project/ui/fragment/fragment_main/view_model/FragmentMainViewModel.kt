@@ -1,5 +1,8 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -9,6 +12,14 @@ class FragmentMainViewModel(
      dispatchersList: DispatchersList,
      private val getTasksAsFlowUseCase: GetTasksAsFlowUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
+
+    private val isLoading = MutableStateFlow<Boolean?>(null)
+    private val tasks = MutableStateFlow<List<Task>?>(null)
+    private val isException = MutableStateFlow<DomainException?>(null)
+
+    fun getIsLoading(): StateFlow<Boolean?> = isLoading
+    fun getTasks(): StateFlow<List<Task>?> = tasks
+    fun getIsWasException(): StateFlow<DomainException?> = isException
 
     fun whichFragmentToGoByTaskType(
         taskType: Task.TaskType,
@@ -20,6 +31,26 @@ class FragmentMainViewModel(
         } else if (taskType == Task.TaskType.List) {
             taskList.invoke()
         }
+    }
+
+    fun loadTasks() {
+        asyncWork(
+            showUiWorkStarted = {
+                isLoading.value = true
+            },
+            doWork = {
+                try {
+                    getTasksAsFlowUseCase.execute().collect {
+                        tasks.value = it
+                    }
+                } catch (e: DomainException) {
+                    isException.value = e
+                }
+            }, showUi = {  },
+            wasException = {
+                isException.value = it
+            }
+        )
     }
 
 }

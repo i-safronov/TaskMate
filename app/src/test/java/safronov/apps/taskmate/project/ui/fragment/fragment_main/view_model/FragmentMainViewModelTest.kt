@@ -3,7 +3,9 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.*
 
@@ -12,6 +14,7 @@ import org.junit.Test
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverterImpl
 import safronov.apps.data.exception.DataException
+import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
@@ -35,27 +38,26 @@ class FragmentMainViewModelTest {
     }
 
     @Test
-    fun test_loadTasks() {
+    fun test_loadTasks() = runBlocking {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
-        assertEquals(true, fragmentMainViewModel.getTasks().first().isEmpty() == true)
+        assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         fragmentMainViewModel.loadTasks()
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
-        assertEquals(false, fragmentMainViewModel.getTasks().first().isEmpty() == true)
+        assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
         assertEquals(true,
-            taskEntityConverter
-                .convertListOfTaskToListOfTaskEntity(fragmentMainViewModel.getTasks().first().value())
-                    == fakeTaskRepositoryGetting.dataToReturn
+            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
             )
     }
 
     @Test
-    fun test_loadTasks_expectedException() {
+    fun test_loadTasks_expectedException() = runBlocking {
         fakeTaskRepositoryGetting.isNeedToThrowException = true
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
-        assertEquals(true, fragmentMainViewModel.getTasks().first().isEmpty() == true)
-        assertEquals(true, fragmentMainViewModel.getIsWasException().first().value == null)
+        assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
+        assertEquals(true, fragmentMainViewModel.getIsWasException().first() == null)
         fragmentMainViewModel.loadTasks()
-        assertEquals(false, fragmentMainViewModel.getIsWasException().first().value == null)
+        assertEquals(false, fragmentMainViewModel.getIsWasException().first() == null)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().first() is DomainException)
     }
 
 }
@@ -91,7 +93,7 @@ private class FakeTaskRepositoryGetting: TaskRepository.GettingTask {
     )
 
     override suspend fun getTasksAsFlow(): Flow<List<Task>> {
-        if (isNeedToThrowException) throw DataException("some exception")
+        if (isNeedToThrowException) throw DomainException("some exception")
         countOfRequest++
         return flow {
             emit(dataToReturn)
