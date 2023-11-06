@@ -82,9 +82,7 @@ class RcvTaskListItem(
 
     fun addTaskListItem(item: Task.TaskListItem) {
         taskListItems.add(item)
-        Log.d("sfrLog", "items: ${taskListItems}")
         updated()
-        Log.d("sfrLog", "items: ${taskListItems}")
     }
 
     private fun updated() {

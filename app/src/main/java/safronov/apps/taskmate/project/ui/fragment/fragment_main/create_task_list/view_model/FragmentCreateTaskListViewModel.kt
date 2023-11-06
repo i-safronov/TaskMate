@@ -1,5 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import safronov.apps.domain.exception.DomainException
@@ -71,12 +72,12 @@ class FragmentCreateTaskListViewModel(
         currentTaskList.taskCategoryId = _taskCategory.value?.id
     }
 
-    fun getCurrentTaskListItems(): List<Task.TaskListItem> {
-        return currentTaskList.list ?: emptyList()
-    }
-
     fun saveCurrentTaskListItems(taskListItems: List<Task.TaskListItem>) {
         currentTaskList.list = taskListItems
+    }
+
+    fun getCurrentTaskListItems(): List<Task.TaskListItem> {
+        return currentTaskList.list ?: emptyList()
     }
 
     fun saveCurrentTask() {
@@ -89,7 +90,7 @@ class FragmentCreateTaskListViewModel(
                 if (taskSaved) {
                     changeTaskListUseCase.execute(currentTaskList)
                 } else {
-                    insertTaskListUseCase.execute(currentTaskList)
+                    currentTaskList.id = insertTaskListUseCase.execute(currentTaskList)
                     taskSaved = true
                 }
                 return@asyncWork true
