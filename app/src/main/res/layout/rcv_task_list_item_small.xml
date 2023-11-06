@@ -13,6 +13,9 @@
         android:layout_height="16dp"
         android:checked="false"
         style="@style/check_box"
+        android:clickable="false"
+        android:focusable="false"
+        android:enabled="false"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -21,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
         style="@style/text"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:text="@string/lorem_ipsum" />
 
 </LinearLayout>
