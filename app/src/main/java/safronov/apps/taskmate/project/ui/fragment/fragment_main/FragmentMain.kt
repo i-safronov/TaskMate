@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
+import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.inflateMenuOnHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
@@ -31,6 +34,9 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
+
+    @Inject
+    lateinit var dispatchersList: DispatchersList
 
     @Inject
     lateinit var bottomSheet: BottomSheet
@@ -58,8 +64,54 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         binding.animateFbAddTask.startRippleAnimation()
+        observeStateLoading()
+        observeTasks()
+        observeException()
         fbAddTaskOnClickListener()
         searchOnClickListener()
+    }
+
+    private fun observeStateLoading() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentMainViewModel?.getIsLoading()?.collect {
+            if (it != null) {
+                if (it) {
+                    loadingState()
+                } else {
+                    loadedState()
+                }
+            }
+        }
+    }
+
+    private fun observeTasks() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentMainViewModel?.getTasks()?.collect {
+            if (it != null) {
+                if (it.isEmpty()) {
+                    binding.includedNoTasksLayout.root.visibility = View.VISIBLE
+                } else {
+                    binding.includedNoTasksLayout.root.visibility = View.GONE
+                    //TODO show content
+                }
+            }
+        }
+    }
+
+    private fun observeException() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentMainViewModel?.getIsWasException()?.collect {
+            if (it != null) {
+                handeException(it)
+            }
+        }
+    }
+
+    private fun loadingState() {
+        binding.contentLayout.visibility = View.GONE
+        binding.progress.visibility = View.VISIBLE
+    }
+
+    private fun loadedState() {
+        binding.contentLayout.visibility = View.VISIBLE
+        binding.progress.visibility = View.GONE
     }
 
     override fun handeException(e: RuntimeException) {

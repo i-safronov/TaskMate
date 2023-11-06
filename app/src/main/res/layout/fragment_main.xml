@@ -7,82 +7,100 @@
     tools:context=".project.ui.fragment.fragment_main.FragmentMain"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/edit_text"
-            android:gravity="center|start"
-            android:background="@drawable/search_view_shape"
-            app:queryBackground="@android:color/transparent"
-            android:paddingStart="20dp"
-            android:text="@string/search"
-            android:textColor="@color/hint"
-            android:drawablePadding="12dp"
-            android:drawableStart="@drawable/ic_search"
-            android:layout_margin="@dimen/margin"/>
-
-    </LinearLayout>
-
-    <include
-        android:id="@+id/included_no_tasks_layout"
-        layout="@layout/no_tasks_layout"
-        android:layout_margin="@dimen/margin_big"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_tasks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <com.skyfishjy.library.RippleBackground
-        android:id="@+id/animate_fb_add_task"
+    <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_big"
-        app:rb_color="@color/accent_color"
-        app:rb_radius="8dp"
-        app:rb_rippleAmount="2"
-        app:rb_duration="6000"
-        app:rb_scale="6"
-        android:gravity="bottom|end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        style="@style/progress_bar"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fb_add_task"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edit_text"
+                android:gravity="center|start"
+                android:background="@drawable/search_view_shape"
+                app:queryBackground="@android:color/transparent"
+                android:paddingStart="20dp"
+                android:text="@string/search"
+                android:textColor="@color/hint"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_search"
+                android:layout_margin="@dimen/margin"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/included_no_tasks_layout"
+            layout="@layout/no_tasks_layout"
+            android:layout_margin="@dimen/margin_big"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/animate_fb_add_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_big"
-            android:layout_marginTop="@dimen/margin_big"
-            android:layout_marginEnd="@dimen/margin_big"
-            android:layout_marginBottom="@dimen/margin_big"
-            android:backgroundTint="@color/accent_color"
-            android:elevation="0dp"
-            app:borderWidth="0dp"
-            app:srcCompat="@drawable/ic_pencil" />
+            android:layout_margin="@dimen/margin_big"
+            app:rb_color="@color/accent_color"
+            app:rb_radius="8dp"
+            app:rb_rippleAmount="2"
+            app:rb_duration="6000"
+            app:rb_scale="6"
+            android:gravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    </com.skyfishjy.library.RippleBackground>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fb_add_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginEnd="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_big"
+                android:backgroundTint="@color/accent_color"
+                android:elevation="0dp"
+                app:borderWidth="0dp"
+                app:srcCompat="@drawable/ic_pencil" />
+
+        </com.skyfishjy.library.RippleBackground>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
