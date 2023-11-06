@@ -38,6 +38,7 @@ class RcvTaskListItem(
 
                 override fun afterTextChanged(p0: Editable?) {
                     item.title = p0.toString()
+                    rcvTaskListItemInt.taskListItemsChanged(taskListItems)
                 }
             }
             binding.tvTitle.setOnFocusChangeListener { view, hasFocus ->
@@ -56,7 +57,6 @@ class RcvTaskListItem(
             binding.checkBoxTaskWasFinished.setOnCheckedChangeListener { compoundButton, isChecked: Boolean ->
                 item.isChecked = isChecked
                 updated()
-                Log.d("sfrLog", "Size: ${taskListItems.size}, position: ${position}")
             }
         }
     }
@@ -77,13 +77,11 @@ class RcvTaskListItem(
 
     fun submitList(items: MutableList<Task.TaskListItem>) {
         taskListItems = items
-        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
         updated()
     }
 
     fun addTaskListItem(item: Task.TaskListItem) {
         taskListItems.add(item)
-        rcvTaskListItemInt.taskListItemsChanged(taskListItems)
         updated()
     }
 

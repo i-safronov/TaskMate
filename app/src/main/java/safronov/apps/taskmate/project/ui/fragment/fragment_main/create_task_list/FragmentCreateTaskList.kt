@@ -98,6 +98,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }, saveTask = {
                 //TODO save current task
+                //fragmentCreateTaskListViewModel.saveCurrentTask()
             }
         )
     }

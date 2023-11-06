@@ -75,18 +75,17 @@ class FragmentCreateTaskListViewModel(
         return currentTaskList.list ?: emptyList()
     }
 
-    fun saveCurrentTaskListItems(list: List<Task.TaskListItem>) {
-        currentTaskList.list = list
+    fun saveCurrentTaskListItems(taskListItems: List<Task.TaskListItem>) {
+        currentTaskList.list = taskListItems
     }
 
-    fun saveCurrentTask(taskListItems: List<Task.TaskListItem>) {
+    fun saveCurrentTask() {
         asyncWork(
             showUiWorkStarted = {},
             doWork = {
-                if (taskListItems.isEmpty() && _currentTaskTitle.value.isEmpty()) {
+                if (currentTaskList.list.isNullOrEmpty() && _currentTaskTitle.value.isEmpty()) {
                     return@asyncWork false
                 }
-                currentTaskList.list = taskListItems
                 if (taskSaved) {
                     changeTaskListUseCase.execute(currentTaskList)
                 } else {
