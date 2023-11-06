@@ -1,11 +1,13 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model
 
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
 class FragmentMainViewModel(
-     dispatchersList: DispatchersList
+     dispatchersList: DispatchersList,
+     private val getTasksAsFlowUseCase: GetTasksAsFlowUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     fun whichFragmentToGoByTaskType(
