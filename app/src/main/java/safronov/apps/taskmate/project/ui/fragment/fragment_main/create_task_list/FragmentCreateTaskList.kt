@@ -97,7 +97,7 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
                 rcvTaskCategory.submitList(fragmentCreateTaskListViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }, saveTask = {
-                //fragmentCreateTaskListViewModel?.saveCurrentTask()
+                fragmentCreateTaskListViewModel?.saveCurrentTask()
             }
         )
     }
