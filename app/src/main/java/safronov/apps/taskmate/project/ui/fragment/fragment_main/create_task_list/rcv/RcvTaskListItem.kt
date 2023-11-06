@@ -54,9 +54,9 @@ class RcvTaskListItem(
                     binding.btnCancel.visibility = View.GONE
                 }
             }
-            binding.checkBoxTaskWasFinished.setOnCheckedChangeListener { compoundButton, isChecked: Boolean ->
-                item.isChecked = isChecked
-                updated()
+            binding.checkBoxTaskWasFinished.setOnClickListener {
+                item.isChecked = binding.checkBoxTaskWasFinished.isChecked
+                rcvTaskListItemInt.taskListItemsChanged(taskListItems)
             }
         }
     }
@@ -82,7 +82,9 @@ class RcvTaskListItem(
 
     fun addTaskListItem(item: Task.TaskListItem) {
         taskListItems.add(item)
+        Log.d("sfrLog", "items: ${taskListItems}")
         updated()
+        Log.d("sfrLog", "items: ${taskListItems}")
     }
 
     private fun updated() {
