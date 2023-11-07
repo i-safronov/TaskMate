@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,6 +23,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.require
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskTypeInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
@@ -158,7 +160,12 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
         fragmentMainViewModel?.whichFragmentToGoByTaskType(
             taskType = taskType.taskType,
             taskText = {
-                navigate(R.id.action_fragmentMain_to_fragmentCreateTaskText)
+                navigate(
+                    R.id.action_fragmentMain_to_fragmentCreateTaskText,
+                    bundleOf(
+                        FragmentCreateTaskText.THIS_FRAGMENT_FOR to FragmentCreateTaskText.FOR_CREATE_NEW_TASK
+                    )
+                )
             }, taskList = {
                 navigate(R.id.action_fragmentMain_to_fragmentCreateTaskList)
             }
