@@ -41,7 +41,7 @@ class FragmentMainViewModel(
             },
             doWork = {
                 getTasksAsFlowUseCase.execute().collect {
-                    tasks.value = it
+                    tasks.value = sortTasksByPinned(it)
                     withContext(dispatchersList.ui()) {
                         isLoading.value = false
                     }
@@ -51,6 +51,27 @@ class FragmentMainViewModel(
                 isException.value = it
             }
         )
+    }
+
+    //TODO refactor this code
+    private fun sortTasksByPinned(list: List<Task>): List<Task>? {
+        val mList = mutableListOf<Task>()
+        if (list.isNotEmpty()) {
+            val mList1 = mutableListOf<Task>()
+            val mList2 = mutableListOf<Task>()
+            list.forEach {
+                if (it is Task.TaskText && it.isPinned == true) {
+                    mList1.add(0, it)
+                } else if (it is Task.TaskList && it.isPinned == true) {
+                    mList1.add(0, it)
+                } else {
+                    mList2.add(it)
+                }
+            }
+            mList.addAll(mList1)
+            mList.addAll(mList2)
+        }
+        return mList
     }
 
 }

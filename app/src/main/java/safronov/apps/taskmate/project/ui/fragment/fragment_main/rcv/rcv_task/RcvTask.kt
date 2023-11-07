@@ -1,6 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,11 @@ class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.tvTitle.text = taskText.title
             binding.tvDate.text = taskText.date
             binding.tvMainText.text = taskText.text
+            if (taskText.isPinned == true) {
+                binding.imgIsPinned.visibility = View.VISIBLE
+            } else {
+                binding.imgIsPinned.visibility = View.GONE
+            }
         }
     }
 
@@ -34,6 +40,11 @@ class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             binding.tvTitle.text = taskList.title
             binding.tvDate.text = taskList.date
             rcvTaskListItems.submitList(taskList.list)
+            if (taskList.isPinned == true) {
+                binding.imgIsPinned.visibility = View.VISIBLE
+            } else {
+                binding.imgIsPinned.visibility = View.GONE
+            }
         }
     }
 
