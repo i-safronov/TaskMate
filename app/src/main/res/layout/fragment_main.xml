@@ -64,8 +64,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_tasks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="visible"
             tools:listitem="@layout/rcv_task_text"
             app:layout_constraintBottom_toBottomOf="parent"
