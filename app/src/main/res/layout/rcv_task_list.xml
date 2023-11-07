@@ -55,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/hint"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/margin"
                 tools:text="17:36"
@@ -62,16 +63,16 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_date"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:src="@drawable/ic_calendar"
                 android:layout_marginEnd="@dimen/margin"
                 app:tint="@color/hint"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_list"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_list_task_type"
                 android:scaleType="centerCrop"
                 app:tint="@color/hint"/>
