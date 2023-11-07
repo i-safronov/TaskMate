@@ -4,15 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.launch
 import safronov.apps.taskmate.databinding.FragmentSearchTasksBinding
+import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.focusOnViewAndShowKeyboard
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
+import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModel
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModelFactory
+import javax.inject.Inject
 
 
 class FragmentSearchTasks : FragmentBase() {
 
     private var _binding: FragmentSearchTasksBinding? = null
     private val binding get() = _binding!!
+    private val rcvTask = RcvTask()
+
+    @Inject
+    lateinit var fragmentSearchTasksViewModelFactory: FragmentSearchTasksViewModelFactory
+    private var fragmentSearchTasksViewModel: FragmentSearchTasksViewModel? = null
+
+    @Inject
+    lateinit var dispatchersList: DispatchersList
 
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
         _binding = FragmentSearchTasksBinding.inflate(inflater, container, false)
@@ -20,15 +40,41 @@ class FragmentSearchTasks : FragmentBase() {
     }
 
     override fun setup() {
-
+        requireAppComponent().inject(this)
+        fragmentSearchTasksViewModel = ViewModelProvider(this, fragmentSearchTasksViewModelFactory)
+            .get(FragmentSearchTasksViewModel::class.java)
+        binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.rcvTasks.adapter = rcvTask
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         focusOnViewAndShowKeyboard(binding.includedSearchView.root)
+        observeTasks()
+        observeTextChangedInSearchView()
     }
 
     override fun handeException(e: RuntimeException) {
+        goToFragmentErrorFromHomePage(e.message.toString())
+    }
 
+    private fun observeTasks() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentSearchTasksViewModel?.getTasks()?.collect {
+            rcvTask.submitList(it)
+        }
+    }
+
+    private fun observeTextChangedInSearchView() {
+        binding.includedSearchView.root.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                fragmentSearchTasksViewModel?.getTasksByText(query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                fragmentSearchTasksViewModel?.getTasksByText(newText.toString())
+                return true
+            }
+        })
     }
 
     override fun removeUI() {

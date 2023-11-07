@@ -6,6 +6,7 @@ import dagger.Provides
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
+import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
@@ -23,6 +24,7 @@ import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBa
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.start.view_model.FragmentStartViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.welcome.view_model.FragmentWelcomeViewModelFactory
@@ -108,6 +110,16 @@ class AppModule(
             dispatchersList = dispatchersList,
             userLoginUseCase = userLoginUseCase,
             insertTaskCategoriesUseCase = insertTaskCategoriesUseCase
+        )
+    }
+
+    @Provides
+    fun provideFragmentSearchTasksViewModelFactory(
+        dispatchersList: DispatchersList,
+        getTasksByTextUseCase: GetTasksByTextUseCase
+    ): FragmentSearchTasksViewModelFactory {
+        return FragmentSearchTasksViewModelFactory(
+            dispatchersList, getTasksByTextUseCase
         )
     }
 
