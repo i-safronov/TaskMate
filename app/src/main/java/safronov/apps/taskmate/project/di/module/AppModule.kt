@@ -10,6 +10,7 @@ import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -158,14 +159,16 @@ class AppModule(
         date: Date,
         insertTaskTextUseCase: InsertTaskTextUseCase,
         changeTaskTextUseCase: ChangeTaskTextUseCase,
-        defaultTaskCategories: DefaultTaskCategories
+        defaultTaskCategories: DefaultTaskCategories,
+        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
     ): FragmentCreateTaskTextViewModelFactory {
         return FragmentCreateTaskTextViewModelFactory(
             dispatchersList = dispatchersList,
             date = date,
             insertTaskTextUseCase = insertTaskTextUseCase,
             changeTaskTextUseCase = changeTaskTextUseCase,
-            defaultTaskCategories = defaultTaskCategories
+            defaultTaskCategories = defaultTaskCategories,
+            getTaskCategoryByIdUseCase
         )
     }
 

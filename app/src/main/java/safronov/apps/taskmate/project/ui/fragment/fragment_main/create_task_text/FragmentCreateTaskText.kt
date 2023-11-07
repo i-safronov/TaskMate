@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
@@ -36,6 +37,8 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     private var _binding: FragmentCreateTaskTextBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskCategory = RcvTaskCategory(this)
+    private var forWhatThisFragment = FOR_CREATE_NEW_TASK
+    private var existingTaskText: Task.TaskText? = null
 
     @Inject
     lateinit var textWatcher: TextWatcher
@@ -65,6 +68,16 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         requireAppComponent().inject(this)
         fragmentCreateTaskTextViewModel = ViewModelProvider(this, fragmentCreateTaskTextViewModelFactory)
             .get(FragmentCreateTaskTextViewModel::class.java)
+        //TODO
+        forWhatThisFragment = requireArguments().getString(THIS_FRAGMENT_FOR, FOR_CREATE_NEW_TASK)
+        if (forWhatThisFragment == FOR_UPDATE_EXISTING_TASK) {
+            setupDefaultValues()
+        }
+    }
+
+    private fun setupDefaultValues() {
+        existingTaskText = requireArguments().getSerializable(EXISTING_TASK_TEXT) as Task.TaskText
+        fragmentCreateTaskTextViewModel?.setupDefaultValue(existingTaskText!!)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -171,6 +184,10 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     companion object {
         @JvmStatic
         fun newInstance() = FragmentCreateTaskText()
+        const val THIS_FRAGMENT_FOR = "ThisFragmentFor"
+        const val FOR_CREATE_NEW_TASK = "ForCreateNewTask"
+        const val FOR_UPDATE_EXISTING_TASK = "ForUpdateExistingTask"
+        const val EXISTING_TASK_TEXT = "ExistingTaskText"
     }
 
 }

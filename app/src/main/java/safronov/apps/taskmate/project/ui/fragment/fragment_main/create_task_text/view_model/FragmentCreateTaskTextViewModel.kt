@@ -1,14 +1,13 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
@@ -19,7 +18,8 @@ class FragmentCreateTaskTextViewModel(
     date: Date,
     private val insertTaskTextUseCase: InsertTaskTextUseCase,
     private val changeTaskTextUseCase: ChangeTaskTextUseCase,
-    private val defaultTaskCategories: DefaultTaskCategories
+    private val defaultTaskCategories: DefaultTaskCategories,
+    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
@@ -61,7 +61,7 @@ class FragmentCreateTaskTextViewModel(
         }
     }
 
-    fun saveTaskCategory(taskCategory: TaskCategory) {
+    fun saveTaskCategory(taskCategory: TaskCategory?) {
         _taskCategory.value = taskCategory
         currentTask.taskCategoryId = _taskCategory.value?.id
     }
@@ -79,6 +79,21 @@ class FragmentCreateTaskTextViewModel(
     fun saveCurrentTaskText(text: String?) {
         _currentTaskText.value = text.toString()
         currentTask.text = _currentTaskText.value
+    }
+
+    fun setupDefaultValue(task: Task.TaskText) {
+        asyncWork(
+            showUiWorkStarted = {},
+            doWork = {
+                saveTaskCategory(getTaskCategoryByIdUseCase.execute(task.taskCategoryId.toString()))
+                _taskIsPin.value = task.isPinned == true
+                currentTask.isPinned = _taskIsPin.value
+                saveCurrentTaskTitle(task.title)
+                saveCurrentTaskText(task.text)
+            }, showUi = {}, wasException = {
+                _wasException.value = it
+            }
+        )
     }
 
     fun saveCurrentTask() {

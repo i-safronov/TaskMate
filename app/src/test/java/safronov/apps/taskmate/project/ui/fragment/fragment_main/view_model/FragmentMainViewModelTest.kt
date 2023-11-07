@@ -66,7 +66,7 @@ private class FakeTaskRepositoryGetting: TaskRepository.GettingTask {
 
     var isNeedToThrowException = false
     var countOfRequest = 0
-    val dataToReturn = listOf(
+    val dataToReturn = listOf<Task>(
         Task.TaskText(
             title = "asometr",
             text = "fasdf",
