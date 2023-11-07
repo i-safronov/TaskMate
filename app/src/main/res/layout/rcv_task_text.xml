@@ -5,10 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/back_shape_with_ripple"
-    android:layout_marginStart="@dimen/margin"
-    android:layout_marginEnd="@dimen/margin"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
     android:layout_marginTop="@dimen/margin_small"
-    android:layout_marginBottom="@dimen/margin_small">
+    android:layout_marginBottom="@dimen/margin_small"
+    android:elevation="@dimen/default_elevation">
     
     <View
         android:id="@+id/task_category_color"

@@ -12,7 +12,7 @@ import java.lang.IllegalStateException
 
 class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val tasks = emptyList<Task>()
+    private var tasks = emptyList<Task>()
 
     class TaskTextViewHolder(
         private val binding: RcvTaskTextBinding
@@ -71,6 +71,11 @@ class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         } else {
             throw IllegalStateException("could not find view type")
         }
+    }
+
+    fun submitList(list: List<Task>) {
+        tasks = list
+        notifyDataSetChanged()
     }
 
     companion object {

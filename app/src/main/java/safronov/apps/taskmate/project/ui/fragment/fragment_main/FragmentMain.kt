@@ -1,12 +1,14 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
@@ -23,6 +25,7 @@ import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskTypeInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
@@ -33,6 +36,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
+    private val rcvTask = RcvTask()
 
     @Inject
     lateinit var dispatchersList: DispatchersList
@@ -59,6 +63,9 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
         requireAppComponent().inject(this)
         fragmentMainViewModel = ViewModelProvider(this, fragmentMainViewModelFactory)
             .get(FragmentMainViewModel::class.java)
+        binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
+        binding.rcvTasks.adapter = rcvTask
+        fragmentMainViewModel?.loadTasks()
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +96,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
                     binding.includedNoTasksLayout.root.visibility = View.VISIBLE
                 } else {
                     binding.includedNoTasksLayout.root.visibility = View.GONE
-                    //TODO show content
+                    rcvTask.submitList(it)
                 }
             }
         }
@@ -104,12 +111,12 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
     }
 
     private fun loadingState() {
-        binding.contentLayout.visibility = View.GONE
+        binding.rcvTasks.visibility = View.GONE
         binding.progress.visibility = View.VISIBLE
     }
 
     private fun loadedState() {
-        binding.contentLayout.visibility = View.VISIBLE
+        binding.rcvTasks.visibility = View.VISIBLE
         binding.progress.visibility = View.GONE
     }
 
@@ -163,6 +170,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
         @JvmStatic
         fun newInstance() = FragmentMain()
         private const val RCV_TYPES_SPAN_COUNT = 2
+        private const val RCV_TASKS_SPAN_COUNT = 2
     }
 
 }
