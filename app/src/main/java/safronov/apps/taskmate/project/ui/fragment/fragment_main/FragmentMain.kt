@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
@@ -28,17 +29,18 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_typ
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskTypeInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import javax.inject.Inject
 
-class FragmentMain : FragmentBase(), RcvTaskTypeInt {
+class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
-    private val rcvTask = RcvTask()
+    private val rcvTask = RcvTask(this)
 
     @Inject
     lateinit var dispatchersList: DispatchersList
@@ -171,6 +173,20 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt {
             }
         )
         bottomSheet.dismissBottomSheet()
+    }
+
+    override fun onTaskTextClick(task: Task.TaskText) {
+        navigate(
+            R.id.action_fragmentMain_to_fragmentCreateTaskText,
+            bundleOf(
+                FragmentCreateTaskText.THIS_FRAGMENT_FOR to FragmentCreateTaskText.FOR_UPDATE_EXISTING_TASK,
+                FragmentCreateTaskText.EXISTING_TASK_TEXT to task
+            )
+        )
+    }
+
+    override fun onTaskListClick(task: Task.TaskList) {
+        //TODO go to change task list
     }
 
     companion object {

@@ -70,7 +70,7 @@ class FragmentCreateTaskTextViewModelTest {
     }
 
     @Test
-    fun test_setupDefaultValue() {
+    fun test_prepareToChangeExistingTask() {
         val defaultValue = Task.TaskText(
             title = "asdf",
             text = "asdf",
@@ -80,7 +80,7 @@ class FragmentCreateTaskTextViewModelTest {
             isPinned = false,
             id = 235423
         )
-        fragmentCreateTaskTextViewModel.setupDefaultValue(defaultValue)
+        fragmentCreateTaskTextViewModel.prepareToChangeExistingTask(defaultValue)
         assertEquals(true, defaultValue.title == fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value)
         assertEquals(true, defaultValue.text == fragmentCreateTaskTextViewModel.getCurrentTaskText().value)
         assertEquals(true, defaultValue.taskCategoryId == fragmentCreateTaskTextViewModel.getTaskCategory().value?.id)
@@ -88,7 +88,7 @@ class FragmentCreateTaskTextViewModelTest {
     }
 
     @Test
-    fun test_setupDefaultValue_expectedException() {
+    fun test_prepareToChangeExistingTask_expectedException() {
         fakeTaskCategoryRepository.isNeedToThrowException = true
         assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value == null)
         val defaultValue = Task.TaskText(
@@ -100,7 +100,7 @@ class FragmentCreateTaskTextViewModelTest {
             isPinned = false,
             id = 235423
         )
-        fragmentCreateTaskTextViewModel.setupDefaultValue(defaultValue)
+        fragmentCreateTaskTextViewModel.prepareToChangeExistingTask(defaultValue)
         assertEquals(false, fragmentCreateTaskTextViewModel.isWasException().value == null)
     }
 

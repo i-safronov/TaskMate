@@ -11,11 +11,18 @@ import safronov.apps.taskmate.databinding.RcvTaskTextBinding
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.task_list_items.RcvTaskListItemSmall
 import java.lang.IllegalStateException
 
-class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+interface RcvTaskInt {
+    fun onTaskTextClick(task: Task.TaskText)
+    fun onTaskListClick(task: Task.TaskList)
+}
+
+class RcvTask(
+    private val rcvTaskInt: RcvTaskInt
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var tasks = emptyList<Task>()
 
-    class TaskTextViewHolder(
+    inner class TaskTextViewHolder(
         private val binding: RcvTaskTextBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(taskText: Task.TaskText) {
@@ -27,10 +34,13 @@ class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             } else {
                 binding.imgIsPinned.visibility = View.GONE
             }
+            itemView.setOnClickListener {
+                rcvTaskInt.onTaskTextClick(taskText)
+            }
         }
     }
 
-    class TaskListViewHolder(
+    inner class TaskListViewHolder(
         private val binding: RcvTaskListBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(taskList: Task.TaskList) {
@@ -44,6 +54,9 @@ class RcvTask: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 binding.imgIsPinned.visibility = View.VISIBLE
             } else {
                 binding.imgIsPinned.visibility = View.GONE
+            }
+            itemView.setOnClickListener {
+                rcvTaskInt.onTaskListClick(taskList)
             }
         }
     }

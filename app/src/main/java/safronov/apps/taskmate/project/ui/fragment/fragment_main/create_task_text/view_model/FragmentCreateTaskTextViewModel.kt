@@ -81,7 +81,7 @@ class FragmentCreateTaskTextViewModel(
         currentTask.text = _currentTaskText.value
     }
 
-    fun setupDefaultValue(task: Task.TaskText) {
+    fun prepareToChangeExistingTask(task: Task.TaskText) {
         asyncWork(
             showUiWorkStarted = {},
             doWork = {
@@ -90,6 +90,8 @@ class FragmentCreateTaskTextViewModel(
                 currentTask.isPinned = _taskIsPin.value
                 saveCurrentTaskTitle(task.title)
                 saveCurrentTaskText(task.text)
+                currentTask.id = task.id
+                isTaskSaved = true
             }, showUi = {}, wasException = {
                 _wasException.value = it
             }

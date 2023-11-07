@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
@@ -68,7 +67,6 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
         requireAppComponent().inject(this)
         fragmentCreateTaskTextViewModel = ViewModelProvider(this, fragmentCreateTaskTextViewModelFactory)
             .get(FragmentCreateTaskTextViewModel::class.java)
-        //TODO
         forWhatThisFragment = requireArguments().getString(THIS_FRAGMENT_FOR, FOR_CREATE_NEW_TASK)
         if (forWhatThisFragment == FOR_UPDATE_EXISTING_TASK) {
             setupDefaultValues()
@@ -77,7 +75,9 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
 
     private fun setupDefaultValues() {
         existingTaskText = requireArguments().getSerializable(EXISTING_TASK_TEXT) as Task.TaskText
-        fragmentCreateTaskTextViewModel?.setupDefaultValue(existingTaskText!!)
+        fragmentCreateTaskTextViewModel?.prepareToChangeExistingTask(existingTaskText!!)
+        binding.edtvTitle.setText(existingTaskText?.title)
+        binding.edtvText.setText(existingTaskText?.text)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {

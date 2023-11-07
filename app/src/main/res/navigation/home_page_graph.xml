@@ -34,6 +34,13 @@
         android:id="@+id/fragmentSearchTasks"
         android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.search.FragmentSearchTasks"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_search_tasks" />
+        tools:layout="@layout/fragment_search_tasks" >
+        <action
+            android:id="@+id/action_fragmentSearchTasks_to_fragmentCreateTaskList"
+            app:destination="@id/fragmentCreateTaskList" />
+        <action
+            android:id="@+id/action_fragmentSearchTasks_to_fragmentCreateTaskText"
+            app:destination="@id/fragmentCreateTaskText" />
+    </fragment>
 
 </navigation>
