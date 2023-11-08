@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList"
+    tools:context=".project.ui.fragment.fragment_main.task_list_details.FragmentTaskListDetails"
     android:paddingTop="@dimen/padding"
     android:paddingStart="@dimen/padding_big"
     android:paddingEnd="@dimen/padding_big">

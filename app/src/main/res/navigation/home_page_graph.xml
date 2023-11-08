@@ -14,8 +14,8 @@
             android:id="@+id/action_fragmentMain_to_fragmentTaskTextDetails"
             app:destination="@id/fragmentTaskTextDetails" />
         <action
-            android:id="@+id/action_fragmentMain_to_fragmentCreateTaskList"
-            app:destination="@id/fragmentCreateTaskList" />
+            android:id="@+id/action_fragmentMain_to_fragmentTaskListDetails"
+            app:destination="@id/fragmentTaskListDetails" />
           <action
               android:id="@+id/action_fragmentMain_to_fragmentSearchTasks"
               app:destination="@id/fragmentSearchTasks" />
@@ -26,18 +26,18 @@
         android:label="@string/empty"
         tools:layout="@layout/fragment_task_text_details" />
     <fragment
-        android:id="@+id/fragmentCreateTaskList"
-        android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList"
+        android:id="@+id/fragmentTaskListDetails"
+        android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.FragmentTaskListDetails"
         android:label="@string/empty"
-        tools:layout="@layout/fragment_create_task_list" />
+        tools:layout="@layout/fragment_task_list_details" />
     <fragment
         android:id="@+id/fragmentSearchTasks"
         android:name="safronov.apps.taskmate.project.ui.fragment.fragment_main.search.FragmentSearchTasks"
         android:label="@string/empty"
         tools:layout="@layout/fragment_search_tasks" >
         <action
-            android:id="@+id/action_fragmentSearchTasks_to_fragmentCreateTaskList"
-            app:destination="@id/fragmentCreateTaskList" />
+            android:id="@+id/action_fragmentSearchTasks_to_fragmentTaskListDetails"
+            app:destination="@id/fragmentTaskListDetails" />
         <action
             android:id="@+id/action_fragmentSearchTasks_to_fragmentTaskTextDetails"
             app:destination="@id/fragmentTaskTextDetails" />

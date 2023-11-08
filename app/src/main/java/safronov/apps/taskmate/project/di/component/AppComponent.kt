@@ -6,7 +6,7 @@ import safronov.apps.taskmate.project.di.module.DataModule
 import safronov.apps.taskmate.project.di.module.DomainModule
 import safronov.apps.taskmate.project.ui.activity.MainActivity
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.FragmentMain
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.FragmentTaskListDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.FragmentSearchTasks
 import safronov.apps.taskmate.project.ui.fragment.start.FragmentStart
@@ -22,7 +22,7 @@ interface AppComponent {
     fun inject(fragmentWelcome: FragmentWelcome)
     fun inject(fragmentMain: FragmentMain)
     fun inject(fragmentTaskTextDetails: FragmentTaskTextDetails)
-    fun inject(fragmentCreateTaskList: FragmentCreateTaskList)
+    fun inject(fragmentTaskListDetails: FragmentTaskListDetails)
     fun inject(fragmentSearchTasks: FragmentSearchTasks)
 
 }

@@ -22,7 +22,7 @@ import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomShee
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.view_model.FragmentTaskListDetailsViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model.FragmentTaskTextDetailsViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModelFactory
@@ -144,8 +144,8 @@ class AppModule(
         changeTaskListUseCase: ChangeTaskListUseCase,
         defaultTaskCategories: DefaultTaskCategories,
         getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
-    ): FragmentCreateTaskListViewModelFactory {
-        return FragmentCreateTaskListViewModelFactory(
+    ): FragmentTaskListDetailsViewModelFactory {
+        return FragmentTaskListDetailsViewModelFactory(
             dispatchersList = dispatchersList,
             date = date,
             insertTaskListUseCase = insertTaskListUseCase,

@@ -1,15 +1,12 @@
-package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.rcv
+package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.rcv
 
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.databinding.RcvTaskListItemMainBinding
-import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 
 interface RcvTaskListItemInt {
     fun taskListItemsChanged(list: List<Task.TaskListItem>)
