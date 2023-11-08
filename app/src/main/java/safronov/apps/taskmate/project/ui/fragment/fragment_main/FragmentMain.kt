@@ -20,6 +20,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.inflate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
+import safronov.apps.taskmate.project.system_settings.extension.fragment.requireHomePageToolBar
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
@@ -201,12 +202,27 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         )
     }
 
+    override fun onTaskSelectionMode() {
+        removeMenuFromHomePageToolBar()
+        inflateMenuOnHomePageToolBar(R.menu.fragment_home_page_tool_bar_selection_tasks_menu)
+        requireHomePageToolBar().setOnMenuItemClickListener {
+            var handled = false
+            if (it.itemId == R.id.delete_tasks) {
+                //TODO delete tasks
+                handled = true
+            }
+            handled
+        }
+    }
+
     private fun onBackPressListener() {
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(this, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (rcvTask.isSelectionMode()) {
+                        removeMenuFromHomePageToolBar()
+                        inflateMenuOnHomePageToolBar(R.menu.fragment_main_toolbar_menu)
                         rcvTask.clearSelectionMode()
                     } else {
                         if (isEnabled) {

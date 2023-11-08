@@ -17,6 +17,7 @@ import java.lang.IllegalStateException
 interface RcvTaskInt {
     fun onTaskTextClick(task: Task.TaskText)
     fun onTaskListClick(task: Task.TaskList)
+    fun onTaskSelectionMode()
 }
 
 //TODO make multi selection item 
@@ -58,9 +59,12 @@ class RcvTask(
                 }
             }
             itemView.setOnLongClickListener {
-                isSelectionMode = true
-                selectedTasks.add(taskText)
-                notifyItemChanged(position)
+                if (!isSelectionMode) {
+                    isSelectionMode = true
+                    selectedTasks.add(taskText)
+                    rcvTaskInt.onTaskSelectionMode()
+                    notifyItemChanged(position)
+                }
                 true
             }
 
@@ -77,7 +81,7 @@ class RcvTask(
         private val binding: RcvTaskListBinding
     ): RecyclerView.ViewHolder(binding.root) {
         //TODO refactor of this method [bind]
-        fun bind(taskList: Task.TaskList) {
+        fun bind(taskList: Task.TaskList, position: Int) {
             val rcvTaskListItems = RcvTaskListItemSmall()
             binding.rcvTasks.layoutManager = LinearLayoutManager(binding.root.context)
             binding.rcvTasks.adapter = rcvTaskListItems
@@ -105,9 +109,12 @@ class RcvTask(
                 }
             }
             itemView.setOnLongClickListener {
-                isSelectionMode = true
-                selectedTasks.add(taskList)
-                notifyItemChanged(position)
+                if (!isSelectionMode) {
+                    isSelectionMode = true
+                    selectedTasks.add(taskList)
+                    rcvTaskInt.onTaskSelectionMode()
+                    notifyItemChanged(position)
+                }
                 true
             }
 
@@ -139,7 +146,7 @@ class RcvTask(
         if (holder is TaskTextViewHolder) {
             holder.bind(currentTask as Task.TaskText, holder.absoluteAdapterPosition)
         } else if (holder is TaskListViewHolder) {
-            holder.bind(currentTask as Task.TaskList)
+            holder.bind(currentTask as Task.TaskList, holder.absoluteAdapterPosition)
         } else {
             throw IllegalStateException("could not find view holder")
         }
@@ -168,6 +175,8 @@ class RcvTask(
     }
 
     fun isSelectionMode() = isSelectionMode
+
+    fun getSelectedTasks() = selectedTasks.toList()
 
     companion object {
         private const val TASK_TEXT_VIEW_TYPE = 0
