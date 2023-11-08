@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -78,6 +79,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         observeException()
         fbAddTaskOnClickListener()
         searchOnClickListener()
+        onBackPressListener()
     }
 
     private fun observeStateLoading() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
@@ -197,6 +199,23 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                 FragmentTaskListDetails.EXISTING_TASK_LIST to task
             )
         )
+    }
+
+    private fun onBackPressListener() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (rcvTask.isSelectionMode()) {
+                        rcvTask.clearSelectionMode()
+                    } else {
+                        if (isEnabled) {
+                            isEnabled = false
+                            requireActivity().onBackPressed()
+                        }
+                    }
+                }
+            })
     }
 
     companion object {

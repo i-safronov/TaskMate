@@ -184,7 +184,6 @@ class FragmentTaskListDetails : FragmentBase(), RcvTaskCategoryInt, RcvTaskListI
         }
     }
 
-
     override fun onStop() {
         super.onStop()
         removeMenuFromHomePageToolBar()
