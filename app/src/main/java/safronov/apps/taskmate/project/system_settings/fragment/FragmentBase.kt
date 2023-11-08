@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import safronov.apps.taskmate.project.app.App
+import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 
 abstract class FragmentBase(): Fragment() {
 
@@ -73,6 +74,7 @@ abstract class FragmentBase(): Fragment() {
      * as this behavior can lead to memory leaks. */
     abstract fun removeUI()
 
+    //TODO move the code for transaction to fragment error here:
     private fun wasException(e: RuntimeException) {
         handeException(e)
         logError(e)

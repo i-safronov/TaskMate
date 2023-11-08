@@ -32,6 +32,7 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import javax.inject.Inject
 
 class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListItemInt {
@@ -40,6 +41,9 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
     private val binding get() = _binding!!
     private val rcvTaskCategory = RcvTaskCategory(this)
     private var rcvTaskListItem: RcvTaskListItem? = null
+
+    private var forWhatThisFragment = FragmentCreateTaskList.FOR_CREATE_NEW_TASK
+    private var existingTaskList: Task.TaskList? = null
 
     @Inject
     lateinit var textWatcher: TextWatcher
@@ -70,6 +74,14 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
         fragmentCreateTaskListViewModel = ViewModelProvider(this, fragmentCreateTaskListViewModelFactory)
             .get(FragmentCreateTaskListViewModel::class.java)
         rcvTaskListItem = RcvTaskListItem(rcvTaskListItemInt = this)
+        forWhatThisFragment = requireArguments().getString(THIS_FRAGMENT_FOR, FOR_CREATE_NEW_TASK)
+        if (forWhatThisFragment == FOR_UPDATE_EXISTING_TASK) {
+            setupDefaultValues()
+        }
+    }
+
+    private fun setupDefaultValues() {
+        //TODO setup default value
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
@@ -183,6 +195,10 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
     companion object {
         @JvmStatic
         fun newInstance() = FragmentCreateTaskList()
+        const val THIS_FRAGMENT_FOR = "ThisFragmentFor"
+        const val FOR_CREATE_NEW_TASK = "ForCreateNewTask"
+        const val FOR_UPDATE_EXISTING_TASK = "ForUpdateExistingTask"
+        const val EXISTING_TASK_LIST = "ExistingTaskList"
     }
 
 }

@@ -142,14 +142,16 @@ class AppModule(
         date: Date,
         insertTaskListUseCase: InsertTaskListUseCase,
         changeTaskListUseCase: ChangeTaskListUseCase,
-        defaultTaskCategories: DefaultTaskCategories
+        defaultTaskCategories: DefaultTaskCategories,
+        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
     ): FragmentCreateTaskListViewModelFactory {
         return FragmentCreateTaskListViewModelFactory(
             dispatchersList = dispatchersList,
             date = date,
             insertTaskListUseCase = insertTaskListUseCase,
             changeTaskListUseCase = changeTaskListUseCase,
-            defaultTaskCategories = defaultTaskCategories
+            defaultTaskCategories = defaultTaskCategories,
+            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase
         )
     }
 

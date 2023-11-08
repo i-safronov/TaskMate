@@ -33,7 +33,7 @@
             app:destination="@id/fragmentHomePage" />
     </fragment>
 
-    <fragment
+     <fragment
         android:id="@+id/fragmentHomePage"
         android:name="safronov.apps.taskmate.project.ui.fragment.home_page.FragmentHomePage"
         android:label="fragment_home_page"

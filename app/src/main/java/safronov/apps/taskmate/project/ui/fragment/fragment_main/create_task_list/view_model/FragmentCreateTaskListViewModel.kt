@@ -8,6 +8,7 @@ import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
@@ -18,7 +19,8 @@ class FragmentCreateTaskListViewModel(
     date: Date,
     private val insertTaskListUseCase: InsertTaskListUseCase,
     private val changeTaskListUseCase: ChangeTaskListUseCase,
-    private val defaultTaskCategories: DefaultTaskCategories
+    private val defaultTaskCategories: DefaultTaskCategories,
+    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _currentTaskTitle = MutableStateFlow("")
@@ -47,6 +49,23 @@ class FragmentCreateTaskListViewModel(
     fun isWasException(): StateFlow<DomainException?> = _wasException
     fun getTaskSaved(): StateFlow<Boolean?> = _taskSaved
 
+    fun prepareToChangeExistingTask(defaultValue: Task.TaskList) {
+        asyncWork(
+            showUiWorkStarted = {},
+            doWork = {
+                saveCurrentTaskCategory(getTaskCategoryByIdUseCase.execute(defaultValue.taskCategoryId.toString()))
+                _taskIsPin.value = defaultValue.isPinned == true
+                currentTaskList.isPinned = _taskIsPin.value
+                saveCurrentTaskTitle(defaultValue.title.toString())
+                saveCurrentTaskListItems(defaultValue.list ?: emptyList())
+                currentTaskList.id = defaultValue.id
+                taskSaved = true
+            }, showUi = {}, wasException = {
+                _wasException.value = it
+            }
+        )
+    }
+
     fun getCurrentTime(): String {
         return currentTaskList.date.toString()
     }
@@ -67,7 +86,7 @@ class FragmentCreateTaskListViewModel(
         currentTaskList.isPinned = _taskIsPin.value
     }
 
-    fun saveCurrentTaskCategory(taskCategory: TaskCategory) {
+    fun saveCurrentTaskCategory(taskCategory: TaskCategory?) {
         _taskCategory.value = taskCategory
         currentTaskList.taskCategoryId = _taskCategory.value?.id
     }
