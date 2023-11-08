@@ -19,6 +19,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFra
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
@@ -94,7 +95,13 @@ class FragmentSearchTasks : FragmentBase(), RcvTaskInt {
     }
 
     override fun onTaskListClick(task: Task.TaskList) {
-        //TODO go to change task list
+        navigate(
+            R.id.action_fragmentSearchTasks_to_fragmentCreateTaskList,
+            bundleOf(
+                FragmentCreateTaskList.THIS_FRAGMENT_FOR to FragmentCreateTaskList.FOR_UPDATE_EXISTING_TASK,
+                FragmentCreateTaskList.EXISTING_TASK_LIST to task
+            )
+        )
     }
 
 

@@ -22,6 +22,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.require
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.FragmentCreateTaskList
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskTypeInt
@@ -167,7 +168,12 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                     )
                 )
             }, taskList = {
-                navigate(R.id.action_fragmentMain_to_fragmentCreateTaskList)
+                navigate(
+                    R.id.action_fragmentMain_to_fragmentCreateTaskList,
+                    bundleOf(
+                        FragmentCreateTaskList.THIS_FRAGMENT_FOR to FragmentCreateTaskList.FOR_CREATE_NEW_TASK
+                    )
+                )
             }
         )
         bottomSheet.dismissBottomSheet()
@@ -184,7 +190,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
     }
 
     override fun onTaskListClick(task: Task.TaskList) {
-        //TODO go to change task list
+        navigate(
+            R.id.action_fragmentMain_to_fragmentCreateTaskList,
+            bundleOf(
+                FragmentCreateTaskList.THIS_FRAGMENT_FOR to FragmentCreateTaskList.FOR_UPDATE_EXISTING_TASK,
+                FragmentCreateTaskList.EXISTING_TASK_LIST to task
+            )
+        )
     }
 
     companion object {

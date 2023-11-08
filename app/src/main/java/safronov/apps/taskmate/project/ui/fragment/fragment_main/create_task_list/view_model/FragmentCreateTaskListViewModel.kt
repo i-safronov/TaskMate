@@ -3,6 +3,7 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_lis
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
@@ -15,7 +16,7 @@ import safronov.apps.taskmate.project.system_settings.date.Date
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
 class FragmentCreateTaskListViewModel(
-    dispatchersList: DispatchersList,
+    private val dispatchersList: DispatchersList,
     date: Date,
     private val insertTaskListUseCase: InsertTaskListUseCase,
     private val changeTaskListUseCase: ChangeTaskListUseCase,
@@ -51,7 +52,7 @@ class FragmentCreateTaskListViewModel(
 
     fun prepareToChangeExistingTask(defaultValue: Task.TaskList) {
         asyncWork(
-            showUiWorkStarted = {},
+            showUiWorkStarted = { },
             doWork = {
                 saveCurrentTaskCategory(getTaskCategoryByIdUseCase.execute(defaultValue.taskCategoryId.toString()))
                 _taskIsPin.value = defaultValue.isPinned == true

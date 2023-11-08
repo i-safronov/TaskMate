@@ -81,7 +81,10 @@ class FragmentCreateTaskList : FragmentBase(), RcvTaskCategoryInt, RcvTaskListIt
     }
 
     private fun setupDefaultValues() {
-        //TODO setup default value
+        existingTaskList = requireArguments().getSerializable(EXISTING_TASK_LIST) as Task.TaskList
+        fragmentCreateTaskListViewModel?.prepareToChangeExistingTask(existingTaskList!!)
+        binding.edtvTitle.setText(existingTaskList?.title)
+        rcvTaskListItem?.submitList(existingTaskList?.list?.toMutableList() ?: mutableListOf())
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {

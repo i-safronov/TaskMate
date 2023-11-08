@@ -1,5 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
