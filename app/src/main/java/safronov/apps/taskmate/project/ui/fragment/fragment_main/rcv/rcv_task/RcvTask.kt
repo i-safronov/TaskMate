@@ -32,6 +32,7 @@ class RcvTask(
     inner class TaskTextViewHolder(
         private val binding: RcvTaskTextBinding
     ): RecyclerView.ViewHolder(binding.root) {
+        //TODO refactor of this method [bind]
         fun bind(taskText: Task.TaskText, position: Int) {
             binding.tvTitle.text = taskText.title
             binding.tvDate.text = taskText.date
@@ -42,8 +43,8 @@ class RcvTask(
                 binding.imgIsPinned.visibility = View.GONE
             }
 
-            if (isSelectionMode) {
-                itemView.setOnClickListener {
+            itemView.setOnClickListener {
+                if (isSelectionMode) {
                     if (selectedTasks.contains(taskText)) {
                         selectedTasks.remove(taskText)
                         binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
@@ -51,23 +52,22 @@ class RcvTask(
                         selectedTasks.add(taskText)
                         binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.selected_task))
                     }
-                }
-                if (selectedTasks.contains(taskText)) {
-                    binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.selected_task))
                 } else {
                     binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
-                }
-            } else {
-                binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
-                itemView.setOnClickListener {
                     rcvTaskInt.onTaskTextClick(taskText)
                 }
-                itemView.setOnLongClickListener {
-                    isSelectionMode = true
-                    selectedTasks.add(taskText)
-                    notifyItemChanged(position)
-                    true
-                }
+            }
+            itemView.setOnLongClickListener {
+                isSelectionMode = true
+                selectedTasks.add(taskText)
+                notifyItemChanged(position)
+                true
+            }
+
+            if (selectedTasks.contains(taskText)) {
+                binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.selected_task))
+            } else {
+                binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
             }
 
         }
@@ -76,6 +76,7 @@ class RcvTask(
     inner class TaskListViewHolder(
         private val binding: RcvTaskListBinding
     ): RecyclerView.ViewHolder(binding.root) {
+        //TODO refactor of this method [bind]
         fun bind(taskList: Task.TaskList) {
             val rcvTaskListItems = RcvTaskListItemSmall()
             binding.rcvTasks.layoutManager = LinearLayoutManager(binding.root.context)
@@ -90,7 +91,30 @@ class RcvTask(
             }
 
             itemView.setOnClickListener {
-                rcvTaskInt.onTaskListClick(taskList)
+                if (isSelectionMode) {
+                    if (selectedTasks.contains(taskList)) {
+                        selectedTasks.remove(taskList)
+                        binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
+                    } else {
+                        selectedTasks.add(taskList)
+                        binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.selected_task))
+                    }
+                } else {
+                    binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
+                    rcvTaskInt.onTaskListClick(taskList)
+                }
+            }
+            itemView.setOnLongClickListener {
+                isSelectionMode = true
+                selectedTasks.add(taskList)
+                notifyItemChanged(position)
+                true
+            }
+
+            if (selectedTasks.contains(taskList)) {
+                binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.selected_task))
+            } else {
+                binding.root.setBackgroundDrawable(AppCompatResources.getDrawable(binding.root.context, R.drawable.back_shape_with_ripple))
             }
 
         }
@@ -139,6 +163,7 @@ class RcvTask(
 
     fun clearSelectionMode() {
         isSelectionMode = false
+        selectedTasks.clear()
         notifyDataSetChanged()
     }
 
