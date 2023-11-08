@@ -1,4 +1,4 @@
-package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model
+package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -20,14 +20,14 @@ import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 import java.lang.IllegalStateException
 
-class FragmentCreateTaskTextViewModelTest {
+class FragmentTaskTextDetailsViewModelTest {
 
     private lateinit var dataToSave: Task.TaskText
     private lateinit var taskCategory: TaskCategory
     private lateinit var fakeInsertingTaskRepository: FakeInsertingTaskRepository
     private lateinit var insertTaskTextUseCase: InsertTaskTextUseCase
     private lateinit var testDispatchersList: TestDispatchersList
-    private lateinit var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel
+    private lateinit var fragmentTaskTextDetailsViewModel: FragmentTaskTextDetailsViewModel
     private lateinit var fakeDate: Date
     private lateinit var fakeChangingTaskRepository: FakeChangingTaskRepository
     private lateinit var fakeDefaultTaskCategories: FakeDefaultTaskCategories
@@ -59,7 +59,7 @@ class FragmentCreateTaskTextViewModelTest {
         fakeInsertingTaskRepository = FakeInsertingTaskRepository()
         insertTaskTextUseCase = InsertTaskTextUseCase(insertingTaskRepository = fakeInsertingTaskRepository)
         testDispatchersList = TestDispatchersList()
-        fragmentCreateTaskTextViewModel = FragmentCreateTaskTextViewModel(
+        fragmentTaskTextDetailsViewModel = FragmentTaskTextDetailsViewModel(
             dispatchersList = testDispatchersList,
             date = fakeDate,
             insertTaskTextUseCase = insertTaskTextUseCase,
@@ -80,17 +80,17 @@ class FragmentCreateTaskTextViewModelTest {
             isPinned = false,
             id = 235423
         )
-        fragmentCreateTaskTextViewModel.prepareToChangeExistingTask(defaultValue)
-        assertEquals(true, defaultValue.title == fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value)
-        assertEquals(true, defaultValue.text == fragmentCreateTaskTextViewModel.getCurrentTaskText().value)
-        assertEquals(true, defaultValue.taskCategoryId == fragmentCreateTaskTextViewModel.getTaskCategory().value?.id)
-        assertEquals(true, defaultValue.isPinned == fragmentCreateTaskTextViewModel.getIsTaskPin().value)
+        fragmentTaskTextDetailsViewModel.prepareToChangeExistingTask(defaultValue)
+        assertEquals(true, defaultValue.title == fragmentTaskTextDetailsViewModel.getCurrentTaskTitle().value)
+        assertEquals(true, defaultValue.text == fragmentTaskTextDetailsViewModel.getCurrentTaskText().value)
+        assertEquals(true, defaultValue.taskCategoryId == fragmentTaskTextDetailsViewModel.getTaskCategory().value?.id)
+        assertEquals(true, defaultValue.isPinned == fragmentTaskTextDetailsViewModel.getIsTaskPin().value)
     }
 
     @Test
     fun test_prepareToChangeExistingTask_expectedException() {
         fakeTaskCategoryRepository.isNeedToThrowException = true
-        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value == null)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.isWasException().value == null)
         val defaultValue = Task.TaskText(
             title = "asdf",
             text = "asdf",
@@ -100,84 +100,84 @@ class FragmentCreateTaskTextViewModelTest {
             isPinned = false,
             id = 235423
         )
-        fragmentCreateTaskTextViewModel.prepareToChangeExistingTask(defaultValue)
-        assertEquals(false, fragmentCreateTaskTextViewModel.isWasException().value == null)
+        fragmentTaskTextDetailsViewModel.prepareToChangeExistingTask(defaultValue)
+        assertEquals(false, fragmentTaskTextDetailsViewModel.isWasException().value == null)
     }
 
     @Test
     fun `test, load default task category`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
-        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == null)
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
         assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 0)
-        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        fragmentTaskTextDetailsViewModel.loadDefaultTaskCategory()
         assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
-        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getTaskCategory().value == null)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
     }
 
     @Test
     fun test_loadDefaultTaskCategoryWhenCategoryExists() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
-        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == null)
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
         assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 0)
-        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        fragmentTaskTextDetailsViewModel.loadDefaultTaskCategory()
         assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
-        assertEquals(false, fragmentCreateTaskTextViewModel.getTaskCategory().value == null)
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
-        fragmentCreateTaskTextViewModel.loadDefaultTaskCategory()
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getTaskCategory().value == null)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == fakeDefaultTaskCategories.taskCategoryToReturn)
+        fragmentTaskTextDetailsViewModel.loadDefaultTaskCategory()
         assertEquals(true, fakeDefaultTaskCategories.countOfRequestToGetDefaultTaskCategory == 1)
     }
 
     @Test
     fun `test, save task category`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value != taskCategory)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value != taskCategory)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(
             taskCategory = taskCategory
         )
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == taskCategory)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == taskCategory)
     }
 
     @Test
     fun `test, save task pin`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value != true)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
-        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value == true)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getIsTaskPin().value != true)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getIsTaskPin().value == true)
     }
 
     @Test
     fun `test, save title`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value.isEmpty())
-        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = "some title")
-        assertEquals(false, fragmentCreateTaskTextViewModel.getCurrentTaskTitle().value.isEmpty())
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getCurrentTaskTitle().value.isEmpty())
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskTitle(title = "some title")
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getCurrentTaskTitle().value.isEmpty())
     }
 
     @Test
     fun `test, save text`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getCurrentTaskText().value.isEmpty())
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = "some title")
-        assertEquals(false, fragmentCreateTaskTextViewModel.getCurrentTaskText().value.isEmpty())
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getCurrentTaskText().value.isEmpty())
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = "some title")
+        assertEquals(false, fragmentTaskTextDetailsViewModel.getCurrentTaskText().value.isEmpty())
     }
 
     @Test
     fun test_getTaskCategories() {
-        val categories = fragmentCreateTaskTextViewModel.getTaskCategories()
+        val categories = fragmentTaskTextDetailsViewModel.getTaskCategories()
         assertEquals(true, fakeDefaultTaskCategories.taskCategoriesToReturn == categories)
     }
 
     @Test
     fun `test, show task category `() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value != taskCategory)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value != taskCategory)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(
             taskCategory = taskCategory
         )
-        assertEquals(true, fragmentCreateTaskTextViewModel.getTaskCategory().value == taskCategory)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getTaskCategory().value == taskCategory)
     }
 
     @Test
     fun `test, show task pin`() {
-        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value != true)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
-        assertEquals(true, fragmentCreateTaskTextViewModel.getIsTaskPin().value == true)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getIsTaskPin().value != true)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
+        assertEquals(true, fragmentTaskTextDetailsViewModel.getIsTaskPin().value == true)
     }
 
     @Test
@@ -191,11 +191,11 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.taskCategoryId == taskCategory.id)
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.isPinned == true)
 
-        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = titleToSave)
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = textToSave)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskTitle(title = titleToSave)
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = textToSave)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.title == titleToSave)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.text == textToSave)
@@ -206,7 +206,7 @@ class FragmentCreateTaskTextViewModelTest {
     @Test
     fun `test, save task, should don't save task 'cause title and text is empty`() {
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
     }
 
@@ -221,13 +221,13 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.taskCategoryId == taskCategory.id)
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.isPinned == true)
 
-        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = titleToSave)
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = textToSave)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskTitle(title = titleToSave)
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = textToSave)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.title == titleToSave)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.text == textToSave)
@@ -235,8 +235,8 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.isPinned == true)
 
         val newText = "some new text"
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = newText)
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = newText)
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
         assertEquals(true, fakeChangingTaskRepository.dataToReturn.text == newText)
     }
 
@@ -250,20 +250,20 @@ class FragmentCreateTaskTextViewModelTest {
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.taskCategoryId == taskCategory.id)
         assertEquals(false, fakeInsertingTaskRepository.dataToReturn.isPinned == true)
 
-        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = titleToSave)
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = textToSave)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskTitle(title = titleToSave)
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = textToSave)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.title == titleToSave)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.text == textToSave)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.taskCategoryId == taskCategory.id)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.isPinned == true)
 
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.title == titleToSave)
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn.text == textToSave)
@@ -276,28 +276,28 @@ class FragmentCreateTaskTextViewModelTest {
         fakeInsertingTaskRepository.isNeedToThrowException = true
 
         assertEquals(true, fakeInsertingTaskRepository.dataToReturn != dataToSave)
-        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value == null)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.isWasException().value == null)
 
-        fragmentCreateTaskTextViewModel.saveCurrentTaskTitle(title = dataToSave.title)
-        fragmentCreateTaskTextViewModel.saveCurrentTaskText(text = dataToSave.text)
-        fragmentCreateTaskTextViewModel.saveTaskCategory(taskCategory = taskCategory)
-        fragmentCreateTaskTextViewModel.pinCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskTitle(title = dataToSave.title)
+        fragmentTaskTextDetailsViewModel.saveCurrentTaskText(text = dataToSave.text)
+        fragmentTaskTextDetailsViewModel.saveTaskCategory(taskCategory = taskCategory)
+        fragmentTaskTextDetailsViewModel.pinCurrentTask()
 
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
-        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value != null)
-        assertEquals(true, fragmentCreateTaskTextViewModel.isWasException().value?.message == "some exception")
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
+        assertEquals(true, fragmentTaskTextDetailsViewModel.isWasException().value != null)
+        assertEquals(true, fragmentTaskTextDetailsViewModel.isWasException().value?.message == "some exception")
     }
 
     @Test
     fun `test, save task when nothing has been changed`() {
         assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
-        fragmentCreateTaskTextViewModel.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel.saveCurrentTask()
         assertEquals(true, fakeInsertingTaskRepository.countOfRequest == 0)
     }
 
     @Test
     fun `test, get current time`() {
-        assertEquals(true, fakeDate.getCurrentTime() == fragmentCreateTaskTextViewModel.getCurrentTime())
+        assertEquals(true, fakeDate.getCurrentTime() == fragmentTaskTextDetailsViewModel.getCurrentTime())
     }
 
 }

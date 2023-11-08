@@ -1,4 +1,4 @@
-package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model
+package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
-class FragmentCreateTaskTextViewModel(
+class FragmentTaskTextDetailsViewModel(
     dispatchersList: DispatchersList,
     date: Date,
     private val insertTaskTextUseCase: InsertTaskTextUseCase,

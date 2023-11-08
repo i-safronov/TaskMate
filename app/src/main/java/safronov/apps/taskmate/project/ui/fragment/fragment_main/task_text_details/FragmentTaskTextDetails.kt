@@ -1,4 +1,4 @@
-package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text
+package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
-import safronov.apps.taskmate.databinding.FragmentCreateTaskTextBinding
+import safronov.apps.taskmate.databinding.FragmentTaskTextDetailsBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
 import safronov.apps.taskmate.project.system_settings.extension.fragment.removeMenuFromHomePageToolBar
@@ -25,15 +25,15 @@ import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomShee
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModel
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model.FragmentTaskTextDetailsViewModel
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model.FragmentTaskTextDetailsViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.RcvTaskCategoryInt
 import javax.inject.Inject
 
-class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
+class FragmentTaskTextDetails : FragmentBase(), RcvTaskCategoryInt {
 
-    private var _binding: FragmentCreateTaskTextBinding? = null
+    private var _binding: FragmentTaskTextDetailsBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskCategory = RcvTaskCategory(this)
     private var forWhatThisFragment = FOR_CREATE_NEW_TASK
@@ -46,8 +46,8 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     lateinit var bottomSheet: BottomSheet
 
     @Inject
-    lateinit var fragmentCreateTaskTextViewModelFactory: FragmentCreateTaskTextViewModelFactory
-    private var fragmentCreateTaskTextViewModel: FragmentCreateTaskTextViewModel? = null
+    lateinit var fragmentTaskTextDetailsViewModelFactory: FragmentTaskTextDetailsViewModelFactory
+    private var fragmentTaskTextDetailsViewModel: FragmentTaskTextDetailsViewModel? = null
 
     @Inject
     lateinit var dispatchersList: DispatchersList
@@ -59,14 +59,14 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     lateinit var recyclerViewBuilder: RecyclerViewBuilder
 
     override fun createUI(inflater: LayoutInflater, container: ViewGroup?): View? {
-        _binding = FragmentCreateTaskTextBinding.inflate(inflater, container, false)
+        _binding = FragmentTaskTextDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun setup() {
         requireAppComponent().inject(this)
-        fragmentCreateTaskTextViewModel = ViewModelProvider(this, fragmentCreateTaskTextViewModelFactory)
-            .get(FragmentCreateTaskTextViewModel::class.java)
+        fragmentTaskTextDetailsViewModel = ViewModelProvider(this, fragmentTaskTextDetailsViewModelFactory)
+            .get(FragmentTaskTextDetailsViewModel::class.java)
         forWhatThisFragment = requireArguments().getString(THIS_FRAGMENT_FOR, FOR_CREATE_NEW_TASK)
         if (forWhatThisFragment == FOR_UPDATE_EXISTING_TASK) {
             setupDefaultValues()
@@ -75,53 +75,53 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
 
     private fun setupDefaultValues() {
         existingTaskText = requireArguments().getSerializable(EXISTING_TASK_TEXT) as Task.TaskText
-        fragmentCreateTaskTextViewModel?.prepareToChangeExistingTask(existingTaskText!!)
+        fragmentTaskTextDetailsViewModel?.prepareToChangeExistingTask(existingTaskText!!)
         binding.edtvTitle.setText(existingTaskText?.title)
         binding.edtvText.setText(existingTaskText?.text)
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
-        fragmentCreateTaskTextViewModel?.loadDefaultTaskCategory()
+        fragmentTaskTextDetailsViewModel?.loadDefaultTaskCategory()
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
         observeTaskSaved()
         observeWasException()
-        binding.tvDate.text = fragmentCreateTaskTextViewModel?.getCurrentTime()
+        binding.tvDate.text = fragmentTaskTextDetailsViewModel?.getCurrentTime()
     }
 
     private fun addItemMenuClickListenerOnHomePageToolBar() {
         homePageToolBarService.setOnMenuItemClickListener(
             toolBar = requireHomePageToolBar(),
             pinTask = {
-                fragmentCreateTaskTextViewModel?.pinCurrentTask()
+                fragmentTaskTextDetailsViewModel?.pinCurrentTask()
             },
             chooseTaskCategory = {
                 val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.choose)
                 recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
-                rcvTaskCategory.submitList(fragmentCreateTaskTextViewModel?.getTaskCategories() ?: emptyList())
+                rcvTaskCategory.submitList(fragmentTaskTextDetailsViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }, saveTask = {
-                fragmentCreateTaskTextViewModel?.saveCurrentTask()
+                fragmentTaskTextDetailsViewModel?.saveCurrentTask()
             }
         )
     }
 
     private fun addTextWatcherToEdtvTitle() {
         textWatcher.addTextWatcherToView(binding.edtvTitle, afterTextChanged = {
-            fragmentCreateTaskTextViewModel?.saveCurrentTaskTitle(it)
+            fragmentTaskTextDetailsViewModel?.saveCurrentTaskTitle(it)
         })
     }
 
     private fun addTextWatcherToEdtvText() {
         textWatcher.addTextWatcherToView(binding.edtvText, afterTextChanged = {
-            fragmentCreateTaskTextViewModel?.saveCurrentTaskText(it)
+            fragmentTaskTextDetailsViewModel?.saveCurrentTaskText(it)
         })
     }
 
     private fun observeTaskSaved() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
-        fragmentCreateTaskTextViewModel?.getTaskSaved()?.collect {
+        fragmentTaskTextDetailsViewModel?.getTaskSaved()?.collect {
             if (it == true) {
                 Toast.makeText(requireContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show()
             }
@@ -129,7 +129,7 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     }
 
     private fun observeWasException() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
-        fragmentCreateTaskTextViewModel?.isWasException()?.collect {
+        fragmentTaskTextDetailsViewModel?.isWasException()?.collect {
             if (it != null) {
                 handeException(it)
             }
@@ -148,13 +148,13 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
     }
 
     private fun observeTaskPin() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
-        fragmentCreateTaskTextViewModel?.getIsTaskPin()?.collect {
+        fragmentTaskTextDetailsViewModel?.getIsTaskPin()?.collect {
             homePageToolBarService.changePinTaskIconByParam(toolBar = requireHomePageToolBar(), isPinned = it)
         }
     }
 
     private fun observeTaskCategory() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
-        fragmentCreateTaskTextViewModel?.getTaskCategory()?.collect {
+        fragmentTaskTextDetailsViewModel?.getTaskCategory()?.collect {
             homePageToolBarService.changeTaskCategoryIcon(toolBar = requireHomePageToolBar(), taskCategory = it)
             it?.let {
                 rcvTaskCategory.setSelectedTaskCategory(it)
@@ -164,11 +164,11 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
 
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
         bottomSheet.dismissBottomSheet()
-        fragmentCreateTaskTextViewModel?.saveTaskCategory(taskCategory)
+        fragmentTaskTextDetailsViewModel?.saveTaskCategory(taskCategory)
     }
 
     override fun onStop() {
-        fragmentCreateTaskTextViewModel?.saveCurrentTask()
+        fragmentTaskTextDetailsViewModel?.saveCurrentTask()
         super.onStop()
         removeMenuFromHomePageToolBar()
     }
@@ -183,7 +183,7 @@ class FragmentCreateTaskText : FragmentBase(), RcvTaskCategoryInt {
 
     companion object {
         @JvmStatic
-        fun newInstance() = FragmentCreateTaskText()
+        fun newInstance() = FragmentTaskTextDetails()
         const val THIS_FRAGMENT_FOR = "ThisFragmentFor"
         const val FOR_CREATE_NEW_TASK = "ForCreateNewTask"
         const val FOR_UPDATE_EXISTING_TASK = "ForUpdateExistingTask"

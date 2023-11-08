@@ -1,7 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.R
@@ -24,7 +22,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.require
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskTypeInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
@@ -163,9 +161,9 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
             taskType = taskType.taskType,
             taskText = {
                 navigate(
-                    R.id.action_fragmentMain_to_fragmentCreateTaskText,
+                    R.id.action_fragmentMain_to_fragmentTaskTextDetails,
                     bundleOf(
-                        FragmentCreateTaskText.THIS_FRAGMENT_FOR to FragmentCreateTaskText.FOR_CREATE_NEW_TASK
+                        FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_CREATE_NEW_TASK
                     )
                 )
             }, taskList = {
@@ -177,10 +175,10 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
 
     override fun onTaskTextClick(task: Task.TaskText) {
         navigate(
-            R.id.action_fragmentMain_to_fragmentCreateTaskText,
+            R.id.action_fragmentMain_to_fragmentTaskTextDetails,
             bundleOf(
-                FragmentCreateTaskText.THIS_FRAGMENT_FOR to FragmentCreateTaskText.FOR_UPDATE_EXISTING_TASK,
-                FragmentCreateTaskText.EXISTING_TASK_TEXT to task
+                FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
+                FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
             )
         )
     }

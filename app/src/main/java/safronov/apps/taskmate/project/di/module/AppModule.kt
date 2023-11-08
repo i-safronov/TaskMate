@@ -23,7 +23,7 @@ import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_list.view_model.FragmentCreateTaskListViewModelFactory
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model.FragmentCreateTaskTextViewModelFactory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model.FragmentTaskTextDetailsViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModelFactory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
@@ -161,8 +161,8 @@ class AppModule(
         changeTaskTextUseCase: ChangeTaskTextUseCase,
         defaultTaskCategories: DefaultTaskCategories,
         getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
-    ): FragmentCreateTaskTextViewModelFactory {
-        return FragmentCreateTaskTextViewModelFactory(
+    ): FragmentTaskTextDetailsViewModelFactory {
+        return FragmentTaskTextDetailsViewModelFactory(
             dispatchersList = dispatchersList,
             date = date,
             insertTaskTextUseCase = insertTaskTextUseCase,

@@ -1,4 +1,4 @@
-package safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.view_model
+package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +9,7 @@ import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
 import safronov.apps.taskmate.project.system_settings.date.Date
 
-class FragmentCreateTaskTextViewModelFactory(
+class FragmentTaskTextDetailsViewModelFactory(
     private val dispatchersList: DispatchersList,
     private val date: Date,
     private val insertTaskTextUseCase: InsertTaskTextUseCase,
@@ -19,7 +19,7 @@ class FragmentCreateTaskTextViewModelFactory(
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return FragmentCreateTaskTextViewModel(
+        return FragmentTaskTextDetailsViewModel(
             dispatchersList = dispatchersList,
             date = date,
             insertTaskTextUseCase = insertTaskTextUseCase,

@@ -19,7 +19,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFra
 import safronov.apps.taskmate.project.system_settings.extension.fragment.navigate
 import safronov.apps.taskmate.project.system_settings.extension.fragment.requireAppComponent
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
-import safronov.apps.taskmate.project.ui.fragment.fragment_main.create_task_text.FragmentCreateTaskText
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModel
@@ -85,10 +85,10 @@ class FragmentSearchTasks : FragmentBase(), RcvTaskInt {
 
     override fun onTaskTextClick(task: Task.TaskText) {
         navigate(
-            R.id.action_fragmentSearchTasks_to_fragmentCreateTaskText,
+            R.id.action_fragmentSearchTasks_to_fragmentTaskTextDetails,
             bundleOf(
-                FragmentCreateTaskText.THIS_FRAGMENT_FOR to FragmentCreateTaskText.FOR_UPDATE_EXISTING_TASK,
-                FragmentCreateTaskText.EXISTING_TASK_TEXT to task
+                FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
+                FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
             )
         )
     }
