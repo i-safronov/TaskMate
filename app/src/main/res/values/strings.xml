@@ -28,4 +28,5 @@
     <string name="choose">Выбрать</string>
     <string name="saved">Сохранено</string>
     <string name="delete">Удалить</string>
+    <string name="selected">Выбрано</string>
 </resources>

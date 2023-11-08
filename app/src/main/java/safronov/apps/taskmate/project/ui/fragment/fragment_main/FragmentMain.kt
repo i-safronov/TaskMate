@@ -34,6 +34,7 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.Rcv
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
@@ -182,24 +183,26 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         bottomSheet.dismissBottomSheet()
     }
 
-    override fun onTaskTextClick(task: Task.TaskText) {
-        navigate(
-            R.id.action_fragmentMain_to_fragmentTaskTextDetails,
-            bundleOf(
-                FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
-                FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
+    override fun onTaskClick(task: Task) {
+        if (task is Task.TaskList) {
+            navigate(
+                R.id.action_fragmentMain_to_fragmentTaskListDetails,
+                bundleOf(
+                    FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_UPDATE_EXISTING_TASK,
+                    FragmentTaskListDetails.EXISTING_TASK_LIST to task
+                )
             )
-        )
-    }
-
-    override fun onTaskListClick(task: Task.TaskList) {
-        navigate(
-            R.id.action_fragmentMain_to_fragmentTaskListDetails,
-            bundleOf(
-                FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_UPDATE_EXISTING_TASK,
-                FragmentTaskListDetails.EXISTING_TASK_LIST to task
+        } else if (task is Task.TaskText) {
+            navigate(
+                R.id.action_fragmentMain_to_fragmentTaskTextDetails,
+                bundleOf(
+                    FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
+                    FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
+                )
             )
-        )
+        } else {
+            throw IllegalStateException("not found task")
+        }
     }
 
     override fun onTaskSelectionMode() {
@@ -215,6 +218,11 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         }
     }
 
+    override fun selectionTasksChanged(list: List<Task>) {
+        val title = "${getString(R.string.selected)}: ${list.size}"
+        requireHomePageToolBar().title = title
+    }
+
     private fun onBackPressListener() {
         requireActivity()
             .onBackPressedDispatcher
@@ -223,6 +231,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                     if (rcvTask.isSelectionMode()) {
                         removeMenuFromHomePageToolBar()
                         inflateMenuOnHomePageToolBar(R.menu.fragment_main_toolbar_menu)
+                        requireHomePageToolBar().title = getString(R.string.app_name)
                         rcvTask.clearSelectionMode()
                     } else {
                         if (isEnabled) {
