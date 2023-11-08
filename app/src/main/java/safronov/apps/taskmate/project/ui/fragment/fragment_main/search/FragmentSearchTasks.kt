@@ -23,16 +23,18 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_detail
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.rcv.RcvTaskForSearching
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.rcv.RcvTaskForSearchingInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model.FragmentSearchTasksViewModelFactory
 import javax.inject.Inject
 
 
-class FragmentSearchTasks : FragmentBase(), RcvTaskInt {
+class FragmentSearchTasks : FragmentBase(), RcvTaskForSearchingInt {
 
     private var _binding: FragmentSearchTasksBinding? = null
     private val binding get() = _binding!!
-    private val rcvTask = RcvTask(this)
+    private val rcvTask = RcvTaskForSearching(this)
 
     @Inject
     lateinit var fragmentSearchTasksViewModelFactory: FragmentSearchTasksViewModelFactory
@@ -73,12 +75,12 @@ class FragmentSearchTasks : FragmentBase(), RcvTaskInt {
     private fun observeTextChangedInSearchView() {
         binding.includedSearchView.root.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                fragmentSearchTasksViewModel?.getTasksByText(query.toString())
+                fragmentSearchTasksViewModel?.getTasksByText(query.toString().trim())
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                fragmentSearchTasksViewModel?.getTasksByText(newText.toString())
+                fragmentSearchTasksViewModel?.getTasksByText(newText.toString().trim())
                 return true
             }
         })
