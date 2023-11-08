@@ -82,6 +82,7 @@ class RcvTask(
                     selectedTasks.add(task)
                     rootView.setBackgroundDrawable(AppCompatResources.getDrawable(rootView.context, R.drawable.selected_task))
                 }
+                rcvTaskInt.selectionTasksChanged(selectedTasks)
             } else {
                 rootView.setBackgroundDrawable(AppCompatResources.getDrawable(rootView.context, R.drawable.back_shape_with_ripple))
                 rcvTaskInt.onTaskClick(task)
@@ -92,6 +93,7 @@ class RcvTask(
                 isSelectionMode = true
                 selectedTasks.add(task)
                 rcvTaskInt.onTaskSelectionMode()
+                rcvTaskInt.selectionTasksChanged(selectedTasks)
                 notifyItemChanged(position)
             }
             true
