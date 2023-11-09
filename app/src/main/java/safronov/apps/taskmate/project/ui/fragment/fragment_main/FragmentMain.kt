@@ -1,5 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main
 
+import android.app.AlertDialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.R
+import safronov.apps.taskmate.databinding.AskUserBinding
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -211,7 +214,20 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         requireHomePageToolBar().setOnMenuItemClickListener {
             var handled = false
             if (it.itemId == R.id.delete_tasks) {
-                //TODO delete tasks
+                val alertDialog = AlertDialog.Builder(requireContext()).create()
+                val alertView = AskUserBinding.inflate(layoutInflater)
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+                alertView.tvTitle.text = getString(R.string.delete_tasks)
+                alertView.btnNo.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+                alertView.btnYes.setOnClickListener {
+                    //TODO delete tasks
+                    alertDialog.dismiss()
+                }
+                alertDialog.setView(alertView.root)
+                alertDialog.setCancelable(false)
+                alertDialog.show()
                 handled = true
             }
             handled
