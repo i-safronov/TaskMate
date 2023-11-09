@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/back_shape_with_ripple"
+    android:layout_margin="@dimen/margin"
+    android:padding="@dimen/padding">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/text"
+        tools:text="@string/delete_tasks"
+        android:textStyle="bold"
+        android:gravity="center"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/margin"
+        android:background="@color/hint"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/button_without_margin"
+            android:background="@drawable/transparent_back_with_ripple"
+            android:layout_weight="1"
+            android:text="@string/no"
+            android:textAllCaps="false"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:textColor="@color/red" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_yes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/button_without_margin"
+            android:background="@drawable/transparent_back_with_ripple"
+            android:layout_weight="1"
+            android:text="@string/yes"
+            android:textAllCaps="false"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textColor="@color/accent_color" />
+
+    </LinearLayout>
+
+</LinearLayout>

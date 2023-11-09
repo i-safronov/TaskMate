@@ -29,4 +29,7 @@
     <string name="saved">Сохранено</string>
     <string name="delete">Удалить</string>
     <string name="selected">Выбрано</string>
+    <string name="delete_tasks">Удалить задачи?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>
