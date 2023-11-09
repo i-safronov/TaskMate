@@ -17,6 +17,8 @@ import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.repository.task.TaskRepository
+import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
+import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import java.lang.IllegalStateException
@@ -26,15 +28,36 @@ class FragmentMainViewModelTest {
     private lateinit var fakeTaskRepositoryGetting: FakeTaskRepositoryGetting
     private lateinit var fragmentMainViewModel: FragmentMainViewModel
     private lateinit var taskEntityConverter: TaskEntityConverter
+    private lateinit var fakeDeletingTaskRepository: FakeDeletingTaskRepository
 
     @Before
     fun setUp() {
+        fakeDeletingTaskRepository = FakeDeletingTaskRepository()
         fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
         fragmentMainViewModel = FragmentMainViewModel(
             dispatchersList = TestDispatchersList(),
-            getTasksAsFlowUseCase = GetTasksAsFlowUseCase(gettingTaskRepository = fakeTaskRepositoryGetting)
+            getTasksAsFlowUseCase = GetTasksAsFlowUseCase(gettingTaskRepository = fakeTaskRepositoryGetting),
+            deleteTasksUseCase = DeleteTasksUseCase(deletingTaskRepository = fakeDeletingTaskRepository)
         )
         taskEntityConverter = TaskEntityConverterImpl(Gson())
+    }
+
+    @Test
+    fun test_deleteTasks() {
+        val deleted = fakeDeletingTaskRepository.dataToReturn.toList()
+        fragmentMainViewModel.deleteTasks(deleted)
+        assertEquals(true, fakeDeletingTaskRepository.dataToReturn.isEmpty())
+        assertEquals(true, fakeDeletingTaskRepository.requestToDeleteList?.toList() == deleted)
+        assertEquals(true, fakeDeletingTaskRepository.countOfRequest == 1)
+    }
+
+    @Test
+    fun test_deleteTasks_expectedException() {
+        assertEquals(false, fragmentMainViewModel.getIsWasException().value != null)
+        fakeDeletingTaskRepository.isNeedToThrowException = true
+        val deleted = fakeDeletingTaskRepository.dataToReturn
+        fragmentMainViewModel.deleteTasks(deleted)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
     }
 
     @Test
@@ -102,6 +125,33 @@ private class FakeTaskRepositoryGetting: TaskRepository.GettingTask {
 
     override suspend fun getTasks(): List<Task> {
         throw IllegalStateException("don't use this method -_- ")
+    }
+
+}
+
+private class FakeDeletingTaskRepository: TaskRepository.DeletingTask {
+
+    var isNeedToThrowException = false
+    val dataToReturn = mutableListOf<Task>(
+        Task.TaskText(title = null, text = null, date = null, taskCategoryId = null, taskType = null, isPinned = false, id = null),
+        Task.TaskList(title = null, list = null, date = null, taskCategoryId = null, taskType = null, isPinned = false, id = null)
+    )
+    var requestToDeleteList: List<Task>? = null
+    var countOfRequest = 0
+
+    override suspend fun deleteTaskText(task: Task.TaskText) {
+        throw IllegalStateException("don't use this method")
+    }
+
+    override suspend fun deleteTaskList(task: Task.TaskList) {
+        throw IllegalStateException("don't use this method")
+    }
+
+    override suspend fun deleteTasks(tasks: List<Task>) {
+        if (isNeedToThrowException) throw DomainException("some exception")
+        requestToDeleteList = tasks
+        countOfRequest++
+        dataToReturn.clear()
     }
 
 }

@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
+import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
@@ -82,11 +83,13 @@ class AppModule(
     @Provides
     fun provideFragmentMainViewModelFactory(
         dispatchersList: DispatchersList,
-        getTasksAsFlowUseCase: GetTasksAsFlowUseCase
+        getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
+        deleteTasksUseCase: DeleteTasksUseCase
     ): FragmentMainViewModelFactory {
         return FragmentMainViewModelFactory(
             dispatchersList = dispatchersList,
-            getTasksAsFlowUseCase = getTasksAsFlowUseCase
+            getTasksAsFlowUseCase = getTasksAsFlowUseCase,
+            deleteTasksUseCase = deleteTasksUseCase
         )
     }
 

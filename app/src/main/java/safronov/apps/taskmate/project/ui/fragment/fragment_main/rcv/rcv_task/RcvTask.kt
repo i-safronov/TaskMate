@@ -21,8 +21,6 @@ interface RcvTaskInt {
     fun selectionTasksChanged(list: List<Task>)
 }
 
-//TODO make multi selection item 
-
 class RcvTask(
     private val rcvTaskInt: RcvTaskInt
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
