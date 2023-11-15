@@ -2,11 +2,13 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_detai
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
@@ -14,16 +16,18 @@ import safronov.apps.taskmate.project.system_settings.date.Date
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
 class FragmentTaskListDetailsViewModel(
-    private val dispatchersList: DispatchersList,
+    dispatchersList: DispatchersList,
     date: Date,
     private val insertTaskListUseCase: InsertTaskListUseCase,
     private val changeTaskListUseCase: ChangeTaskListUseCase,
     private val defaultTaskCategories: DefaultTaskCategories,
-    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
+    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase,
+    private val getTasksCategoriesUseCase: GetTaskCategoriesUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _currentTaskTitle = MutableStateFlow("")
     private val _taskIsPin = MutableStateFlow(false)
+    private val _taskCategories = MutableStateFlow<List<TaskCategory>>(emptyList())
     private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
     private val _wasException = MutableStateFlow<DomainException?>(null)
     private val _taskSaved = MutableStateFlow<Boolean?>(null)
@@ -44,6 +48,7 @@ class FragmentTaskListDetailsViewModel(
 
     fun getCurrentTaskTitle(): StateFlow<String> = _currentTaskTitle
     fun getIsCurrentTaskPin(): StateFlow<Boolean> = _taskIsPin
+    fun getCategories(): StateFlow<List<TaskCategory>> = _taskCategories
     fun getCurrentTaskCategory(): StateFlow<TaskCategory?> = _taskCategory
     fun isWasException(): StateFlow<DomainException?> = _wasException
     fun getTaskSaved(): StateFlow<Boolean?> = _taskSaved
@@ -122,8 +127,17 @@ class FragmentTaskListDetailsViewModel(
         )
     }
 
-    fun getTaskCategories(): List<TaskCategory> {
-        return defaultTaskCategories.getDefaultTaskCategories()
+    fun loadTaskCategories() {
+        asyncWork(
+            showUiWorkStarted = {},
+            doWork = {
+                getTasksCategoriesUseCase.execute().first()
+            }, showUi = {
+                _taskCategories.value = it
+            }, wasException = {
+                _wasException.value = it
+            }
+        )
     }
 
 }
