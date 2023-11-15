@@ -223,6 +223,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                 }
                 alertView.btnYes.setOnClickListener {
                     fragmentMainViewModel?.deleteTasks(rcvTask.getSelectedTasks())
+                    clearSelectionModeOnTasks()
                     alertDialog.dismiss()
                 }
                 alertDialog.setView(alertView.root)
@@ -245,10 +246,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
             .addCallback(this, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     if (rcvTask.isSelectionMode()) {
-                        removeMenuFromHomePageToolBar()
-                        inflateMenuOnHomePageToolBar(R.menu.fragment_main_toolbar_menu)
-                        requireHomePageToolBar().title = getString(R.string.app_name)
-                        rcvTask.clearSelectionMode()
+                        clearSelectionModeOnTasks()
                     } else {
                         if (isEnabled) {
                             isEnabled = false
@@ -257,6 +255,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                     }
                 }
             })
+    }
+
+    private fun clearSelectionModeOnTasks() {
+        removeMenuFromHomePageToolBar()
+        inflateMenuOnHomePageToolBar(R.menu.fragment_main_toolbar_menu)
+        requireHomePageToolBar().title = getString(R.string.app_name)
+        rcvTask.clearSelectionMode()
     }
 
     companion object {
