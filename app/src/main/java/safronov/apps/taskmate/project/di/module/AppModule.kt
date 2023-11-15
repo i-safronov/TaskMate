@@ -11,6 +11,7 @@ import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
@@ -146,7 +147,8 @@ class AppModule(
         insertTaskListUseCase: InsertTaskListUseCase,
         changeTaskListUseCase: ChangeTaskListUseCase,
         defaultTaskCategories: DefaultTaskCategories,
-        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
+        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase,
+        getTasksCategoriesUseCase: GetTaskCategoriesUseCase
     ): FragmentTaskListDetailsViewModelFactory {
         return FragmentTaskListDetailsViewModelFactory(
             dispatchersList = dispatchersList,
@@ -154,7 +156,8 @@ class AppModule(
             insertTaskListUseCase = insertTaskListUseCase,
             changeTaskListUseCase = changeTaskListUseCase,
             defaultTaskCategories = defaultTaskCategories,
-            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase
+            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase,
+            getTasksCategoriesUseCase = getTasksCategoriesUseCase
         )
     }
 
@@ -165,7 +168,8 @@ class AppModule(
         insertTaskTextUseCase: InsertTaskTextUseCase,
         changeTaskTextUseCase: ChangeTaskTextUseCase,
         defaultTaskCategories: DefaultTaskCategories,
-        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
+        getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase,
+        getTasksCategoriesUseCase: GetTaskCategoriesUseCase
     ): FragmentTaskTextDetailsViewModelFactory {
         return FragmentTaskTextDetailsViewModelFactory(
             dispatchersList = dispatchersList,
@@ -173,7 +177,8 @@ class AppModule(
             insertTaskTextUseCase = insertTaskTextUseCase,
             changeTaskTextUseCase = changeTaskTextUseCase,
             defaultTaskCategories = defaultTaskCategories,
-            getTaskCategoryByIdUseCase
+            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase,
+            getTasksCategoriesUseCase = getTasksCategoriesUseCase
         )
     }
 
