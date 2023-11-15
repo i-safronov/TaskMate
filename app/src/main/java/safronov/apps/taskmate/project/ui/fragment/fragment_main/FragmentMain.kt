@@ -11,11 +11,13 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.AskUserBinding
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
+import safronov.apps.taskmate.databinding.BottomSheetChooseOrChangeTaskCategoriesBinding
 import safronov.apps.taskmate.databinding.FragmentMainBinding
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.extension.fragment.goToFragmentErrorFromHomePage
@@ -34,6 +36,7 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_typ
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTaskTypeModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.changing.RcvChangingTaskCategory
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
@@ -79,12 +82,37 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         binding.animateFbAddTask.startRippleAnimation()
+        observeOnToolBarMenuItemClick()
         observeStateLoading()
         observeTasks()
         observeException()
         fbAddTaskOnClickListener()
         searchOnClickListener()
         onBackPressListener()
+    }
+
+    private fun observeOnToolBarMenuItemClick() {
+        requireHomePageToolBar().setOnMenuItemClickListener {
+            var handled = false
+
+            if (it.itemId == R.id.choose_category) {
+                //TODO show bottom sheet with categories
+                val rcvCHangingTaskCategory = RcvChangingTaskCategory()
+                val bottomView = BottomSheetChooseOrChangeTaskCategoriesBinding.inflate(layoutInflater)
+                bottomView.tvTitle.text = getString(R.string.sort)
+                bottomView.tvAction.text = getString(R.string.change)
+                bottomView.rcvTypes.layoutManager = LinearLayoutManager(requireContext())
+                bottomView.rcvTypes.adapter = rcvCHangingTaskCategory
+                bottomSheet.showBottomSheet(requireContext(), bottomView.root)
+                rcvCHangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
+                handled = true
+            } else if (it.itemId == R.id.view_of_tasks) {
+                //TODO show alert dialog to choose view of recycler view of tasks
+                handled = true
+            }
+
+            handled
+        }
     }
 
     private fun observeStateLoading() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {

@@ -2,27 +2,34 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectIndexed
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
 class FragmentMainViewModel(
      private val dispatchersList: DispatchersList,
      private val getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
-     private val deleteTasksUseCase: DeleteTasksUseCase
+     private val deleteTasksUseCase: DeleteTasksUseCase,
+     private val getTaskCategoriesUseCase: GetTaskCategoriesUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
-    private val isLoading = MutableStateFlow<Boolean?>(null)
-    private val tasks = MutableStateFlow<List<Task>?>(null)
-    private val isException = MutableStateFlow<DomainException?>(null)
+    private val _isLoading = MutableStateFlow<Boolean?>(null)
+    private val _tasks = MutableStateFlow<List<Task>?>(null)
+    private val _isException = MutableStateFlow<DomainException?>(null)
+    private val _taskCategories = MutableStateFlow<List<TaskCategory>>(emptyList())
 
-    fun getIsLoading(): StateFlow<Boolean?> = isLoading
-    fun getTasks(): StateFlow<List<Task>?> = tasks
-    fun getIsWasException(): StateFlow<DomainException?> = isException
+    fun getIsLoading(): StateFlow<Boolean?> = _isLoading
+    fun getTasks(): StateFlow<List<Task>?> = _tasks
+    fun getIsWasException(): StateFlow<DomainException?> = _isException
+    fun getCategories(): StateFlow<List<TaskCategory>> = _taskCategories
 
     fun whichFragmentToGoByTaskType(
         taskType: Task.TaskType,
@@ -39,18 +46,19 @@ class FragmentMainViewModel(
     fun loadTasks() {
         asyncWork(
             showUiWorkStarted = {
-                isLoading.value = true
+                _isLoading.value = true
             },
             doWork = {
+                _taskCategories.value = getTaskCategoriesUseCase.execute().first()
                 getTasksAsFlowUseCase.execute().collect {
-                    tasks.value = sortTasksByPinned(it)
+                    _tasks.value = sortTasksByPinned(it)
                     withContext(dispatchersList.ui()) {
-                        isLoading.value = false
+                        _isLoading.value = false
                     }
                 }
             }, showUi = { },
             wasException = {
-                isException.value = it
+                _isException.value = it
             }
         )
     }
@@ -59,7 +67,7 @@ class FragmentMainViewModel(
         asyncWork(showUiWorkStarted = {}, doWork = {
             deleteTasksUseCase.execute(deleted)
         }, showUi = { loadTasks() }, wasException = {
-            isException.value = it
+            _isException.value = it
         })
     }
 

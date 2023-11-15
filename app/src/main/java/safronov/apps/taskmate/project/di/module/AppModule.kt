@@ -85,12 +85,14 @@ class AppModule(
     fun provideFragmentMainViewModelFactory(
         dispatchersList: DispatchersList,
         getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
-        deleteTasksUseCase: DeleteTasksUseCase
+        deleteTasksUseCase: DeleteTasksUseCase,
+        getTaskCategoriesUseCase: GetTaskCategoriesUseCase
     ): FragmentMainViewModelFactory {
         return FragmentMainViewModelFactory(
             dispatchersList = dispatchersList,
             getTasksAsFlowUseCase = getTasksAsFlowUseCase,
-            deleteTasksUseCase = deleteTasksUseCase
+            deleteTasksUseCase = deleteTasksUseCase,
+            getTaskCategoriesUseCase = getTaskCategoriesUseCase
         )
     }
 
