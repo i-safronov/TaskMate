@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         style="@style/text"
         android:layout_margin="@dimen/margin_big"
-        android:textSize="@dimen/title_size"
+        android:textSize="@dimen/text_size"
         tools:text="@string/add"/>
 
     <androidx.recyclerview.widget.RecyclerView
