@@ -7,8 +7,8 @@ import safronov.apps.taskmate.R
 
 interface DefaultTaskCategories {
 
-    fun getDefaultTaskCategories(): List<TaskCategory>
     fun getDefaultTaskCategory(): TaskCategory
+    fun getDefaultTaskCategories(): List<TaskCategory>
 
     class Base(
         private val context: Context
@@ -68,13 +68,13 @@ interface DefaultTaskCategories {
             )
         }
 
-        override fun getDefaultTaskCategories(): List<TaskCategory> {
-            return taskCategories
-        }
-
         //TODO save default task category when user first opened app or user changed default task category in app settings
         override fun getDefaultTaskCategory(): TaskCategory {
             return taskCategories.first()
+        }
+
+        override fun getDefaultTaskCategories(): List<TaskCategory> {
+            return taskCategories
         }
 
     }
