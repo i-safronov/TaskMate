@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
-import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -56,6 +55,14 @@ class FragmentMainViewModel(
         )
     }
 
+    fun deleteTasks(deleted: List<Task>) {
+        asyncWork(showUiWorkStarted = {}, doWork = {
+            deleteTasksUseCase.execute(deleted)
+        }, showUi = { loadTasks() }, wasException = {
+            isException.value = it
+        })
+    }
+
     //TODO refactor this code
     private fun sortTasksByPinned(list: List<Task>): List<Task>? {
         val mList = mutableListOf<Task>()
@@ -75,14 +82,6 @@ class FragmentMainViewModel(
             mList.addAll(mList2)
         }
         return mList
-    }
-
-    fun deleteTasks(deleted: List<Task>) {
-        asyncWork(showUiWorkStarted = {}, doWork = {
-            deleteTasksUseCase.execute(deleted)
-        }, showUi = {}, wasException = {
-            isException.value = it
-        })
     }
 
 }
