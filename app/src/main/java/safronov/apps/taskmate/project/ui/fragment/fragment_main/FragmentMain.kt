@@ -222,7 +222,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
                     alertDialog.dismiss()
                 }
                 alertView.btnYes.setOnClickListener {
-                    //TODO delete tasks
+                    fragmentMainViewModel?.deleteTasks(rcvTask.getSelectedTasks())
                     alertDialog.dismiss()
                 }
                 alertDialog.setView(alertView.root)
