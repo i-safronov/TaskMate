@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
-import safronov.apps.taskmate.databinding.RcvItemTaskCategoryBinding
+import safronov.apps.taskmate.databinding.RcvItemChangingTaskCategoryBinding
 
 class RcvChangingTaskCategory(): RecyclerView.Adapter<RcvChangingTaskCategory.TaskCategoryViewHolder>() {
 
@@ -14,11 +14,12 @@ class RcvChangingTaskCategory(): RecyclerView.Adapter<RcvChangingTaskCategory.Ta
     private var selectedTaskCategory: TaskCategory? = null
 
     inner class TaskCategoryViewHolder(
-        private val binding: RcvItemTaskCategoryBinding
+        private val binding: RcvItemChangingTaskCategoryBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: TaskCategory) {
+            binding.tvTitle.isEnabled = false
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
-            binding.tvTitle.text = item.categoryName
+            binding.tvTitle.setText(item.categoryName)
             binding.imgIsPinned.visibility =
                 if (item.id == selectedTaskCategory?.id) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
@@ -29,7 +30,7 @@ class RcvChangingTaskCategory(): RecyclerView.Adapter<RcvChangingTaskCategory.Ta
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskCategoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = RcvItemTaskCategoryBinding.inflate(inflater, parent, false)
+        val binding = RcvItemChangingTaskCategoryBinding.inflate(inflater, parent, false)
         return TaskCategoryViewHolder(binding = binding)
     }
 
