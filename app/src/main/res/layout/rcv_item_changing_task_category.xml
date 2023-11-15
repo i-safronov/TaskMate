@@ -29,11 +29,11 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tv_title"
-            style="@style/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            tools:text="Другое"/>
+            android:layout_marginEnd="@dimen/margin"
+            android:backgroundTint="@color/hint"
+            tools:text="@string/lorem_ipsum" />
 
     </LinearLayout>
 

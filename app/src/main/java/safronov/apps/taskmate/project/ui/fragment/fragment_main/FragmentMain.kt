@@ -111,6 +111,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                 bottomView.rcvTypes.adapter = rcvCHangingTaskCategory
                 bottomSheet.showBottomSheet(requireContext(), bottomView.root)
                 rcvCHangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
+
+                bottomView.tvAction.setOnClickListener {
+                    rcvCHangingTaskCategory.setChangingMode()
+                    bottomView.tvTitle.text = getString(R.string.color)
+                    bottomView.tvAction.text = getString(R.string.done)
+                }
+
                 handled = true
             } else if (it.itemId == R.id.view_of_tasks) {
                 //TODO show alert dialog to choose view of recycler view of tasks

@@ -34,4 +34,6 @@
     <string name="no">Нет</string>
     <string name="change">Изменить</string>
     <string name="sort">Сортировать</string>
+    <string name="done">Готово</string>
+    <string name="color">Цвет</string>
 </resources>

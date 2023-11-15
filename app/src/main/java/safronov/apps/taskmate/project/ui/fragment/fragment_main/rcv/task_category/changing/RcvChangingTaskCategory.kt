@@ -1,8 +1,10 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.changing
 
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
@@ -30,9 +32,9 @@ class RcvChangingTaskCategory(
                 textWatcher.addTextWatcherToView(binding.tvTitle, afterTextChanged = {
                     item.categoryName = it
                 })
-                binding.tvTitle.isEnabled = true
+                binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE
             } else {
-                binding.tvTitle.isEnabled = false
+                binding.tvTitle.inputType = InputType.TYPE_NULL
             }
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
             binding.tvTitle.setText(item.categoryName)
@@ -66,6 +68,11 @@ class RcvChangingTaskCategory(
 
     fun setSelectedTaskCategory(item: TaskCategory) {
         saveSelectedItem(item)
+    }
+
+    fun setChangingMode() {
+        isChangingMode = true
+        notifyDataSetChanged()
     }
 
     private fun saveSelectedItem(item: TaskCategory) {
