@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
@@ -15,7 +16,8 @@ class FragmentTaskListDetailsViewModelFactory(
     private val insertTaskListUseCase: InsertTaskListUseCase,
     private val changeTaskListUseCase: ChangeTaskListUseCase,
     private val defaultTaskCategories: DefaultTaskCategories,
-    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase
+    private val getTaskCategoryByIdUseCase: GetTaskCategoryByIdUseCase,
+    private val getTasksCategoriesUseCase: GetTaskCategoriesUseCase
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -25,7 +27,8 @@ class FragmentTaskListDetailsViewModelFactory(
             insertTaskListUseCase = insertTaskListUseCase,
             changeTaskListUseCase = changeTaskListUseCase,
             defaultTaskCategories = defaultTaskCategories,
-            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase
+            getTaskCategoryByIdUseCase = getTaskCategoryByIdUseCase,
+            getTasksCategoriesUseCase = getTasksCategoriesUseCase
         ) as T
     }
 
