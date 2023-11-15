@@ -2,6 +2,9 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_detai
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,6 +17,7 @@ import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.update.ChangeTaskListUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.data.DefaultTaskCategories
@@ -56,7 +60,8 @@ class FragmentTaskListDetailsViewModelTest {
             insertTaskListUseCase = insertTaskListUseCase,
             changeTaskListUseCase = changeTaskListUseCase,
             defaultTaskCategories = fakeDefaultTaskCategories,
-            getTaskCategoryByIdUseCase = GetTaskCategoryByIdUseCase(fakeTaskCategoryRepository)
+            getTaskCategoryByIdUseCase = GetTaskCategoryByIdUseCase(fakeTaskCategoryRepository),
+            getTasksCategoriesUseCase = GetTaskCategoriesUseCase(taskCategoryRepository = fakeTaskCategoryRepository)
         )
     }
 
@@ -151,9 +156,9 @@ class FragmentTaskListDetailsViewModelTest {
     }
 
     @Test
-    fun test_getTaskCategories() {
-        val categories = fragmentTaskListDetailsViewModel.getTaskCategories()
-        assertEquals(true, fakeDefaultTaskCategories.taskCategoriesToReturn == categories)
+    fun test_loadTaskCategories() = runBlocking {
+        fragmentTaskListDetailsViewModel.loadTaskCategories()
+        assertEquals(true, fakeTaskCategoryRepository.list == fragmentTaskListDetailsViewModel.getCategories().first())
     }
 
     @Test
@@ -365,6 +370,22 @@ private class FakeInsertingTaskRepository: TaskRepository.InsertingTask {
 private class FakeTaskCategoryRepository: TaskCategoryRepository {
 
     var isNeedToThrowException = false
+    val list = listOf(
+        TaskCategory(
+            id = 252,
+            icon = 43543,
+            backgroundColor = 324534,
+            categoryName = "asdfa",
+            categoryType = CategoryTypes.User
+        ),
+        TaskCategory(
+            id = 32523,
+            icon = 435235243,
+            backgroundColor = 253,
+            categoryName = "asdfa",
+            categoryType = CategoryTypes.User
+        )
+    )
     val dataToReturn = TaskCategory(
         id = 252,
         icon = 43543,
@@ -378,7 +399,9 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
     }
 
     override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
-        throw IllegalStateException("don't use this method")
+        return flow {
+            emit(list)
+        }
     }
 
     override suspend fun getTaskCategoryById(id: String): TaskCategory? {
@@ -447,13 +470,13 @@ private class FakeDefaultTaskCategories: DefaultTaskCategories {
         )
     )
 
-    override fun getDefaultTaskCategories(): List<TaskCategory> {
-        return taskCategoriesToReturn
-    }
-
     override fun getDefaultTaskCategory(): TaskCategory {
         countOfRequestToGetDefaultTaskCategory++
         return taskCategoryToReturn
+    }
+
+    override fun getDefaultTaskCategories(): List<TaskCategory> {
+        return emptyList()
     }
 
 }
