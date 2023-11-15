@@ -1,6 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,13 +81,16 @@ class FragmentTaskTextDetails : FragmentBase(), RcvTaskCategoryInt {
         binding.edtvText.setText(existingTaskText?.text)
     }
 
+    //TODO refactor this code
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentTaskTextDetailsViewModel?.loadTaskCategories()
         fragmentTaskTextDetailsViewModel?.loadDefaultTaskCategory()
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         addTextWatcherToEdtvText()
         observeTaskSaved()
         observeWasException()
+        observeTaskCategories()
         binding.tvDate.text = fragmentTaskTextDetailsViewModel?.getCurrentTime()
     }
 
@@ -100,7 +104,6 @@ class FragmentTaskTextDetails : FragmentBase(), RcvTaskCategoryInt {
                 val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.choose)
                 recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
-                rcvTaskCategory.submitList(fragmentTaskTextDetailsViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }, saveTask = {
                 fragmentTaskTextDetailsViewModel?.saveCurrentTask()
@@ -133,6 +136,13 @@ class FragmentTaskTextDetails : FragmentBase(), RcvTaskCategoryInt {
             if (it != null) {
                 handeException(it)
             }
+        }
+    }
+
+    private fun observeTaskCategories() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentTaskTextDetailsViewModel?.getCategories()?.collect {
+            Log.d("sfrLog", "Data: ${it}")
+            rcvTaskCategory.submitList(it)
         }
     }
 

@@ -86,13 +86,16 @@ class FragmentTaskListDetails : FragmentBase(), RcvTaskCategoryInt, RcvTaskListI
         rcvTaskListItem?.submitList(existingTaskList?.list?.toMutableList() ?: mutableListOf())
     }
 
+    //TODO refactor this code
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentTaskListDetailsViewModel?.loadTaskCategories()
         fragmentTaskListDetailsViewModel?.loadDefaultCurrentTaskCategory()
         addItemMenuClickListenerOnHomePageToolBar()
         addTextWatcherToEdtvTitle()
         observeTaskSaved()
         observeWasException()
         includedAddButtonLayoutOnClickListener()
+        observeTaskCategories()
         recyclerViewBuilder.setupRcv(binding.rcvListTasks, rcvTaskListItem!!, LinearLayoutManager(requireContext()))
         binding.tvDate.text = fragmentTaskListDetailsViewModel?.getCurrentTime()
         rcvTaskListItem?.submitList(fragmentTaskListDetailsViewModel?.getCurrentTaskListItems()?.toMutableList() ?: mutableListOf())
@@ -108,7 +111,6 @@ class FragmentTaskListDetails : FragmentBase(), RcvTaskCategoryInt, RcvTaskListI
                 val bottomView = BottomSheetChooseItemBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.choose)
                 recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvTaskCategory, LinearLayoutManager(requireContext()))
-                rcvTaskCategory.submitList(fragmentTaskListDetailsViewModel?.getTaskCategories() ?: emptyList())
                 bottomSheet.showBottomSheet(activityContext = requireContext(), view = bottomView.root)
             }, saveTask = {
                 fragmentTaskListDetailsViewModel?.saveCurrentTask()
@@ -142,6 +144,12 @@ class FragmentTaskListDetails : FragmentBase(), RcvTaskCategoryInt, RcvTaskListI
         binding.includedAddButtonLayout.root.setOnClickListener {
             clearFocusAndHideKeyboard()
             rcvTaskListItem?.addTaskListItem(item = Task.TaskListItem(title = "", isChecked = false))
+        }
+    }
+
+    private fun observeTaskCategories() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentTaskListDetailsViewModel?.getCategories()?.collect {
+            rcvTaskCategory.submitList(it)
         }
     }
 
