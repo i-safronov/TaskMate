@@ -6,6 +6,6 @@ data class TaskCategory(
     val id: Long? = null,
     val icon: Int?,
     val backgroundColor: Int?,
-    val categoryName: String?,
+    var categoryName: String?,
     val categoryType: CategoryTypes?
 )

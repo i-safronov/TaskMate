@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.AskUserBinding
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
@@ -29,6 +30,7 @@ import safronov.apps.taskmate.project.system_settings.extension.fragment.require
 import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
+import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.FragmentTaskListDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
@@ -37,18 +39,22 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.model.RcvTas
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTask
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task.RcvTaskInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.changing.RcvChangingTaskCategory
+import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.changing.RcvChangingTaskCategoryInt
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
+class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTaskCategoryInt {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val rcvTaskType = RcvTaskType(this)
     private val rcvTask = RcvTask(this)
+
+    @Inject
+    lateinit var textWatcher: TextWatcher
 
     @Inject
     lateinit var dispatchersList: DispatchersList
@@ -97,7 +103,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
 
             if (it.itemId == R.id.choose_category) {
                 //TODO show bottom sheet with categories
-                val rcvCHangingTaskCategory = RcvChangingTaskCategory()
+                val rcvCHangingTaskCategory = RcvChangingTaskCategory(textWatcher, this)
                 val bottomView = BottomSheetChooseOrChangeTaskCategoriesBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.sort)
                 bottomView.tvAction.text = getString(R.string.change)
@@ -268,6 +274,10 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         requireHomePageToolBar().title = title
     }
 
+    override fun onTaskCategoryClick(taskCategory: TaskCategory) {
+        //TODO save selected task category
+    }
+
     private fun onBackPressListener() {
         requireActivity()
             .onBackPressedDispatcher
@@ -298,5 +308,6 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt {
         private const val RCV_TYPES_SPAN_COUNT = 2
         private const val RCV_TASKS_SPAN_COUNT = 2
     }
+
 
 }

@@ -7,23 +7,40 @@ import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.RcvItemChangingTaskCategoryBinding
+import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
 
-class RcvChangingTaskCategory(): RecyclerView.Adapter<RcvChangingTaskCategory.TaskCategoryViewHolder>() {
+interface RcvChangingTaskCategoryInt {
+    fun onTaskCategoryClick(taskCategory: TaskCategory)
+}
+
+class RcvChangingTaskCategory(
+    private val textWatcher: TextWatcher,
+    private val rcvChangingTaskCategoryInt: RcvChangingTaskCategoryInt
+): RecyclerView.Adapter<RcvChangingTaskCategory.TaskCategoryViewHolder>() {
 
     private var categories = listOf<TaskCategory>()
     private var selectedTaskCategory: TaskCategory? = null
+    private var isChangingMode = false
 
     inner class TaskCategoryViewHolder(
         private val binding: RcvItemChangingTaskCategoryBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: TaskCategory) {
-            binding.tvTitle.isEnabled = false
+            if (isChangingMode) {
+                textWatcher.addTextWatcherToView(binding.tvTitle, afterTextChanged = {
+                    item.categoryName = it
+                })
+                binding.tvTitle.isEnabled = true
+            } else {
+                binding.tvTitle.isEnabled = false
+            }
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
             binding.tvTitle.setText(item.categoryName)
             binding.imgIsPinned.visibility =
                 if (item.id == selectedTaskCategory?.id) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
                 saveSelectedItem(item)
+                rcvChangingTaskCategoryInt.onTaskCategoryClick(item)
             }
         }
     }
