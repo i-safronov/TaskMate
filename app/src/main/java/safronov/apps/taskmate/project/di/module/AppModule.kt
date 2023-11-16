@@ -13,6 +13,7 @@ import safronov.apps.domain.use_case.task.update.ChangeTaskTextUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
+import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -86,13 +87,15 @@ class AppModule(
         dispatchersList: DispatchersList,
         getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
         deleteTasksUseCase: DeleteTasksUseCase,
-        getTaskCategoriesUseCase: GetTaskCategoriesUseCase
+        getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
+        updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase
     ): FragmentMainViewModelFactory {
         return FragmentMainViewModelFactory(
             dispatchersList = dispatchersList,
             getTasksAsFlowUseCase = getTasksAsFlowUseCase,
             deleteTasksUseCase = deleteTasksUseCase,
-            getTaskCategoriesUseCase = getTaskCategoriesUseCase
+            getTaskCategoriesUseCase = getTaskCategoriesUseCase,
+            updateTaskCategoriesUseCase = updateTaskCategoriesUseCase
         )
     }
 

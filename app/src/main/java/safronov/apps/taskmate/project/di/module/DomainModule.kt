@@ -26,6 +26,7 @@ import safronov.apps.domain.use_case.task.update.ChangeTasksUseCase
 import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
+import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoryUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
@@ -144,6 +145,13 @@ class DomainModule {
         taskRepository: TaskRepository.TaskRepositoryMutable
     ): DeleteTasksUseCase {
         return DeleteTasksUseCase(deletingTaskRepository = taskRepository)
+    }
+
+    @Provides
+    fun provideUpdateTaskCategoriesUseCase(
+        taskCategoryRepository: TaskCategoryRepository
+    ): UpdateTaskCategoriesUseCase {
+        return UpdateTaskCategoriesUseCase(taskCategoryRepository)
     }
 
     @Provides
