@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task_category.TaskCategory
+import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.RcvItemChangingTaskCategoryBinding
 
@@ -41,23 +42,29 @@ class RcvChangingTaskCategory(
                 }
             }
             if (isChangingMode) {
-                val view: View = binding.tvTitle
-                val layoutParams: LayoutParams = view.layoutParams
-                layoutParams.width = LayoutParams.MATCH_PARENT
-                view.layoutParams = layoutParams
+                if (item.categoryType == CategoryTypes.System) {
+                    binding.tvTitle.isEnabled = false
+                } else {
+                    binding.tvTitle.isEnabled = true
+                    val view: View = binding.tvTitle
+                    val layoutParams: LayoutParams = view.layoutParams
+                    layoutParams.width = LayoutParams.MATCH_PARENT
+                    view.layoutParams = layoutParams
 
-                binding.tvTitle.setOnFocusChangeListener { view, hasFocus: Boolean ->
-                    if (hasFocus) {
-                        binding.tvTitle.addTextChangedListener(textWatcher)
-                    } else {
-                        binding.tvTitle.removeTextChangedListener(textWatcher)
+                    binding.tvTitle.setOnFocusChangeListener { view, hasFocus: Boolean ->
+                        if (hasFocus) {
+                            binding.tvTitle.addTextChangedListener(textWatcher)
+                        } else {
+                            binding.tvTitle.removeTextChangedListener(textWatcher)
+                        }
                     }
+
+                    binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
+                    binding.tvTitle.isEnabled = true
+                    binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(
+                        R.color.hint)
                 }
 
-                binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
-                binding.tvTitle.isEnabled = true
-                binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(
-                    R.color.hint)
             } else {
                 val view: View = binding.tvTitle
                 val layoutParams: LayoutParams = view.layoutParams

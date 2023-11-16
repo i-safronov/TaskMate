@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -286,6 +287,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
 
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
         //TODO save selected task category
+        Toast.makeText(requireContext(), "Выбрано: ${taskCategory.categoryName}", Toast.LENGTH_LONG).show()
     }
 
     private fun onBackPressListener() {
