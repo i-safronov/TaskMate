@@ -19,6 +19,9 @@ interface TaskCategoryDao {
     @Update
     fun updateTaskCategory(taskCategory: TaskCategoryEntity)
 
+    @Update
+    fun updateTaskCategories(categories: List<TaskCategoryEntity>)
+
     @Query("DELETE FROM ${TaskCategoryEntity.TASK_CATEGORY_TABLE_NAME}")
     fun clearTaskCategories()
 

@@ -41,6 +41,14 @@ class TaskCategoryServiceImpl(
         }
     }
 
+    override suspend fun updateTaskCategories(categories: List<TaskCategoryEntity>) {
+        try {
+            taskCategoryDao.updateTaskCategories(categories)
+        } catch (e: Exception) {
+            throw DataException(e.message, e)
+        }
+    }
+
     override suspend fun clearTaskCategories() {
         try {
             taskCategoryDao.clearTaskCategories()
