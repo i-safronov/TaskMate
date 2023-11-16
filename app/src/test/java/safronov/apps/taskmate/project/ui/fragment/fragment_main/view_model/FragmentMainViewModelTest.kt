@@ -24,6 +24,7 @@ import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import java.lang.IllegalStateException
 
@@ -46,7 +47,8 @@ class FragmentMainViewModelTest {
             deleteTasksUseCase = DeleteTasksUseCase(deletingTaskRepository = fakeDeletingTaskRepository),
             getTaskCategoriesUseCase = GetTaskCategoriesUseCase(
                 fakeTaskCategoryRepository
-            )
+            ),
+            updateTaskCategoriesUseCase = UpdateTaskCategoriesUseCase(fakeTaskCategoryRepository)
         )
         taskEntityConverter = TaskEntityConverterImpl(Gson())
     }
@@ -103,6 +105,21 @@ class FragmentMainViewModelTest {
             fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
         )
         assertEquals(true, fragmentMainViewModel.getCategories().first() == fakeTaskCategoryRepository.dataToReturn)
+    }
+
+    @Test
+    fun testUpdateTaskCategories() {
+        val data = fakeTaskCategoryRepository.dataToReturn
+        fragmentMainViewModel.updateTaskCategories(data)
+        assertEquals(true, fakeTaskCategoryRepository.dataToReturn == data)
+    }
+
+    @Test
+    fun testUpdateTaskCategories_expectedException() {
+        val data = fakeTaskCategoryRepository.dataToReturn
+        fakeTaskCategoryRepository.isNeedToThrowException = true
+        fragmentMainViewModel.updateTaskCategories(data)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
     }
 
 }
@@ -180,7 +197,9 @@ private class FakeDeletingTaskRepository: TaskRepository.DeletingTask {
 
 private class FakeTaskCategoryRepository: TaskCategoryRepository {
 
-    val dataToReturn = listOf(TaskCategory(
+    var isNeedToThrowException = false
+    var requests = 0
+    var dataToReturn = listOf(TaskCategory(
         id = 2342,
         icon = null,
         backgroundColor = 23423,
@@ -207,7 +226,9 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
     }
 
     override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
-        TODO("Not yet implemented")
+        if (isNeedToThrowException) throw DomainException("some exception")
+        requests++
+        dataToReturn = categories
     }
 
     override suspend fun clearTaskCategories() {
