@@ -5,12 +5,12 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.view.ViewGroup.LayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.RcvItemChangingTaskCategoryBinding
-import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
+
 
 interface RcvChangingTaskCategoryInt {
     fun onTaskCategoryClick(taskCategory: TaskCategory)
@@ -42,11 +42,20 @@ class RcvChangingTaskCategory(
                 }
             }
             if (isChangingMode) {
+                val view: View = binding.tvTitle
+                val layoutParams: LayoutParams = view.layoutParams
+                layoutParams.width = LayoutParams.MATCH_PARENT
+                view.layoutParams = layoutParams
                 binding.tvTitle.addTextChangedListener(textWatcher)
                 binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
                 binding.tvTitle.isEnabled = true
-                binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(R.color.hint)
+                binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(
+                    R.color.hint)
             } else {
+                val view: View = binding.tvTitle
+                val layoutParams: LayoutParams = view.layoutParams
+                layoutParams.width = LayoutParams.WRAP_CONTENT
+                view.layoutParams = layoutParams
                 binding.tvTitle.removeTextChangedListener(textWatcher)
                 binding.tvTitle.inputType = InputType.TYPE_NULL
                 binding.tvTitle.isEnabled = false
