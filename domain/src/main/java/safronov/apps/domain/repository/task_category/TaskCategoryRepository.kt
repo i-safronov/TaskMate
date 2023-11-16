@@ -9,6 +9,7 @@ interface TaskCategoryRepository {
     suspend fun getTaskCategories(): Flow<List<TaskCategory>>
     suspend fun getTaskCategoryById(id: String): TaskCategory?
     suspend fun updateTaskCategory(taskCategory: TaskCategory)
+    suspend fun updateTaskCategories(categories: List<TaskCategory>) {}
     suspend fun clearTaskCategories()
 
 }
