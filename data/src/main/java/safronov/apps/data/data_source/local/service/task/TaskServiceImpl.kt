@@ -3,6 +3,7 @@ package safronov.apps.data.data_source.local.service.task
 import kotlinx.coroutines.flow.Flow
 import safronov.apps.data.data_source.local.app_db.dao_sql.TaskDao
 import safronov.apps.data.data_source.local.model.task.TaskEntity
+import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 import safronov.apps.data.exception.DataException
 import java.lang.Exception
 
@@ -21,6 +22,14 @@ class TaskServiceImpl(
     override suspend fun getTasksAsFlow(): Flow<List<TaskEntity>> {
         try {
             return taskDao.getTasksAsFlow()
+        } catch (e: Exception) {
+            throw DataException(e.message, e)
+        }
+    }
+
+    override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategoryEntity): Flow<List<TaskEntity>> {
+        try {
+            return taskDao.getTasksAsFlowByTaskCategoryId(taskCategoryId = taskCategory.id.toString())
         } catch (e: Exception) {
             throw DataException(e.message, e)
         }
