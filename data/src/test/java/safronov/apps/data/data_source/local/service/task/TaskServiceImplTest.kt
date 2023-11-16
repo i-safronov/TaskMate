@@ -10,9 +10,11 @@ import org.junit.Before
 import org.junit.Test
 import safronov.apps.data.data_source.local.app_db.dao_sql.TaskDao
 import safronov.apps.data.data_source.local.model.task.TaskEntity
+import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEntity
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import java.lang.IllegalStateException
 
 class TaskServiceImplTest {
@@ -68,6 +70,24 @@ class TaskServiceImplTest {
         assertEquals(true, fakeTaskDao.dataToReturn.first() == dataToInsert)
         val data = taskService.getTasksAsFlow().first().first()
         assertEquals(true, data == dataToInsert)
+    }
+
+    @Test
+    fun getTasksAsFlowByTaskCategory() = runBlocking {
+        val data: MutableList<TaskEntity> = fakeTaskDao.dataToReturn
+        val result: Flow<List<TaskEntity>> = taskService.getTasksAsFlowByTaskCategory(TaskCategoryEntity(
+            id = 2532, icon = null, backgroundColor = null, categoryName = "asldfkj", categoryType = CategoryTypes.User
+        ))
+        assertEquals(true, data.toList() == result.first())
+    }
+
+    @Test(expected = DataException::class)
+    fun getTasksAsFlowByTaskCategory_expectedException() = runBlocking {
+        fakeTaskDao.isNeedToThrowException = true
+        val data = fakeTaskDao.dataToReturn
+        val result = taskService.getTasksAsFlowByTaskCategory(TaskCategoryEntity(
+            id = 2532, icon = null, backgroundColor = null, categoryName = "asldfkj", categoryType = CategoryTypes.User
+        ))
     }
 
     @Test
@@ -212,6 +232,13 @@ private class FakeTaskDao: TaskDao {
     }
 
     override fun getTasksAsFlow(): Flow<List<TaskEntity>> {
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
+        return flow {
+            emit(dataToReturn)
+        }
+    }
+
+    override fun getTasksAsFlowByTaskCategoryId(taskCategoryId: String): Flow<List<TaskEntity>> {
         if (isNeedToThrowException) throw IllegalStateException("some exception")
         return flow {
             emit(dataToReturn)
