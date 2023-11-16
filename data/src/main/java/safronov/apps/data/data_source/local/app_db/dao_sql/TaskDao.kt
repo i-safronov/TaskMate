@@ -17,6 +17,9 @@ interface TaskDao {
     @Query("SELECT * FROM ${TaskEntity.TASK_ENTITY_TABLE_NAME}")
     fun getTasksAsFlow(): Flow<List<TaskEntity>>
 
+    @Query("SELECT * FROM ${TaskEntity.TASK_ENTITY_TABLE_NAME} WHERE taskCategoryId=:taskCategoryId")
+    fun getTasksAsFlowByTaskCategoryId(taskCategoryId: String): Flow<List<TaskEntity>>
+
     @Query("SELECT * FROM ${TaskEntity.TASK_ENTITY_TABLE_NAME}")
     fun getTasks(): List<TaskEntity>
 
