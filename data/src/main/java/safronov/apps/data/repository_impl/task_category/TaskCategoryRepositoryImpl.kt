@@ -50,6 +50,16 @@ class TaskCategoryRepositoryImpl(
         }
     }
 
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        try {
+            taskCategoryService.updateTaskCategories(
+                TaskCategoryEntity.convertListOfTaskCategoryToListOfTaskCategoryEntity(categories)
+            )
+        } catch (e: Exception) {
+            throw DomainException(e.message, e)
+        }
+    }
+
     override suspend fun clearTaskCategories() {
         try {
             taskCategoryService.clearTaskCategories()

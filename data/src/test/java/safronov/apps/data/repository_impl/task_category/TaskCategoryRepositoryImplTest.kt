@@ -176,6 +176,25 @@ class TaskCategoryRepositoryImplTest {
         taskCategoryRepository.clearTaskCategories()
     }
 
+    @Test
+    fun test_updateTaskCategories() = runBlocking {
+        val fakeTaskCategoryService = FakeTaskCategoryService()
+        val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
+        val data = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
+        taskCategoryRepository.updateTaskCategories(data)
+        val current = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
+        assertEquals(true, data == current)
+    }
+
+    @Test(expected = DomainException::class)
+    fun test_updateTaskCategoriesShouldThrowException() = runBlocking {
+        val fakeTaskCategoryService = FakeTaskCategoryService()
+        fakeTaskCategoryService.isNeedToThrowException = true
+        val taskCategoryRepository: TaskCategoryRepository = TaskCategoryRepositoryImpl(taskCategoryService = fakeTaskCategoryService)
+        val data = TaskCategoryEntity.convertListOfTaskCategoryEntityToListOfTaskCategory(fakeTaskCategoryService.dataToReturn)
+        taskCategoryRepository.updateTaskCategories(data)
+    }
+
 }
 
 private class FakeTaskCategoryService: TaskCategoryService {
@@ -215,7 +234,8 @@ private class FakeTaskCategoryService: TaskCategoryService {
     }
 
     override suspend fun updateTaskCategories(categories: List<TaskCategoryEntity>) {
-        TODO("Not yet implemented")
+        if (isNeedToThrowException) throw DomainException("some exception")
+        dataToReturn = categories.toMutableList()
     }
 
     override suspend fun clearTaskCategories() {
