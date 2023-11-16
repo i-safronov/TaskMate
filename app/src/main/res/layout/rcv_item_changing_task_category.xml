@@ -10,13 +10,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start|center"
         android:orientation="horizontal"
         android:padding="@dimen/padding_big"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_is_pinned"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,11 +29,11 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tv_title"
+            style="@style/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin"
-            android:backgroundTint="@color/hint"
-            tools:text="@string/lorem_ipsum" />
+            android:minHeight="1dp"
+            tools:text="Другое" />
 
     </LinearLayout>
 
