@@ -47,6 +47,8 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.Fragm
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
+//TODO sort by selected task category
+
 class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTaskCategoryInt {
 
     private var _binding: FragmentMainBinding? = null
@@ -102,22 +104,21 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
             var handled = false
 
             if (it.itemId == R.id.choose_category) {
-                //TODO show bottom sheet with categories
-                val rcvCHangingTaskCategory = RcvChangingTaskCategory(this)
+                val rcvChangingTaskCategory = RcvChangingTaskCategory(this)
                 val bottomView = BottomSheetChooseOrChangeTaskCategoriesBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.sort)
                 bottomView.tvAction.text = getString(R.string.change)
                 bottomView.rcvTypes.layoutManager = LinearLayoutManager(requireContext())
-                bottomView.rcvTypes.adapter = rcvCHangingTaskCategory
+                bottomView.rcvTypes.adapter = rcvChangingTaskCategory
                 bottomSheet.showBottomSheet(requireContext(), bottomView.root)
-                rcvCHangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
+                rcvChangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
 
                 bottomView.tvAction.setOnClickListener {
-                    rcvCHangingTaskCategory.setChangingMode()
+                    rcvChangingTaskCategory.setChangingMode()
                     bottomView.tvTitle.text = getString(R.string.color)
                     bottomView.tvAction.text = getString(R.string.done)
                     bottomView.tvAction.setOnClickListener {
-                        //TODO save changed tasks
+                        fragmentMainViewModel?.updateTaskCategories(rcvChangingTaskCategory.getChangedTaskCategories())
                         bottomSheet.dismissBottomSheet()
                     }
                 }
