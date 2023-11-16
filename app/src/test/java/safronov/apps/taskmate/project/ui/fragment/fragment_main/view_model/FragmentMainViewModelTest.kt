@@ -16,10 +16,14 @@ import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConve
 import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
+import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
+import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
+import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import java.lang.IllegalStateException
 
@@ -29,15 +33,20 @@ class FragmentMainViewModelTest {
     private lateinit var fragmentMainViewModel: FragmentMainViewModel
     private lateinit var taskEntityConverter: TaskEntityConverter
     private lateinit var fakeDeletingTaskRepository: FakeDeletingTaskRepository
+    private lateinit var fakeTaskCategoryRepository: FakeTaskCategoryRepository
 
     @Before
     fun setUp() {
         fakeDeletingTaskRepository = FakeDeletingTaskRepository()
         fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
+        fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         fragmentMainViewModel = FragmentMainViewModel(
             dispatchersList = TestDispatchersList(),
             getTasksAsFlowUseCase = GetTasksAsFlowUseCase(gettingTaskRepository = fakeTaskRepositoryGetting),
-            deleteTasksUseCase = DeleteTasksUseCase(deletingTaskRepository = fakeDeletingTaskRepository)
+            deleteTasksUseCase = DeleteTasksUseCase(deletingTaskRepository = fakeDeletingTaskRepository),
+            getTaskCategoriesUseCase = GetTaskCategoriesUseCase(
+                fakeTaskCategoryRepository
+            )
         )
         taskEntityConverter = TaskEntityConverterImpl(Gson())
     }
@@ -81,6 +90,19 @@ class FragmentMainViewModelTest {
         fragmentMainViewModel.loadTasks()
         assertEquals(false, fragmentMainViewModel.getIsWasException().first() == null)
         assertEquals(true, fragmentMainViewModel.getIsWasException().first() is DomainException)
+    }
+
+    @Test
+    fun testLoadTasksWithTaskCategories() = runBlocking {
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
+        fragmentMainViewModel.loadTasks()
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
+        assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
+        assertEquals(true,
+            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
+        )
+        assertEquals(true, fragmentMainViewModel.getCategories().first() == fakeTaskCategoryRepository.dataToReturn)
     }
 
 }
@@ -152,6 +174,44 @@ private class FakeDeletingTaskRepository: TaskRepository.DeletingTask {
         requestToDeleteList = tasks
         countOfRequest++
         dataToReturn.clear()
+    }
+
+}
+
+private class FakeTaskCategoryRepository: TaskCategoryRepository {
+
+    val dataToReturn = listOf(TaskCategory(
+        id = 2342,
+        icon = null,
+        backgroundColor = 23423,
+        categoryName = "alsjdkf",
+        categoryType = CategoryTypes.User
+    ))
+
+    override suspend fun insertTaskCategories(list: List<TaskCategory>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
+        return flow {
+            emit(dataToReturn)
+        }
+    }
+
+    override suspend fun getTaskCategoryById(id: String): TaskCategory? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateTaskCategory(taskCategory: TaskCategory) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun clearTaskCategories() {
+        TODO("Not yet implemented")
     }
 
 }
