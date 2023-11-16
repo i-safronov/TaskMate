@@ -11,7 +11,6 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.RcvItemChangingTaskCategoryBinding
 
-
 interface RcvChangingTaskCategoryInt {
     fun onTaskCategoryClick(taskCategory: TaskCategory)
 }
@@ -46,7 +45,15 @@ class RcvChangingTaskCategory(
                 val layoutParams: LayoutParams = view.layoutParams
                 layoutParams.width = LayoutParams.MATCH_PARENT
                 view.layoutParams = layoutParams
-                binding.tvTitle.addTextChangedListener(textWatcher)
+
+                binding.tvTitle.setOnFocusChangeListener { view, hasFocus: Boolean ->
+                    if (hasFocus) {
+                        binding.tvTitle.addTextChangedListener(textWatcher)
+                    } else {
+                        binding.tvTitle.removeTextChangedListener(textWatcher)
+                    }
+                }
+
                 binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
                 binding.tvTitle.isEnabled = true
                 binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(
