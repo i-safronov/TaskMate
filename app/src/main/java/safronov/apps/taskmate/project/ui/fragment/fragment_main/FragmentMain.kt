@@ -81,8 +81,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         requireAppComponent().inject(this)
         fragmentMainViewModel = ViewModelProvider(this, fragmentMainViewModelFactory)
             .get(FragmentMainViewModel::class.java)
-        binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
-        binding.rcvTasks.adapter = rcvTask
+        recyclerViewBuilder.setupRcv(binding.rcvTasks, rcvTask, GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT))
         fragmentMainViewModel?.loadTasks()
     }
 
@@ -103,7 +102,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
 
             if (it.itemId == R.id.choose_category) {
                 //TODO show bottom sheet with categories
-                val rcvCHangingTaskCategory = RcvChangingTaskCategory(textWatcher, this)
+                val rcvCHangingTaskCategory = RcvChangingTaskCategory(this)
                 val bottomView = BottomSheetChooseOrChangeTaskCategoriesBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.sort)
                 bottomView.tvAction.text = getString(R.string.change)
@@ -116,6 +115,10 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                     rcvCHangingTaskCategory.setChangingMode()
                     bottomView.tvTitle.text = getString(R.string.color)
                     bottomView.tvAction.text = getString(R.string.done)
+                    bottomView.tvAction.setOnClickListener {
+                        //TODO save changed tasks
+                        bottomSheet.dismissBottomSheet()
+                    }
                 }
 
                 handled = true
