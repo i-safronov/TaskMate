@@ -7,6 +7,7 @@ import safronov.apps.data.data_source.local.model.task.TaskEntity
 import safronov.apps.data.data_source.local.service.task.TaskService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.repository.task.TaskRepository
 import java.lang.Exception
 import java.lang.IllegalStateException
@@ -66,6 +67,10 @@ class TaskRepositoryImpl(
         } catch (e: Exception) {
             throw DomainException(e.message, e)
         }
+    }
+
+    override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun changeTaskText(task: Task.TaskText) {

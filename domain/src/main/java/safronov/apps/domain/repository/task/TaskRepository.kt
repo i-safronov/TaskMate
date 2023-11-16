@@ -2,6 +2,7 @@ package safronov.apps.domain.repository.task
 
 import kotlinx.coroutines.flow.Flow
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 
 interface TaskRepository {
 
@@ -17,6 +18,7 @@ interface TaskRepository {
 
     interface GettingTaskByParameters: TaskRepository {
         suspend fun getTasksByText(text: String): List<Task>
+        suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>>
     }
 
     interface ChangingTask: TaskRepository {

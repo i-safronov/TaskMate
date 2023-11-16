@@ -1,11 +1,13 @@
 package safronov.apps.domain.use_case.task.read
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.repository.task.TaskRepository
 
 class GetTasksByTextUseCaseTest {
@@ -58,6 +60,10 @@ private class FakeGettingTasksByParametersRepository: TaskRepository.GettingTask
     override suspend fun getTasksByText(text: String): List<Task> {
         if (isNeedToThrowException) throw DomainException("some exception")
         return dataToReturn
+    }
+
+    override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>> {
+        TODO("Not yet implemented")
     }
 
 }

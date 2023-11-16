@@ -1,12 +1,14 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.search.view_model
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -90,6 +92,10 @@ private class FakeGettingTasksByParametersRepository: TaskRepository.GettingTask
         if (isNeedToThrowException) throw DomainException(messageException)
         if (isNeedEmptyList) return emptyList()
         return dataToReturn
+    }
+
+    override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>> {
+        TODO("Not yet implemented")
     }
 
 }
