@@ -214,6 +214,10 @@ private class FakeTaskCategoryService: TaskCategoryService {
         dataToReturn.add(taskCategory)
     }
 
+    override suspend fun updateTaskCategories(categories: List<TaskCategoryEntity>) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun clearTaskCategories() {
         if (isNeedToThrowException) throw DataException("some exception")
         dataToReturn.clear()

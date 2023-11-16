@@ -142,6 +142,24 @@ class TaskCategoryServiceImplTest {
         assertEquals(true, taskCategoryServiceImpl.getTaskCategories().first().isEmpty())
     }
 
+    @Test
+    fun updateTaskCategories() = runBlocking {
+        val fakeTaskCategoryDao = FakeTaskCategoryDao()
+        val data = fakeTaskCategoryDao.dataToReturn
+        val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
+        taskCategoryServiceImpl.updateTaskCategories(data)
+        assertEquals(true, data == fakeTaskCategoryDao.dataToReturn)
+    }
+
+    @Test(expected = DataException::class)
+    fun updateTaskCategoriesShouldThrowException() = runBlocking {
+        val fakeTaskCategoryDao = FakeTaskCategoryDao()
+        fakeTaskCategoryDao.isNeedToThrowException = true
+        val data = fakeTaskCategoryDao.dataToReturn
+        val taskCategoryServiceImpl = TaskCategoryServiceImpl(taskCategoryDao = fakeTaskCategoryDao)
+        taskCategoryServiceImpl.updateTaskCategories(data)
+    }
+
 }
 
 private class FakeTaskCategoryDao: TaskCategoryDao {
@@ -178,6 +196,11 @@ private class FakeTaskCategoryDao: TaskCategoryDao {
         if (isNeedToThrowException) throw IllegalArgumentException("some exception ;)")
         dataToReturn.clear()
         dataToReturn.add(taskCategory)
+    }
+
+    override fun updateTaskCategories(categories: List<TaskCategoryEntity>) {
+        if (isNeedToThrowException) throw DataException("some exception")
+        dataToReturn = categories.toMutableList()
     }
 
     override fun clearTaskCategories() {
