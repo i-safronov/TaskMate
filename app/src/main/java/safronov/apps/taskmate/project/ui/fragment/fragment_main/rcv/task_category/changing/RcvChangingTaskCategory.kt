@@ -23,6 +23,7 @@ class RcvChangingTaskCategory(
     private var categories = listOf<TaskCategory>()
     private var selectedTaskCategory: TaskCategory? = null
     private var isChangingMode = false
+    private val changedTaskCategories = mutableListOf<TaskCategory>()
 
     inner class TaskCategoryViewHolder(
         private val binding: RcvItemChangingTaskCategoryBinding
@@ -38,6 +39,9 @@ class RcvChangingTaskCategory(
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
+                    if (!changedTaskCategories.contains(item)) {
+                        changedTaskCategories.add(item)
+                    }
                     item.categoryName = p0.toString()
                 }
             }
@@ -108,6 +112,8 @@ class RcvChangingTaskCategory(
     fun setSelectedTaskCategory(item: TaskCategory) {
         saveSelectedItem(item)
     }
+
+    fun getChangedTaskCategories(): List<TaskCategory> = changedTaskCategories
 
     fun setChangingMode() {
         isChangingMode = true
