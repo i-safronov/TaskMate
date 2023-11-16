@@ -1,5 +1,6 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_category.changing
 
+import android.text.Editable
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ interface RcvChangingTaskCategoryInt {
 }
 
 class RcvChangingTaskCategory(
-    private val textWatcher: TextWatcher,
     private val rcvChangingTaskCategoryInt: RcvChangingTaskCategoryInt
 ): RecyclerView.Adapter<RcvChangingTaskCategory.TaskCategoryViewHolder>() {
 
@@ -28,13 +28,29 @@ class RcvChangingTaskCategory(
         private val binding: RcvItemChangingTaskCategoryBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: TaskCategory) {
+            val textWatcher = object: android.text.TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    item.categoryName = p0.toString()
+                }
+            }
             if (isChangingMode) {
-                textWatcher.addTextWatcherToView(binding.tvTitle, afterTextChanged = {
-                    item.categoryName = it
-                })
-                binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE
+                binding.tvTitle.addTextChangedListener(textWatcher)
+                binding.tvTitle.inputType = InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE
+                binding.tvTitle.isEnabled = true
+                binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(R.color.hint)
             } else {
+                binding.tvTitle.removeTextChangedListener(textWatcher)
                 binding.tvTitle.inputType = InputType.TYPE_NULL
+                binding.tvTitle.isEnabled = false
+                binding.tvTitle.backgroundTintList = binding.root.context.resources.getColorStateList(android.R.color.transparent)
             }
             binding.img.setImageResource(item.icon ?: R.drawable.ic_block)
             binding.tvTitle.setText(item.categoryName)
