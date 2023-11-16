@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverterImpl
 import safronov.apps.data.data_source.local.model.task.TaskEntity
@@ -15,6 +16,8 @@ import safronov.apps.data.data_source.local.model.task_category.TaskCategoryEnti
 import safronov.apps.data.data_source.local.service.task.TaskService
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
+import safronov.apps.domain.model.task_category.TaskCategory
+import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 import java.lang.IllegalStateException
 
@@ -323,6 +326,44 @@ class TaskRepositoryImplTest {
         assertEquals(true, fakeTaskService.requestToDeleteItemsId.isNotEmpty())
     }
 
+    @Test
+    fun testGetTasksAsFlowByTaskCategory() = runBlocking {
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksAsFlowByTaskCategory(
+            TaskCategory(
+                id = 2342,
+                icon = null,
+                backgroundColor = null,
+                categoryName = "adsfd",
+                categoryType = CategoryTypes.User
+            )
+        ).first().first()
+        if (result is Task.TaskText) {
+            assertEquals(true, taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()) == result)
+        } else if (result is Task.TaskList) {
+            assertEquals(true, taskList == result)
+        } else {
+            throw IllegalStateException("oops")
+        }
+    }
+
+    @Test(expected = DomainException::class)
+    fun testGetTasksAsFlowByTaskCategory_expectedException(): Unit = runBlocking {
+        fakeTaskService.isNeedToThrowException = true
+        taskRepository.insertTaskList(taskList)
+        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
+        val result: Task = taskRepository.getTasksAsFlowByTaskCategory(
+            TaskCategory(
+                id = 2342,
+                icon = null,
+                backgroundColor = null,
+                categoryName = "adsfd",
+                categoryType = CategoryTypes.User
+            )
+        ).first().first()
+    }
+
 }
 
 private class FakeTaskService: TaskService {
@@ -357,7 +398,10 @@ private class FakeTaskService: TaskService {
     }
 
     override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategoryEntity): Flow<List<TaskEntity>> {
-        TODO("Not yet implemented")
+        if (isNeedToThrowException) throw IllegalStateException("some exception")
+        return flow {
+            emit(dataToReturn)
+        }
     }
 
     override suspend fun getTasks(): List<TaskEntity> {
