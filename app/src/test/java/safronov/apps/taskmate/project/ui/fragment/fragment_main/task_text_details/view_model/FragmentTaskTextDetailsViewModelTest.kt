@@ -375,6 +375,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
         categoryType = CategoryTypes.User
     )
 
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        throw IllegalStateException("don't use this method")
+    }
+
     override suspend fun insertTaskCategories(list: List<TaskCategory>) {
         throw IllegalStateException("don't use this method")
     }

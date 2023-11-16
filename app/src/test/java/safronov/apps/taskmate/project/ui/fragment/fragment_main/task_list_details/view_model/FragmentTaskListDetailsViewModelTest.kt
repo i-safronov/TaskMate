@@ -398,6 +398,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
         throw IllegalStateException("don't use this method")
     }
 
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        throw IllegalStateException("don't use this method")
+    }
+
     override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
         return flow {
             emit(list)

@@ -10,6 +10,7 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
+import java.lang.IllegalStateException
 
 class InsertTaskCategoriesUseCaseTest {
 
@@ -82,6 +83,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
     override suspend fun updateTaskCategory(taskCategory: TaskCategory) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn[0] = taskCategory
+    }
+
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        throw IllegalStateException("don't use this method")
     }
 
     override suspend fun clearTaskCategories() {

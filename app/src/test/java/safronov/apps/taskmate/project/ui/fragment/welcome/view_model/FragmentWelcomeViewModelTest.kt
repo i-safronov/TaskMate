@@ -16,6 +16,7 @@ import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUs
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
+import java.lang.IllegalStateException
 
 class FragmentWelcomeViewModelTest {
 
@@ -185,6 +186,10 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
     override suspend fun insertTaskCategories(list: List<TaskCategory>) {
         if (isNeedToThrowException) throw DomainException("some exception")
         dataToReturn = list.toMutableList()
+    }
+
+    override suspend fun updateTaskCategories(categories: List<TaskCategory>) {
+        throw IllegalStateException("don't use this method")
     }
 
     override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
