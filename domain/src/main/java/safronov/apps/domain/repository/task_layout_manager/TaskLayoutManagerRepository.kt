@@ -9,7 +9,7 @@ interface TaskLayoutManagerRepository {
     }
 
     interface GettingTaskLayoutManager {
-        suspend fun getTaskLayoutManager(): String?
+        suspend fun getTaskLayoutManager(): TaskLayoutManager?
     }
 
     interface MutableTaskLayoutManagerRepository: SavingTaskLayoutManagerRepository, GettingTaskLayoutManager

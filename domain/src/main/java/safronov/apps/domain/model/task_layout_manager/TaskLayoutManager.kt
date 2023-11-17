@@ -4,8 +4,8 @@ sealed class TaskLayoutManager(
     val name: String
 ) {
 
-    class GridLayoutManager(gridName: String): TaskLayoutManager(gridName)
+    class GridLayoutManager(gridName: String = "Grid"): TaskLayoutManager(gridName)
 
-    class LinearLayoutManager(linearName: String): TaskLayoutManager(linearName)
+    class LinearLayoutManager(linearName: String = "Linear"): TaskLayoutManager(linearName)
 
 }
