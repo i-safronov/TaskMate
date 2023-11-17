@@ -96,7 +96,6 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         observeOnToolBarMenuItemClick()
         observeStateLoading()
         observeTasks()
-        observeTaskCategory()
         observeException()
         fbAddTaskOnClickListener()
         searchOnClickListener()
@@ -202,6 +201,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
     override fun onStart() {
         super.onStart()
         inflateMenuOnHomePageToolBar(menuId = R.menu.fragment_main_toolbar_menu)
+        observeTaskCategory()
     }
 
     override fun onStop() {
