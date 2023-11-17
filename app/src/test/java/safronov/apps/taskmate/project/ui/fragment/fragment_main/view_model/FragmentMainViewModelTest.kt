@@ -92,6 +92,38 @@ class FragmentMainViewModelTest {
     }
 
     @Test
+    fun loadTaskBySystemTaskCategory() = runBlocking {
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
+        assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
+        assertEquals(true, fragmentMainViewModel.getCategory().value == null)
+        fakeTaskCategoryRepository.isSystem = true
+        fragmentMainViewModel.loadTasks()
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
+        assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
+        assertEquals(true, fragmentMainViewModel.getCategory().value == fakeTaskCategoryRepository.dataToReturn.first())
+        assertEquals(false, fragmentMainViewModel.getCategory().value == null)
+        assertEquals(true,
+            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
+        )
+    }
+
+    @Test
+    fun testLoadTasksWithoutTaskCategory_expectedException() = runBlocking {
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
+        assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
+        assertEquals(true, fragmentMainViewModel.getCategory().value == null)
+        fakeTaskCategoryRepository.isEmpty = true
+        fragmentMainViewModel.loadTasks()
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
+        assertEquals(true, fragmentMainViewModel.getTasks().first()?.isEmpty() == null)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
+    }
+
+    @Test
     fun test_loadTasks_expectedException() = runBlocking {
         fakeTaskRepositoryGettingByParams.isNeedToThrowException = true
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
@@ -247,6 +279,8 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
 
     var isNeedToThrowException = false
     var requests = 0
+    var isSystem = false
+    var isEmpty = false
     var dataToReturn = listOf(TaskCategory(
         id = 2342,
         icon = null,
@@ -261,7 +295,14 @@ private class FakeTaskCategoryRepository: TaskCategoryRepository {
 
     override suspend fun getTaskCategories(): Flow<List<TaskCategory>> {
         return flow {
-            emit(dataToReturn)
+            if (isSystem) {
+                dataToReturn.first().categoryType = CategoryTypes.System
+            }
+            if (isEmpty) {
+                emit(emptyList())
+            } else {
+                emit(dataToReturn)
+            }
         }
     }
 

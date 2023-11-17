@@ -36,6 +36,7 @@ class FragmentMainViewModel(
     fun getTasks(): StateFlow<List<Task>?> = _tasks
     fun getIsWasException(): StateFlow<DomainException?> = _isException
     fun getCategories(): StateFlow<List<TaskCategory>> = _taskCategories
+    fun getCategory(): StateFlow<TaskCategory?> = _taskCategory
 
     fun whichFragmentToGoByTaskType(
         taskType: Task.TaskType,
