@@ -112,7 +112,9 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                 bottomView.rcvTypes.adapter = rcvChangingTaskCategory
                 bottomSheet.showBottomSheet(requireContext(), bottomView.root)
                 rcvChangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
-
+                fragmentMainViewModel?.getCategory()?.value?.let { it1 ->
+                    rcvChangingTaskCategory.setSelectedTaskCategory(item = it1)
+                }
                 bottomView.tvAction.setOnClickListener {
                     rcvChangingTaskCategory.setChangingMode()
                     bottomView.tvTitle.text = getString(R.string.color)
@@ -152,8 +154,8 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                     binding.includedNoTasksLayout.root.visibility = View.VISIBLE
                 } else {
                     binding.includedNoTasksLayout.root.visibility = View.GONE
-                    rcvTask.submitList(it)
                 }
+                rcvTask.submitList(it)
             }
         }
     }
