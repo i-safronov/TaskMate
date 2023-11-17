@@ -86,7 +86,6 @@ class AppModule(
     @Provides
     fun provideFragmentMainViewModelFactory(
         dispatchersList: DispatchersList,
-        getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
         deleteTasksUseCase: DeleteTasksUseCase,
         getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
         updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase,
@@ -94,7 +93,6 @@ class AppModule(
     ): FragmentMainViewModelFactory {
         return FragmentMainViewModelFactory(
             dispatchersList = dispatchersList,
-            getTasksAsFlowUseCase = getTasksAsFlowUseCase,
             deleteTasksUseCase = deleteTasksUseCase,
             getTaskCategoriesUseCase = getTaskCategoriesUseCase,
             updateTaskCategoriesUseCase = updateTaskCategoriesUseCase,

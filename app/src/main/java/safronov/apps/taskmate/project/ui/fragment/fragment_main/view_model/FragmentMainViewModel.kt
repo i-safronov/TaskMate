@@ -15,11 +15,8 @@ import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUs
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
-//TODO load default task category and after this load tasks by category, so add method to change category
-
 class FragmentMainViewModel(
      private val dispatchersList: DispatchersList,
-     private val getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
      private val deleteTasksUseCase: DeleteTasksUseCase,
      private val getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
      private val updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase,
