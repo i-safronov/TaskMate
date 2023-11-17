@@ -36,4 +36,6 @@
     <string name="sort">Сортировать</string>
     <string name="done">Готово</string>
     <string name="color">Цвет</string>
+    <string name="grid">Сетка</string>
+    <string name="linear">Список</string>
 </resources>

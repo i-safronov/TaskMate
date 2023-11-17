@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/back_shape_with_ripple"
+    android:layout_margin="@dimen/margin"
+    android:padding="@dimen/padding">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/text"
+        tools:text="@string/linear"
+        android:drawableStart="@drawable/ic_list_task_type"
+        android:drawablePadding="-4dp"
+        android:gravity="center" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/text"
+        android:text="@string/grid"
+        android:drawablePadding="-4dp"
+        android:drawableStart="@drawable/ic_grid"
+        android:layout_marginTop="@dimen/margin"
+        android:gravity="center" />
+
+</LinearLayout>
