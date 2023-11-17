@@ -9,7 +9,6 @@ import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCase
-import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -70,6 +69,11 @@ class FragmentMainViewModel(
                 _isException.value = it
             }
         )
+    }
+
+    fun reloadTasksByTaskCategory(category: TaskCategory) {
+        _taskCategory.value = category
+        loadTasks()
     }
 
     fun updateTaskCategories(categories: List<TaskCategory>) {

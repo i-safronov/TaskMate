@@ -44,10 +44,9 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_categor
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
+import java.lang.Exception
 import java.lang.IllegalStateException
 import javax.inject.Inject
-
-//TODO sort by selected task category
 
 class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTaskCategoryInt {
 
@@ -93,6 +92,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         observeOnToolBarMenuItemClick()
         observeStateLoading()
         observeTasks()
+        observeTaskCategory()
         observeException()
         fbAddTaskOnClickListener()
         searchOnClickListener()
@@ -158,6 +158,14 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         }
     }
 
+    private fun observeTaskCategory() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentMainViewModel?.getCategory()?.collect {
+            if (it != null) {
+                fragmentMainViewModel?.reloadTasksByTaskCategory(it)
+            }
+        }
+    }
+
     private fun observeException() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
         fragmentMainViewModel?.getIsWasException()?.collect {
             if (it != null) {
@@ -211,101 +219,124 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
     }
 
     override fun onTaskTypeClick(taskType: RcvTaskTypeModel) {
-        fragmentMainViewModel?.whichFragmentToGoByTaskType(
-            taskType = taskType.taskType,
-            taskText = {
-                navigate(
-                    R.id.action_fragmentMain_to_fragmentTaskTextDetails,
-                    bundleOf(
-                        FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_CREATE_NEW_TASK
+        try {
+            fragmentMainViewModel?.whichFragmentToGoByTaskType(
+                taskType = taskType.taskType,
+                taskText = {
+                    navigate(
+                        R.id.action_fragmentMain_to_fragmentTaskTextDetails,
+                        bundleOf(
+                            FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_CREATE_NEW_TASK
+                        )
                     )
-                )
-            }, taskList = {
-                navigate(
-                    R.id.action_fragmentMain_to_fragmentTaskListDetails,
-                    bundleOf(
-                        FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_CREATE_NEW_TASK
+                }, taskList = {
+                    navigate(
+                        R.id.action_fragmentMain_to_fragmentTaskListDetails,
+                        bundleOf(
+                            FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_CREATE_NEW_TASK
+                        )
                     )
-                )
-            }
-        )
-        bottomSheet.dismissBottomSheet()
+                }
+            )
+            bottomSheet.dismissBottomSheet()
+        } catch (e: RuntimeException) {
+            handeException(e)
+        }
     }
 
     override fun onTaskClick(task: Task) {
-        if (task is Task.TaskList) {
-            navigate(
-                R.id.action_fragmentMain_to_fragmentTaskListDetails,
-                bundleOf(
-                    FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_UPDATE_EXISTING_TASK,
-                    FragmentTaskListDetails.EXISTING_TASK_LIST to task
+        try {
+            if (task is Task.TaskList) {
+                navigate(
+                    R.id.action_fragmentMain_to_fragmentTaskListDetails,
+                    bundleOf(
+                        FragmentTaskListDetails.THIS_FRAGMENT_FOR to FragmentTaskListDetails.FOR_UPDATE_EXISTING_TASK,
+                        FragmentTaskListDetails.EXISTING_TASK_LIST to task
+                    )
                 )
-            )
-        } else if (task is Task.TaskText) {
-            navigate(
-                R.id.action_fragmentMain_to_fragmentTaskTextDetails,
-                bundleOf(
-                    FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
-                    FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
+            } else if (task is Task.TaskText) {
+                navigate(
+                    R.id.action_fragmentMain_to_fragmentTaskTextDetails,
+                    bundleOf(
+                        FragmentTaskTextDetails.THIS_FRAGMENT_FOR to FragmentTaskTextDetails.FOR_UPDATE_EXISTING_TASK,
+                        FragmentTaskTextDetails.EXISTING_TASK_TEXT to task
+                    )
                 )
-            )
-        } else {
-            throw IllegalStateException("not found task")
+            } else {
+                throw IllegalStateException("not found task")
+            }
+        } catch (e: RuntimeException) {
+            handeException(e)
         }
     }
 
     override fun onTaskSelectionMode() {
-        removeMenuFromHomePageToolBar()
-        inflateMenuOnHomePageToolBar(R.menu.fragment_home_page_tool_bar_selection_tasks_menu)
-        requireHomePageToolBar().setOnMenuItemClickListener {
-            var handled = false
-            if (it.itemId == R.id.delete_tasks) {
-                val alertDialog = AlertDialog.Builder(requireContext()).create()
-                val alertView = AskUserBinding.inflate(layoutInflater)
-                alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
-                alertView.tvTitle.text = getString(R.string.delete_tasks)
-                alertView.btnNo.setOnClickListener {
-                    alertDialog.dismiss()
+        try {
+            removeMenuFromHomePageToolBar()
+            inflateMenuOnHomePageToolBar(R.menu.fragment_home_page_tool_bar_selection_tasks_menu)
+            requireHomePageToolBar().setOnMenuItemClickListener {
+                var handled = false
+                if (it.itemId == R.id.delete_tasks) {
+                    val alertDialog = AlertDialog.Builder(requireContext()).create()
+                    val alertView = AskUserBinding.inflate(layoutInflater)
+                    alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+                    alertView.tvTitle.text = getString(R.string.delete_tasks)
+                    alertView.btnNo.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+                    alertView.btnYes.setOnClickListener {
+                        fragmentMainViewModel?.deleteTasks(rcvTask.getSelectedTasks())
+                        clearSelectionModeOnTasks()
+                        alertDialog.dismiss()
+                    }
+                    alertDialog.setView(alertView.root)
+                    alertDialog.setCancelable(false)
+                    alertDialog.show()
+                    handled = true
                 }
-                alertView.btnYes.setOnClickListener {
-                    fragmentMainViewModel?.deleteTasks(rcvTask.getSelectedTasks())
-                    clearSelectionModeOnTasks()
-                    alertDialog.dismiss()
-                }
-                alertDialog.setView(alertView.root)
-                alertDialog.setCancelable(false)
-                alertDialog.show()
-                handled = true
+                handled
             }
-            handled
+        } catch (e: RuntimeException) {
+            handeException(e)
         }
     }
 
     override fun selectionTasksChanged(list: List<Task>) {
-        val title = "${getString(R.string.selected)}: ${list.size}"
-        requireHomePageToolBar().title = title
+        try {
+            val title = "${getString(R.string.selected)}: ${list.size}"
+            requireHomePageToolBar().title = title
+        } catch (e: RuntimeException) {
+            handeException(e)
+        }
     }
 
     override fun onTaskCategoryClick(taskCategory: TaskCategory) {
-        //TODO save selected task category
-        Toast.makeText(requireContext(), "Выбрано: ${taskCategory.categoryName}", Toast.LENGTH_LONG).show()
+        try {
+            fragmentMainViewModel?.reloadTasksByTaskCategory(taskCategory)
+        } catch (e: RuntimeException) {
+            handeException(e)
+        }
     }
 
     private fun onBackPressListener() {
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (rcvTask.isSelectionMode()) {
-                        clearSelectionModeOnTasks()
-                    } else {
-                        if (isEnabled) {
-                            isEnabled = false
-                            requireActivity().onBackPressed()
+        try {
+            requireActivity()
+                .onBackPressedDispatcher
+                .addCallback(this, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        if (rcvTask.isSelectionMode()) {
+                            clearSelectionModeOnTasks()
+                        } else {
+                            if (isEnabled) {
+                                isEnabled = false
+                                requireActivity().onBackPressed()
+                            }
                         }
                     }
-                }
-            })
+                })
+        } catch (e: RuntimeException) {
+            handeException(e)
+        }
     }
 
     private fun clearSelectionModeOnTasks() {

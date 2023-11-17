@@ -12,7 +12,8 @@ class TaskEntityConverterImpl(
     override fun convertTaskEntityToTaskList(taskEntity: TaskEntity): Task.TaskList {
         return Task.TaskList(
             title = taskEntity.title,
-            list = gson.fromJson(taskEntity.content, Array<Task.TaskListItem>::class.java).asList(),
+            list = if (taskEntity.content?.isEmpty() == true || taskEntity.content == null) emptyList()
+            else gson.fromJson(taskEntity.content, Array<Task.TaskListItem>::class.java).asList(),
             date = taskEntity.date,
             taskCategoryId = taskEntity.taskCategoryId,
             taskType = taskEntity.taskType,
