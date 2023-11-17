@@ -19,12 +19,15 @@ class GetTasksAsFlowByTaskCategoryTest {
 
     private lateinit var fakeTaskRepositoryGettingByParams: FakeTaskRepositoryGettingByParams
     private lateinit var getTasksAsFlowByTaskCategory: GetTasksAsFlowByTaskCategory
+    private lateinit var fakeTaskRepositoryGetting: FakeTaskRepositoryGetting
 
     @Before
     fun setUp() {
         fakeTaskRepositoryGettingByParams = FakeTaskRepositoryGettingByParams()
+        fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
         getTasksAsFlowByTaskCategory = GetTasksAsFlowByTaskCategory(
-            fakeTaskRepositoryGettingByParams
+            fakeTaskRepositoryGettingByParams,
+            taskRepositoryGetting = fakeTaskRepositoryGetting
         )
     }
 
@@ -36,6 +39,18 @@ class GetTasksAsFlowByTaskCategoryTest {
         assertEquals(true, data == result.first())
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCategory == category)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
+        assertEquals(true, fakeTaskRepositoryGetting.requestCount == 0)
+    }
+
+    @Test
+    fun executeBySystemTaskCategory() = runBlocking {
+        val data: List<Task> = fakeTaskRepositoryGetting.dataToReturn
+        val category = fakeTaskRepositoryGetting.taskCategory
+        val result: Flow<List<Task>> = getTasksAsFlowByTaskCategory.execute(category)
+        assertEquals(true, data == result.first())
+        assertEquals(true, fakeTaskRepositoryGetting.requestCategory == category)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
+        assertEquals(true, fakeTaskRepositoryGetting.requestCount == 1)
     }
 
     @Test(expected = DomainException::class)
@@ -83,5 +98,45 @@ private class FakeTaskRepositoryGettingByParams: TaskRepository.GettingTaskByPar
             emit(dataToReturn)
         }
     }
+
+}
+
+private class FakeTaskRepositoryGetting: TaskRepository.GettingTask {
+
+    var isNeedToThrowException = false
+    var requestCategory: TaskCategory? = null
+    var requestCount = 0
+    val taskCategory = TaskCategory(
+        id = 324235324543223523,
+        icon = 23423,
+        backgroundColor = null,
+        categoryName = "asdf",
+        categoryType = CategoryTypes.System
+    )
+    val dataToReturn = listOf<Task>(
+        Task.TaskText(
+            title = "asdf",
+            text = "asdf",
+            date = "asdf",
+            taskCategoryId = taskCategory.id,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32423
+        )
+    )
+
+    override suspend fun getTasksAsFlow(): Flow<List<Task>> {
+        if (isNeedToThrowException) throw DomainException("some exception")
+        requestCategory = taskCategory
+        requestCount++
+        return flow {
+            emit(dataToReturn)
+        }
+    }
+
+    override suspend fun getTasks(): List<Task> {
+        return dataToReturn
+    }
+
 
 }
