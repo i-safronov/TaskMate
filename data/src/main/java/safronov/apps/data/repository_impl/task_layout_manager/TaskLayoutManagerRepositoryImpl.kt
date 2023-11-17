@@ -9,21 +9,19 @@ import java.lang.Exception
 
 class TaskLayoutManagerRepositoryImpl(
     private val sharedPreferencesService: SharedPreferencesService,
-    private val json: Gson
 ): TaskLayoutManagerRepository.MutableTaskLayoutManagerRepository {
 
     override suspend fun saveTaskLayoutManager(manager: TaskLayoutManager) {
         try {
-            sharedPreferencesService.saveString(TASK_LAYOUT_MANAGER_KEY, json.toJson(manager))
+            sharedPreferencesService.saveString(TASK_LAYOUT_MANAGER_KEY, manager.name)
         } catch (e: Exception) {
             throw DataException(e.message, e)
         }
     }
 
-    override suspend fun getTaskLayoutManager(): TaskLayoutManager? {
+    override suspend fun getTaskLayoutManager(): String? {
         try {
-            val result = sharedPreferencesService.getString(TASK_LAYOUT_MANAGER_KEY)
-            return json.fromJson(result, TaskLayoutManager::class.java)
+            return sharedPreferencesService.getString(TASK_LAYOUT_MANAGER_KEY)
         } catch (e: Exception) {
             throw DataException(e.message, e)
         }
