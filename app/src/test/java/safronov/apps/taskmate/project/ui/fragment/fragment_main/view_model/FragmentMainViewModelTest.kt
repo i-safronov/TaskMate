@@ -46,7 +46,6 @@ class FragmentMainViewModelTest {
         fakeTaskCategoryRepository = FakeTaskCategoryRepository()
         fragmentMainViewModel = FragmentMainViewModel(
             dispatchersList = TestDispatchersList(),
-            getTasksAsFlowUseCase = GetTasksAsFlowUseCase(gettingTaskRepository = fakeTaskRepositoryGetting),
             deleteTasksUseCase = DeleteTasksUseCase(deletingTaskRepository = fakeDeletingTaskRepository),
             getTaskCategoriesUseCase = GetTaskCategoriesUseCase(
                 fakeTaskCategoryRepository
