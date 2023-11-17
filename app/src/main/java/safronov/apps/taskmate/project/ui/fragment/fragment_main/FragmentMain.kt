@@ -32,6 +32,7 @@ import safronov.apps.taskmate.project.system_settings.fragment.FragmentBase
 import safronov.apps.taskmate.project.system_settings.ui.bottom_sheet.BottomSheet
 import safronov.apps.taskmate.project.system_settings.ui.rcv.RecyclerViewBuilder
 import safronov.apps.taskmate.project.system_settings.ui.text_watcher.TextWatcher
+import safronov.apps.taskmate.project.system_settings.ui.tool_bar.HomePageToolBarService
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_list_details.FragmentTaskListDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.task_text_details.FragmentTaskTextDetails
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.rcv_task_type.RcvTaskType
@@ -57,6 +58,9 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
 
     @Inject
     lateinit var textWatcher: TextWatcher
+
+    @Inject
+    lateinit var homePageToolBarService: HomePageToolBarService
 
     @Inject
     lateinit var dispatchersList: DispatchersList
@@ -164,6 +168,11 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         fragmentMainViewModel?.getCategory()?.collect {
             if (it != null) {
                 fragmentMainViewModel?.reloadTasksByTaskCategory(it)
+                homePageToolBarService.changeTaskCategoryIcon(
+                    toolBar = requireHomePageToolBar(),
+                    taskCategory = it,
+                    defaultTaskCategoryIcon = R.drawable.ic_block
+                )
             }
         }
     }
