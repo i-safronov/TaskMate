@@ -15,17 +15,17 @@ import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 import java.lang.IllegalStateException
 
-class GetTasksAsFlowByTaskCategoryTest {
+class GetTasksAsFlowByTaskCategoryUseCaseTest {
 
     private lateinit var fakeTaskRepositoryGettingByParams: FakeTaskRepositoryGettingByParams
-    private lateinit var getTasksAsFlowByTaskCategory: GetTasksAsFlowByTaskCategory
+    private lateinit var getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase
     private lateinit var fakeTaskRepositoryGetting: FakeTaskRepositoryGetting
 
     @Before
     fun setUp() {
         fakeTaskRepositoryGettingByParams = FakeTaskRepositoryGettingByParams()
         fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
-        getTasksAsFlowByTaskCategory = GetTasksAsFlowByTaskCategory(
+        getTasksAsFlowByTaskCategoryUseCase = GetTasksAsFlowByTaskCategoryUseCase(
             fakeTaskRepositoryGettingByParams,
             taskRepositoryGetting = fakeTaskRepositoryGetting
         )
@@ -35,7 +35,7 @@ class GetTasksAsFlowByTaskCategoryTest {
     fun execute() = runBlocking {
         val data: List<Task> = fakeTaskRepositoryGettingByParams.dataToReturn
         val category = fakeTaskRepositoryGettingByParams.taskCategory
-        val result: Flow<List<Task>> = getTasksAsFlowByTaskCategory.execute(category)
+        val result: Flow<List<Task>> = getTasksAsFlowByTaskCategoryUseCase.execute(category)
         assertEquals(true, data == result.first())
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCategory == category)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
@@ -46,7 +46,7 @@ class GetTasksAsFlowByTaskCategoryTest {
     fun executeBySystemTaskCategory() = runBlocking {
         val data: List<Task> = fakeTaskRepositoryGetting.dataToReturn
         val category = fakeTaskRepositoryGetting.taskCategory
-        val result: Flow<List<Task>> = getTasksAsFlowByTaskCategory.execute(category)
+        val result: Flow<List<Task>> = getTasksAsFlowByTaskCategoryUseCase.execute(category)
         assertEquals(true, data == result.first())
         assertEquals(true, fakeTaskRepositoryGetting.requestCategory == category)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
@@ -57,7 +57,7 @@ class GetTasksAsFlowByTaskCategoryTest {
     fun execute_expectedException() = runBlocking {
         fakeTaskRepositoryGettingByParams.isNeedToThrowException = true
         val category = fakeTaskRepositoryGettingByParams.taskCategory
-        val result = getTasksAsFlowByTaskCategory.execute(category)
+        val result = getTasksAsFlowByTaskCategoryUseCase.execute(category)
     }
 
 }

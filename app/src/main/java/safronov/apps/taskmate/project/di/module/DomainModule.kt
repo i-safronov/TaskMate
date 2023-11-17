@@ -17,7 +17,7 @@ import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTaskTextUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
-import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategory
+import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksByTextUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksUseCase
@@ -171,12 +171,11 @@ class DomainModule {
 
     @Provides
     fun provideGetTasksAsFlowByTaskCategory(
-        taskRepositoryGetting: TaskRepository.TaskRepositoryMutable,
-        taskRepositoryGettingByParameters: TaskRepository.TaskRepositoryMutable
-    ): GetTasksAsFlowByTaskCategory {
-        return GetTasksAsFlowByTaskCategory(
+        taskRepositoryGetting: TaskRepository.TaskRepositoryMutable
+    ): GetTasksAsFlowByTaskCategoryUseCase {
+        return GetTasksAsFlowByTaskCategoryUseCase(
             taskRepositoryGetting = taskRepositoryGetting,
-            taskRepository = taskRepositoryGettingByParameters
+            taskRepository = taskRepositoryGetting
         )
     }
 

@@ -22,6 +22,7 @@ import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
 import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
+import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
@@ -35,9 +36,11 @@ class FragmentMainViewModelTest {
     private lateinit var taskEntityConverter: TaskEntityConverter
     private lateinit var fakeDeletingTaskRepository: FakeDeletingTaskRepository
     private lateinit var fakeTaskCategoryRepository: FakeTaskCategoryRepository
+    private lateinit var fakeTaskRepositoryGettingByParams: FakeTaskRepositoryGettingByParams
 
     @Before
     fun setUp() {
+        fakeTaskRepositoryGettingByParams = FakeTaskRepositoryGettingByParams()
         fakeDeletingTaskRepository = FakeDeletingTaskRepository()
         fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
         fakeTaskCategoryRepository = FakeTaskCategoryRepository()
@@ -48,7 +51,11 @@ class FragmentMainViewModelTest {
             getTaskCategoriesUseCase = GetTaskCategoriesUseCase(
                 fakeTaskCategoryRepository
             ),
-            updateTaskCategoriesUseCase = UpdateTaskCategoriesUseCase(fakeTaskCategoryRepository)
+            updateTaskCategoriesUseCase = UpdateTaskCategoriesUseCase(fakeTaskCategoryRepository),
+            getTasksAsFlowByTaskCategoryUseCase = GetTasksAsFlowByTaskCategoryUseCase(
+                fakeTaskRepositoryGettingByParams,
+                fakeTaskRepositoryGetting
+            )
         )
         taskEntityConverter = TaskEntityConverterImpl(Gson())
     }
@@ -76,22 +83,23 @@ class FragmentMainViewModelTest {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         fragmentMainViewModel.loadTasks()
-        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
         assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
         assertEquals(true,
-            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
+            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGettingByParams.dataToReturn
             )
     }
 
     @Test
     fun test_loadTasks_expectedException() = runBlocking {
-        fakeTaskRepositoryGetting.isNeedToThrowException = true
+        fakeTaskRepositoryGettingByParams.isNeedToThrowException = true
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         assertEquals(true, fragmentMainViewModel.getIsWasException().first() == null)
         fragmentMainViewModel.loadTasks()
         assertEquals(false, fragmentMainViewModel.getIsWasException().first() == null)
-        assertEquals(true, fragmentMainViewModel.getIsWasException().first() is DomainException)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value is DomainException)
     }
 
     @Test
@@ -99,10 +107,11 @@ class FragmentMainViewModelTest {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         fragmentMainViewModel.loadTasks()
-        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
+        assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
+        assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
         assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
         assertEquals(true,
-            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGetting.dataToReturn
+            fragmentMainViewModel.getTasks().first() == fakeTaskRepositoryGettingByParams.dataToReturn
         )
         assertEquals(true, fragmentMainViewModel.getCategories().first() == fakeTaskCategoryRepository.dataToReturn)
     }
@@ -191,6 +200,45 @@ private class FakeDeletingTaskRepository: TaskRepository.DeletingTask {
         requestToDeleteList = tasks
         countOfRequest++
         dataToReturn.clear()
+    }
+
+}
+
+private class FakeTaskRepositoryGettingByParams: TaskRepository.GettingTaskByParameters {
+
+    var isNeedToThrowException = false
+    var requestCategory: TaskCategory? = null
+    var requestCount = 0
+    val taskCategory = TaskCategory(
+        id = 2342,
+        icon = null,
+        backgroundColor = null,
+        categoryName = "asdf",
+        categoryType = CategoryTypes.User
+    )
+    val dataToReturn = listOf<Task>(
+        Task.TaskText(
+            title = "asdf",
+            text = "asdf",
+            date = "asdf",
+            taskCategoryId = taskCategory.id,
+            taskType = Task.TaskType.Text,
+            isPinned = true,
+            id = 32423
+        )
+    )
+
+    override suspend fun getTasksByText(text: String): List<Task> {
+        throw IllegalStateException("don't use this method")
+    }
+
+    override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>> {
+        if (isNeedToThrowException) throw DomainException("some exception")
+        requestCategory = taskCategory
+        requestCount++
+        return flow {
+            emit(dataToReturn)
+        }
     }
 
 }

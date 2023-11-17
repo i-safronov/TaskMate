@@ -6,7 +6,7 @@ import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
 import safronov.apps.domain.repository.task.TaskRepository
 
-class GetTasksAsFlowByTaskCategory(
+class GetTasksAsFlowByTaskCategoryUseCase(
     private val taskRepository: TaskRepository.GettingTaskByParameters,
     private val taskRepositoryGetting: TaskRepository.GettingTask
 ) {

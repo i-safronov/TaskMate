@@ -2,31 +2,35 @@ package safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
+import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import safronov.apps.taskmate.project.system_settings.view_model.BaseViewModelImpl
 
+//TODO load default task category and after this load tasks by category, so add method to change category
+
 class FragmentMainViewModel(
      private val dispatchersList: DispatchersList,
      private val getTasksAsFlowUseCase: GetTasksAsFlowUseCase,
      private val deleteTasksUseCase: DeleteTasksUseCase,
      private val getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
-     private val updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase
+     private val updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase,
+     private val getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase
 ): BaseViewModelImpl(dispatchersList = dispatchersList) {
 
     private val _isLoading = MutableStateFlow<Boolean?>(null)
     private val _tasks = MutableStateFlow<List<Task>?>(null)
     private val _isException = MutableStateFlow<DomainException?>(null)
     private val _taskCategories = MutableStateFlow<List<TaskCategory>>(emptyList())
+    private val _taskCategory = MutableStateFlow<TaskCategory?>(null)
 
     fun getIsLoading(): StateFlow<Boolean?> = _isLoading
     fun getTasks(): StateFlow<List<Task>?> = _tasks
@@ -52,7 +56,12 @@ class FragmentMainViewModel(
             },
             doWork = {
                 _taskCategories.value = getTaskCategoriesUseCase.execute().first()
-                getTasksAsFlowUseCase.execute().collect {
+                if (_taskCategory.value == null && _taskCategories.value.isNotEmpty()) {
+                    _taskCategory.value = _taskCategories.value.first()
+                }
+                getTasksAsFlowByTaskCategoryUseCase.execute(
+                    taskCategory = _taskCategory.value ?: throw DomainException("couldn't found task category")
+                ).collect {
                     _tasks.value = sortTasksByPinned(it)
                     withContext(dispatchersList.ui()) {
                         _isLoading.value = false
