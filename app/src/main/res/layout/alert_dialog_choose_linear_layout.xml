@@ -13,8 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/text"
-        tools:text="@string/linear"
+        android:text="@string/linear"
         android:drawableStart="@drawable/ic_list_task_type"
+        android:background="@drawable/back_shape_with_ripple"
         android:drawablePadding="-4dp"
         android:gravity="center" />
 
@@ -26,6 +27,7 @@
         android:text="@string/grid"
         android:drawablePadding="-4dp"
         android:drawableStart="@drawable/ic_grid"
+        android:background="@drawable/back_shape_with_ripple"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center" />
 

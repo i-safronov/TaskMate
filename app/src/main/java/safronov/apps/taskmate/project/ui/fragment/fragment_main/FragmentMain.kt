@@ -1,6 +1,7 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.taskmate.R
+import safronov.apps.taskmate.databinding.AlertDialogChooseLinearLayoutBinding
 import safronov.apps.taskmate.databinding.AskUserBinding
 import safronov.apps.taskmate.databinding.BottomSheetChooseItemBinding
 import safronov.apps.taskmate.databinding.BottomSheetChooseOrChangeTaskCategoriesBinding
@@ -111,8 +113,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                 val bottomView = BottomSheetChooseOrChangeTaskCategoriesBinding.inflate(layoutInflater)
                 bottomView.tvTitle.text = getString(R.string.sort)
                 bottomView.tvAction.text = getString(R.string.change)
-                bottomView.rcvTypes.layoutManager = LinearLayoutManager(requireContext())
-                bottomView.rcvTypes.adapter = rcvChangingTaskCategory
+                recyclerViewBuilder.setupRcv(bottomView.rcvTypes, rcvChangingTaskCategory, LinearLayoutManager(requireContext()))
                 bottomSheet.showBottomSheet(requireContext(), bottomView.root)
                 rcvChangingTaskCategory.submitList(fragmentMainViewModel?.getCategories()?.value ?: emptyList())
                 fragmentMainViewModel?.getCategory()?.value?.let { it1 ->
@@ -130,7 +131,17 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
 
                 handled = true
             } else if (it.itemId == R.id.view_of_tasks) {
-                //TODO show alert dialog to choose view of recycler view of tasks
+                val alertView = AlertDialogChooseLinearLayoutBinding.inflate(layoutInflater)
+                val alertDialog = AlertDialog.Builder(requireContext()).create()
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+                alertView.linear.setOnClickListener {
+                    binding.rcvTasks.layoutManager = LinearLayoutManager(requireContext())
+                }
+                alertView.grid.setOnClickListener {
+                    binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
+                }
+                alertDialog.setView(alertView.root)
+                alertDialog.show()
                 handled = true
             }
 
