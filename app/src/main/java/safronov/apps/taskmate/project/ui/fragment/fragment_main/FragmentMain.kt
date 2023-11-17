@@ -136,9 +136,11 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                 alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
                 alertView.linear.setOnClickListener {
                     binding.rcvTasks.layoutManager = LinearLayoutManager(requireContext())
+                    alertDialog.dismiss()
                 }
                 alertView.grid.setOnClickListener {
                     binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
+                    alertDialog.dismiss()
                 }
                 alertDialog.setView(alertView.root)
                 alertDialog.show()
