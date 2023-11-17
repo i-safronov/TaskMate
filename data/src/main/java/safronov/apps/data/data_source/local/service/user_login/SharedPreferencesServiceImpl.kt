@@ -19,4 +19,12 @@ class SharedPreferencesServiceImpl(
         return sharedPreferences.getBoolean(key, false)
     }
 
+    override suspend fun saveString(key: String, value: String) {
+        sharedPreferences.edit().putString(key, value).apply()
+    }
+
+    override suspend fun getString(key: String): String? {
+        return sharedPreferences.getString(key, null)
+    }
+
 }

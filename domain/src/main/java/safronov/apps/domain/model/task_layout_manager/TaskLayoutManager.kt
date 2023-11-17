@@ -1,13 +1,11 @@
 package safronov.apps.domain.model.task_layout_manager
 
-sealed interface TaskLayoutManager {
+sealed class TaskLayoutManager(
+    val name: String
+) {
 
-    class GridLayoutManager(
-        val name: String = "Grid"
-    ): TaskLayoutManager
+    class GridLayoutManager(gridName: String): TaskLayoutManager(gridName)
 
-    class LinearLayoutManager(
-        val name: String = "Linear"
-    ): TaskLayoutManager
+    class LinearLayoutManager(linearName: String): TaskLayoutManager(linearName)
 
 }

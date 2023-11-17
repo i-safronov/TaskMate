@@ -53,4 +53,12 @@ private class FakeSharedPreferencesService(): SharedPreferencesService {
         return isUserLoggedIn
     }
 
+    override suspend fun saveString(key: String, value: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getString(key: String): String? {
+        TODO("Not yet implemented")
+    }
+
 }
