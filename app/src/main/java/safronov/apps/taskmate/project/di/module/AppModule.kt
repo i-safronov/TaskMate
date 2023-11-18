@@ -15,6 +15,8 @@ import safronov.apps.domain.use_case.task_category.create.InsertTaskCategoriesUs
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_layout_manager.GetTaskLayoutManagerUseCase
+import safronov.apps.domain.use_case.task_layout_manager.SaveTaskLayoutManagerUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
@@ -89,14 +91,18 @@ class AppModule(
         deleteTasksUseCase: DeleteTasksUseCase,
         getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
         updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase,
-        getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase
+        getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase,
+        getTaskLayoutManagerUseCase: GetTaskLayoutManagerUseCase,
+        saveTaskLayoutManagerUseCase: SaveTaskLayoutManagerUseCase
     ): FragmentMainViewModelFactory {
         return FragmentMainViewModelFactory(
             dispatchersList = dispatchersList,
             deleteTasksUseCase = deleteTasksUseCase,
             getTaskCategoriesUseCase = getTaskCategoriesUseCase,
             updateTaskCategoriesUseCase = updateTaskCategoriesUseCase,
-            getTasksAsFlowByTaskCategoryUseCase = getTasksAsFlowByTaskCategoryUseCase
+            getTasksAsFlowByTaskCategoryUseCase = getTasksAsFlowByTaskCategoryUseCase,
+            getTaskLayoutManagerUseCase = getTaskLayoutManagerUseCase,
+            saveTaskLayoutManagerUseCase = saveTaskLayoutManagerUseCase
         )
     }
 

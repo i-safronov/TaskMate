@@ -19,8 +19,8 @@ import safronov.apps.data.data_source.local.service.task_category.TaskCategorySe
 import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesService
 import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesServiceImpl
 import safronov.apps.data.data_source.local.service.user_login.SharedPreferencesServiceImpl.Companion.SHARED_PREFERENCES_NAME
-import safronov.apps.data.repository_impl.task.TaskRepositoryImpl
-import safronov.apps.domain.repository.task.TaskRepository
+import safronov.apps.data.repository_impl.task_layout_manager.TaskLayoutManagerRepositoryImpl
+import safronov.apps.domain.repository.task_layout_manager.TaskLayoutManagerRepository
 
 @Module
 class DataModule {
@@ -56,7 +56,7 @@ class DataModule {
     }
 
     @Provides
-    fun provideUserLoginService(sharedPreferences: SharedPreferences): SharedPreferencesService {
+    fun provideSharedPreferencesService(sharedPreferences: SharedPreferences): SharedPreferencesService {
         return SharedPreferencesServiceImpl(
             sharedPreferences = sharedPreferences
         )
@@ -77,6 +77,15 @@ class DataModule {
     @Provides
     fun provideTaskEntityConverter(gson: Gson): TaskEntityConverter {
         return TaskEntityConverterImpl(gson = gson)
+    }
+
+    @Provides
+    fun provideMutableTaskLayoutManagerRepository(
+        sharedPreferencesService: SharedPreferencesService
+    ): TaskLayoutManagerRepository.MutableTaskLayoutManagerRepository {
+        return TaskLayoutManagerRepositoryImpl(
+            sharedPreferencesService = sharedPreferencesService
+        )
     }
 
 }

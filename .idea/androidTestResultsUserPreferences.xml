@@ -265,11 +265,13 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="192.168.31.26:5555" value="120" />
                   <entry key="192.168.31.28:5555" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="ONT4PRIJRG65PZZ5" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi&#10; M2006C3LI" value="120" />
+                  <entry key="Xiaomi&#10; Redmi 5" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

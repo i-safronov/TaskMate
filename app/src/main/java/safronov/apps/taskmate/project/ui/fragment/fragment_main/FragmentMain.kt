@@ -1,13 +1,11 @@
 package safronov.apps.taskmate.project.ui.fragment.fragment_main
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +45,6 @@ import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_categor
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.rcv.task_type.AllTaskTypes
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModel
 import safronov.apps.taskmate.project.ui.fragment.fragment_main.view_model.FragmentMainViewModelFactory
-import java.lang.Exception
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
@@ -90,7 +87,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         fragmentMainViewModel = ViewModelProvider(this, fragmentMainViewModelFactory)
             .get(FragmentMainViewModel::class.java)
         recyclerViewBuilder.setupRcv(binding.rcvTasks, rcvTask, GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT))
-        fragmentMainViewModel?.loadTasks()
+        fragmentMainViewModel?.loadPage()
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {

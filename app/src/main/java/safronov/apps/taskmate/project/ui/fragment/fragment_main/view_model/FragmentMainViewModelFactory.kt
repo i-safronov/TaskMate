@@ -7,6 +7,8 @@ import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCa
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_layout_manager.GetTaskLayoutManagerUseCase
+import safronov.apps.domain.use_case.task_layout_manager.SaveTaskLayoutManagerUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 
 class FragmentMainViewModelFactory(
@@ -14,7 +16,9 @@ class FragmentMainViewModelFactory(
     private val deleteTasksUseCase: DeleteTasksUseCase,
     private val getTaskCategoriesUseCase: GetTaskCategoriesUseCase,
     private val updateTaskCategoriesUseCase: UpdateTaskCategoriesUseCase,
-    private val getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase
+    private val getTasksAsFlowByTaskCategoryUseCase: GetTasksAsFlowByTaskCategoryUseCase,
+    private val getTaskLayoutManagerUseCase: GetTaskLayoutManagerUseCase,
+    private val saveTaskLayoutManagerUseCase: SaveTaskLayoutManagerUseCase
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -23,7 +27,9 @@ class FragmentMainViewModelFactory(
             deleteTasksUseCase = deleteTasksUseCase,
             getTaskCategoriesUseCase = getTaskCategoriesUseCase,
             updateTaskCategoriesUseCase = updateTaskCategoriesUseCase,
-            getTasksAsFlowByTaskCategoryUseCase = getTasksAsFlowByTaskCategoryUseCase
+            getTasksAsFlowByTaskCategoryUseCase = getTasksAsFlowByTaskCategoryUseCase,
+            getTaskLayoutManagerUseCase = getTaskLayoutManagerUseCase,
+            saveTaskLayoutManagerUseCase = saveTaskLayoutManagerUseCase
         ) as T
     }
 

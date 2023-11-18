@@ -13,19 +13,20 @@ import org.junit.Before
 import org.junit.Test
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverter
 import safronov.apps.data.data_source.local.model.converter.task.TaskEntityConverterImpl
-import safronov.apps.data.exception.DataException
 import safronov.apps.domain.exception.DomainException
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
 import safronov.apps.domain.model.task_category.category_type.CategoryTypes
+import safronov.apps.domain.model.task_layout_manager.TaskLayoutManager
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
-import safronov.apps.domain.use_case.task.delete.DeleteTaskListUseCase
+import safronov.apps.domain.repository.task_layout_manager.TaskLayoutManagerRepository
 import safronov.apps.domain.use_case.task.delete.DeleteTasksUseCase
 import safronov.apps.domain.use_case.task.read.GetTasksAsFlowByTaskCategoryUseCase
-import safronov.apps.domain.use_case.task.read.GetTasksAsFlowUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
+import safronov.apps.domain.use_case.task_layout_manager.GetTaskLayoutManagerUseCase
+import safronov.apps.domain.use_case.task_layout_manager.SaveTaskLayoutManagerUseCase
 import safronov.apps.taskmate.project.system_settings.coroutines.DispatchersList
 import java.lang.IllegalStateException
 
@@ -37,9 +38,11 @@ class FragmentMainViewModelTest {
     private lateinit var fakeDeletingTaskRepository: FakeDeletingTaskRepository
     private lateinit var fakeTaskCategoryRepository: FakeTaskCategoryRepository
     private lateinit var fakeTaskRepositoryGettingByParams: FakeTaskRepositoryGettingByParams
+    private lateinit var fakeMutableTaskLayoutManager: FakeMutableTaskLayoutManager
 
     @Before
     fun setUp() {
+        fakeMutableTaskLayoutManager = FakeMutableTaskLayoutManager()
         fakeTaskRepositoryGettingByParams = FakeTaskRepositoryGettingByParams()
         fakeDeletingTaskRepository = FakeDeletingTaskRepository()
         fakeTaskRepositoryGetting = FakeTaskRepositoryGetting()
@@ -54,7 +57,9 @@ class FragmentMainViewModelTest {
             getTasksAsFlowByTaskCategoryUseCase = GetTasksAsFlowByTaskCategoryUseCase(
                 fakeTaskRepositoryGettingByParams,
                 fakeTaskRepositoryGetting
-            )
+            ),
+            getTaskLayoutManagerUseCase = GetTaskLayoutManagerUseCase(gettingTaskLayoutManager = fakeMutableTaskLayoutManager),
+            saveTaskLayoutManagerUseCase = SaveTaskLayoutManagerUseCase(savingTaskLayoutManagerRepository = fakeMutableTaskLayoutManager)
         )
         taskEntityConverter = TaskEntityConverterImpl(Gson())
     }
@@ -78,10 +83,10 @@ class FragmentMainViewModelTest {
     }
 
     @Test
-    fun test_loadTasks() = runBlocking {
+    fun test_loadPage() = runBlocking {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
-        fragmentMainViewModel.loadTasks()
+        fragmentMainViewModel.loadPage()
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
         assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
@@ -97,7 +102,7 @@ class FragmentMainViewModelTest {
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         assertEquals(true, fragmentMainViewModel.getCategory().value == null)
         fakeTaskCategoryRepository.isSystem = true
-        fragmentMainViewModel.loadTasks()
+        fragmentMainViewModel.loadPage()
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 1)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
         assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
@@ -109,13 +114,13 @@ class FragmentMainViewModelTest {
     }
 
     @Test
-    fun testLoadTasksWithoutTaskCategory_expectedException() = runBlocking {
+    fun test_loadPageWithoutTaskCategory_expectedException() = runBlocking {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         assertEquals(true, fragmentMainViewModel.getCategory().value == null)
         fakeTaskCategoryRepository.isEmpty = true
-        fragmentMainViewModel.loadTasks()
+        fragmentMainViewModel.loadPage()
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first()?.isEmpty() == null)
@@ -123,21 +128,21 @@ class FragmentMainViewModelTest {
     }
 
     @Test
-    fun test_loadTasks_expectedException() = runBlocking {
+    fun test_loadPage_expectedException() = runBlocking {
         fakeTaskRepositoryGettingByParams.isNeedToThrowException = true
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
         assertEquals(true, fragmentMainViewModel.getIsWasException().first() == null)
-        fragmentMainViewModel.loadTasks()
+        fragmentMainViewModel.loadPage()
         assertEquals(false, fragmentMainViewModel.getIsWasException().first() == null)
         assertEquals(true, fragmentMainViewModel.getIsWasException().value is DomainException)
     }
 
     @Test
-    fun testLoadTasksWithTaskCategories() = runBlocking {
+    fun test_loadPageWithTaskCategories() = runBlocking {
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fragmentMainViewModel.getTasks().first().isNullOrEmpty())
-        fragmentMainViewModel.loadTasks()
+        fragmentMainViewModel.loadPage()
         assertEquals(true, fakeTaskRepositoryGetting.countOfRequest == 0)
         assertEquals(true, fakeTaskRepositoryGettingByParams.requestCount == 1)
         assertEquals(false, fragmentMainViewModel.getTasks().first()?.isEmpty() == true)
@@ -160,6 +165,74 @@ class FragmentMainViewModelTest {
         fakeTaskCategoryRepository.isNeedToThrowException = true
         fragmentMainViewModel.updateTaskCategories(data)
         assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
+    }
+
+    @Test
+    fun loadPage_checkTaskLayoutManagerLinear() = runBlocking {
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value == null)
+        fragmentMainViewModel.loadPage()
+        assertEquals(false, fragmentMainViewModel.getTaskLayoutManager().value == null)
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value?.name == fakeMutableTaskLayoutManager.linear)
+    }
+
+    @Test
+    fun loadPage_checkTaskLayoutManagerGrid() = runBlocking {
+        fakeMutableTaskLayoutManager.isGrid = true
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value == null)
+        fragmentMainViewModel.loadPage()
+        assertEquals(false, fragmentMainViewModel.getTaskLayoutManager().value == null)
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value?.name == fakeMutableTaskLayoutManager.grid)
+    }
+
+    @Test
+    fun saveTaskLayoutManager_linear() {
+        val manager = TaskLayoutManager.LinearLayoutManager()
+        fragmentMainViewModel.saveTaskLayoutManagerUseCase(manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value == null)
+    }
+
+    @Test
+    fun saveTaskLayoutManager_grid() {
+        val manager = TaskLayoutManager.GridLayoutManager()
+        fragmentMainViewModel.saveTaskLayoutManagerUseCase(manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value == null)
+    }
+
+    @Test
+    fun saveTaskLayoutManager_expectedException() {
+        fakeMutableTaskLayoutManager.exception = true
+        val manager = TaskLayoutManager.GridLayoutManager()
+        fragmentMainViewModel.saveTaskLayoutManagerUseCase(manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
+        assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
+        assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
+    }
+
+}
+
+private class FakeMutableTaskLayoutManager: TaskLayoutManagerRepository.MutableTaskLayoutManagerRepository {
+
+    val grid = TaskLayoutManager.GridLayoutManager().name
+    val linear = TaskLayoutManager.LinearLayoutManager().name
+    var isGrid = false
+    var exception = false
+    var savedManager: TaskLayoutManager? = null
+    var savedRequests = 0
+
+    override suspend fun saveTaskLayoutManager(newManager: TaskLayoutManager) {
+        if (exception) throw DomainException("some exception")
+        savedRequests++
+        savedManager = newManager
+    }
+
+    override suspend fun getTaskLayoutManager(): String? {
+        if (exception) throw DomainException("some exception")
+        if (isGrid) return grid
+        return linear
     }
 
 }

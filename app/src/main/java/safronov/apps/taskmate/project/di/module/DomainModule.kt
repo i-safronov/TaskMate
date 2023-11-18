@@ -11,6 +11,7 @@ import safronov.apps.data.repository_impl.task_category.TaskCategoryRepositoryIm
 import safronov.apps.data.repository_impl.user_login.UserLoginRepositoryImpl
 import safronov.apps.domain.repository.task.TaskRepository
 import safronov.apps.domain.repository.task_category.TaskCategoryRepository
+import safronov.apps.domain.repository.task_layout_manager.TaskLayoutManagerRepository
 import safronov.apps.domain.repository.user_login.UserLoginRepository
 import safronov.apps.domain.use_case.task.create.InsertTaskListUseCase
 import safronov.apps.domain.use_case.task.create.InsertTaskTextUseCase
@@ -29,6 +30,8 @@ import safronov.apps.domain.use_case.task_category.read.GetTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.read.GetTaskCategoryByIdUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoriesUseCase
 import safronov.apps.domain.use_case.task_category.update.UpdateTaskCategoryUseCase
+import safronov.apps.domain.use_case.task_layout_manager.GetTaskLayoutManagerUseCase
+import safronov.apps.domain.use_case.task_layout_manager.SaveTaskLayoutManagerUseCase
 import safronov.apps.domain.use_case.user_login.create.UserLogInUseCase
 import safronov.apps.domain.use_case.user_login.read.IsUserLoggedInUseCase
 
@@ -212,6 +215,24 @@ class DomainModule {
         taskRepository: TaskRepository.TaskRepositoryMutable
     ): ChangeTaskTextUseCase {
         return ChangeTaskTextUseCase(changingTaskRepository = taskRepository)
+    }
+
+    @Provides
+    fun provideGetTaskLayoutManagerUseCase(
+        repository: TaskLayoutManagerRepository.MutableTaskLayoutManagerRepository
+    ): GetTaskLayoutManagerUseCase {
+        return GetTaskLayoutManagerUseCase(
+            gettingTaskLayoutManager = repository
+        )
+    }
+
+    @Provides
+    fun provideSaveTaskLayoutManagerUseCase(
+        repository: TaskLayoutManagerRepository.MutableTaskLayoutManagerRepository
+    ): SaveTaskLayoutManagerUseCase {
+        return SaveTaskLayoutManagerUseCase(
+            savingTaskLayoutManagerRepository = repository
+        )
     }
 
 }
