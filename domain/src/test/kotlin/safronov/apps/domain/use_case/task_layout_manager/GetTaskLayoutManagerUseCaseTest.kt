@@ -39,6 +39,12 @@ class GetTaskLayoutManagerUseCaseTest {
         getTaskLayoutManagerUseCase.execute()
     }
 
+    @Test
+    fun execute_expectedDefaultTaskLayoutManager() = runBlocking {
+        fakeGettingTaskLayoutManager.nothing = true
+        assertEquals(true, getTaskLayoutManagerUseCase.execute() == GetTaskLayoutManagerUseCase.DEFAULT_TASK_LAYOUT_MANAGER)
+    }
+
 }
 
 private class FakeGettingTaskLayoutManager: TaskLayoutManagerRepository.GettingTaskLayoutManager {
@@ -47,10 +53,12 @@ private class FakeGettingTaskLayoutManager: TaskLayoutManagerRepository.GettingT
     val linear = TaskLayoutManager.LinearLayoutManager().name
     var isGrid = false
     var exception = false
+    var nothing = false
 
     override suspend fun getTaskLayoutManager(): String? {
         if (exception) throw DomainException("some exception")
         if (isGrid) return grid
+        if (nothing) return null
         return linear
     }
 
