@@ -191,6 +191,7 @@ class FragmentMainViewModelTest {
         assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
         assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
         assertEquals(true, fragmentMainViewModel.getIsWasException().value == null)
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value == manager)
     }
 
     @Test
@@ -200,6 +201,7 @@ class FragmentMainViewModelTest {
         assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
         assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
         assertEquals(true, fragmentMainViewModel.getIsWasException().value == null)
+        assertEquals(true, fragmentMainViewModel.getTaskLayoutManager().value == manager)
     }
 
     @Test

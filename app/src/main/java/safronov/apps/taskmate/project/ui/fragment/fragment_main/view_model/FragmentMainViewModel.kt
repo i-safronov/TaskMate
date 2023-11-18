@@ -108,6 +108,7 @@ class FragmentMainViewModel(
     ) {
         asyncWork(showUiWorkStarted = {}, doWork = {
             saveTaskLayoutManagerUseCase.execute(manager)
+            _taskLayoutManager.value = manager
         }, showUi = {}, wasException = {
             _isException.value = it
         })
