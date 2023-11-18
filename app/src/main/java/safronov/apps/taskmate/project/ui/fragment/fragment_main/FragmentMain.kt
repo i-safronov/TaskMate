@@ -375,6 +375,11 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
     private fun clearSelectionModeOnTasks() {
         removeMenuFromHomePageToolBar()
         inflateMenuOnHomePageToolBar(R.menu.fragment_main_toolbar_menu)
+        homePageToolBarService.changeTaskCategoryIcon(
+            toolBar = requireHomePageToolBar(),
+            taskCategory = fragmentMainViewModel?.getCategory()?.value
+        )
+
         observeOnToolBarMenuItemClick()
         requireHomePageToolBar().title = getString(R.string.app_name)
         rcvTask.clearSelectionMode()
