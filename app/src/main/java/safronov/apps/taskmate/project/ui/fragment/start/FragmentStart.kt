@@ -50,7 +50,7 @@ class FragmentStart : FragmentBase() {
 
     override fun handeException(e: RuntimeException) {
         findNavController().navigate(
-            R.id.action_fragmentHomePage_to_fragmentError,
+            R.id.action_fragmentStart_to_fragmentError,
             bundleOf(
                 FragmentError.ERROR_MESSAGE to e.message
             )
