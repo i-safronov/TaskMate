@@ -207,8 +207,6 @@ class FragmentMainViewModelTest {
         fakeMutableTaskLayoutManager.exception = true
         val manager = TaskLayoutManager.GridLayoutManager()
         fragmentMainViewModel.saveTaskLayoutManagerUseCase(manager)
-        assertEquals(true, fakeMutableTaskLayoutManager.savedManager == manager)
-        assertEquals(true, fakeMutableTaskLayoutManager.savedRequests == 1)
         assertEquals(true, fragmentMainViewModel.getIsWasException().value != null)
     }
 
@@ -223,10 +221,10 @@ private class FakeMutableTaskLayoutManager: TaskLayoutManagerRepository.MutableT
     var savedManager: TaskLayoutManager? = null
     var savedRequests = 0
 
-    override suspend fun saveTaskLayoutManager(newManager: TaskLayoutManager) {
+    override suspend fun saveTaskLayoutManager(manager: TaskLayoutManager) {
         if (exception) throw DomainException("some exception")
         savedRequests++
-        savedManager = newManager
+        savedManager = manager
     }
 
     override suspend fun getTaskLayoutManager(): String? {
