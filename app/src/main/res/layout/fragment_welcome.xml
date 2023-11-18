@@ -12,17 +12,15 @@
         android:id="@+id/welcome_img"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/logo"
-        android:scaleType="centerCrop"
-        android:tintMode="src_atop"
-        app:tint="#99000000"
+        android:layout_marginBottom="@dimen/margin_very_big"
         android:adjustViewBounds="true"
-        app:shapeAppearanceOverlay="@style/logo_image"
-        app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo"
+        android:tintMode="src_atop"
         app:layout_constraintBottom_toTopOf="@+id/btn_log_in"
-        android:layout_marginBottom="@dimen/margin_very_big" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_welcome"
