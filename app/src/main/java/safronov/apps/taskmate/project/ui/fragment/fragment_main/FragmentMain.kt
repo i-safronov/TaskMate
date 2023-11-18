@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import safronov.apps.domain.model.task.Task
 import safronov.apps.domain.model.task_category.TaskCategory
+import safronov.apps.domain.model.task_layout_manager.TaskLayoutManager
 import safronov.apps.taskmate.R
 import safronov.apps.taskmate.databinding.AlertDialogChooseLinearLayoutBinding
 import safronov.apps.taskmate.databinding.AskUserBinding
@@ -86,12 +87,13 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         requireAppComponent().inject(this)
         fragmentMainViewModel = ViewModelProvider(this, fragmentMainViewModelFactory)
             .get(FragmentMainViewModel::class.java)
-        recyclerViewBuilder.setupRcv(binding.rcvTasks, rcvTask, GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT))
+        binding.rcvTasks.adapter = rcvTask
         fragmentMainViewModel?.loadPage()
     }
 
     override fun uiCreated(view: View, savedInstanceState: Bundle?) {
         binding.animateFbAddTask.startRippleAnimation()
+        observeTaskLayoutManager()
         observeOnToolBarMenuItemClick()
         observeStateLoading()
         observeTasks()
@@ -99,6 +101,16 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
         fbAddTaskOnClickListener()
         searchOnClickListener()
         onBackPressListener()
+    }
+
+    private fun observeTaskLayoutManager() = viewLifecycleOwner.lifecycleScope.launch(dispatchersList.ui()) {
+        fragmentMainViewModel?.getTaskLayoutManager()?.collect {
+            if (it is TaskLayoutManager.GridLayoutManager) {
+                binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
+            } else if (it is TaskLayoutManager.LinearLayoutManager) {
+                binding.rcvTasks.layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
     }
 
     private fun observeOnToolBarMenuItemClick() {
@@ -132,11 +144,11 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
                 val alertDialog = AlertDialog.Builder(requireContext()).create()
                 alertDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
                 alertView.linear.setOnClickListener {
-                    binding.rcvTasks.layoutManager = LinearLayoutManager(requireContext())
+                    fragmentMainViewModel?.saveTaskLayoutManagerUseCase(TaskLayoutManager.LinearLayoutManager())
                     alertDialog.dismiss()
                 }
                 alertView.grid.setOnClickListener {
-                    binding.rcvTasks.layoutManager = GridLayoutManager(requireContext(), RCV_TASKS_SPAN_COUNT)
+                    fragmentMainViewModel?.saveTaskLayoutManagerUseCase(TaskLayoutManager.GridLayoutManager())
                     alertDialog.dismiss()
                 }
                 alertDialog.setView(alertView.root)
