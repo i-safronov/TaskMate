@@ -11,6 +11,8 @@
 ## Download
 The application is under development, will soon be available on [Play Market](https://play.google.com/store/apps?hl=en&gl=US), please wait
 
+<img src="/preview/preview_video.gif" align="right" width="320"/>
+
 ## Tech stack & Libraries
 - Minimum SDK level 23
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
