@@ -51,5 +51,5 @@ The domain layer, also known as the business logic layer, is the core of an appl
 
 The data layer, is responsible for managing and accessing data in a software application. It acts as an intermediary between the application logic and the underlying data storage systems, such as databases, files, or web services. The data layer provides a consistent and unified interface for accessing data, regardless of the specific data source or storage mechanism.
 
-
-
+## Find this repository useful? ❤️
+I will be very glad if you rate (make a star), you can also fork to make the application better
