@@ -229,6 +229,7 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
     override fun onStop() {
         super.onStop()
         removeMenuFromHomePageToolBar()
+        rcvTask.clearSelectionMode()
     }
 
     override fun removeUI() {
@@ -379,7 +380,6 @@ class FragmentMain : FragmentBase(), RcvTaskTypeInt, RcvTaskInt, RcvChangingTask
             toolBar = requireHomePageToolBar(),
             taskCategory = fragmentMainViewModel?.getCategory()?.value
         )
-
         observeOnToolBarMenuItemClick()
         requireHomePageToolBar().title = getString(R.string.app_name)
         rcvTask.clearSelectionMode()
