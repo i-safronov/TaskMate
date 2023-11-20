@@ -23,7 +23,7 @@ The application is under development, will soon be available on [Play Market](ht
 - GJson converter to convert domain object.
 - [Jetpack Navigation](https://developer.android.com/guide/navigation/get-started) to navigate between fragments.
 - Architecture
-  - MVVM Architecture (View - DataBinding - ViewModel - Model)
+  - MVVM Architecture (View - ViewBinding - ViewModel - Model)
   - Clean Architecture
   - TDD (Test-driven development) Pattern
 
@@ -34,4 +34,11 @@ TaskMate follows all the rules of [Clean Architecture](https://developer.android
 <img src="preview/architecture_preview.png"/>
 </p>
 
+The overall architecture of **TaskMate** consists of three layers; user interface layer, domain layer and data layer. Each level has dedicated components and each has different responsibilities
 
+ ## UI module
+ <p align="center">
+<img src="preview/ui_module_preview.png"/>
+</p>
+
+The UI layer consists of UI elements to configure screens that could interact with users and [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) that holds app states and restores data when configuration changes.
