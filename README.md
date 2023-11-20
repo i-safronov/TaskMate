@@ -36,9 +36,12 @@ TaskMate follows all the rules of [Clean Architecture](https://developer.android
 
 The overall architecture of **TaskMate** consists of three layers; user interface layer, domain layer and data layer. Each level has dedicated components and each has different responsibilities
 
- ## UI module
- <p align="center">
-<img src="preview/ui_module_preview.png"/>
-</p>
+## UI module
+<img src="preview/ui_module_preview.png" width="620"/>
 
 The UI layer consists of UI elements to configure screens that could interact with users and [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) that holds app states and restores data when configuration changes.
+
+## Domain module
+<img src="preview/domain_module_preview.png" width="620"/>
+
+In software architecture, the domain layer, also known as the business logic layer, is the core of an application. It encapsulates the business rules, processes, and calculations that represent the core functionality of the application. The domain layer is responsible for ensuring that the application adheres to the business rules and models the real-world domain that the application represents.
