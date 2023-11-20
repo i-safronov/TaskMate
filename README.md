@@ -16,9 +16,9 @@ The application is under development, will soon be available on [Play Market](ht
 ## Tech stack & Libraries
 - Minimum SDK level 23
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
-- ViewModel: Manages UI-related data holder and lifecycle aware. Allows data to survive configuration changes such as screen rotations.
-- ViewBinding: Binds UI components in your layouts to data sources in your app.
-- Room: Constructs Database by providing an abstraction layer over SQLite to allow fluent database access.
+- [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel): Manages UI-related data holder and lifecycle aware. Allows data to survive configuration changes such as screen rotations.
+- [ViewBinding](https://developer.android.com/topic/libraries/view-binding): Binds UI components in your layouts to data sources in your app.
+- [Room](https://developer.android.com/training/data-storage/room): Constructs Database by providing an abstraction layer over SQLite to allow fluent database access.
 - [Dagger](https://github.com/google/dagger): for dependency injection.
 - GJson converter to convert domain object.
 - [Jetpack Navigation](https://developer.android.com/guide/navigation/get-started) to navigate between fragments.
