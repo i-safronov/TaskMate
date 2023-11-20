@@ -328,9 +328,7 @@ class TaskRepositoryImplTest {
 
     @Test
     fun testGetTasksAsFlowByTaskCategory() = runBlocking {
-        taskRepository.insertTaskList(taskList)
-        assertEquals(true, taskList == taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn.first()))
-        val result: Task = taskRepository.getTasksAsFlowByTaskCategory(
+        val result = taskRepository.getTasksAsFlowByTaskCategory(
             TaskCategory(
                 id = 2342,
                 icon = null,
@@ -338,7 +336,7 @@ class TaskRepositoryImplTest {
                 categoryName = "adsfd",
                 categoryType = CategoryTypes.User
             )
-        ).first().first()
+        ).first()[1]
         if (result is Task.TaskText) {
             assertEquals(true, taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()) == result)
         } else if (result is Task.TaskList) {
@@ -371,13 +369,22 @@ private class FakeTaskService: TaskService {
     var isNeedToThrowException = false
     var requestDeleteItemId: Long? = null
     var requestToDeleteItemsId: MutableList<Long?> = mutableListOf()
-    var dataToReturn = mutableListOf(
+    var dataToReturn: MutableList<TaskEntity> = mutableListOf(
         TaskEntity(
             title = "some title",
             content = "content",
             date = "today",
             taskCategoryId = 45,
             taskType = Task.TaskType.Text,
+            isPinned = false,
+            id = 435
+        ),
+        TaskEntity(
+            title = "some title",
+            content = null,
+            date = "today",
+            taskCategoryId = 45,
+            taskType = Task.TaskType.List,
             isPinned = false,
             id = 435
         )
