@@ -11,7 +11,7 @@
 ## Download
 The application is under development, will soon be available on [Play Market](https://play.google.com/store/apps?hl=en&gl=US), please wait
 
-<img src="/preview/preview_video.gif" align="right" width="320"/>
+<img src="/preview/preview_video.gif" align="right" width="220"/>
 
 ## Tech stack & Libraries
 - Minimum SDK level 23
@@ -21,7 +21,17 @@ The application is under development, will soon be available on [Play Market](ht
 - Room: Constructs Database by providing an abstraction layer over SQLite to allow fluent database access.
 - [Dagger](https://github.com/google/dagger): for dependency injection.
 - GJson converter to convert domain object.
+- [Jetpack Navigation](https://developer.android.com/guide/navigation/get-started) to navigate between fragments.
 - Architecture
   - MVVM Architecture (View - DataBinding - ViewModel - Model)
   - Clean Architecture
   - TDD (Test-driven development) Pattern
+
+ ## Architecture
+TaskMate follows all the rules of [Clean Architecture](https://developer.android.com/topic/architecture), [TDD](https://en.wikipedia.org/wiki/Test-driven_development#:~:text=Test%2Ddriven%20development%20(TDD),software%20against%20all%20test%20cases.) and [SOLID](https://en.wikipedia.org/wiki/SOLID), which have become common development methodologies
+
+<p align="center">
+<img src="preview/architecture_preview.png"/>
+</p>
+
+
