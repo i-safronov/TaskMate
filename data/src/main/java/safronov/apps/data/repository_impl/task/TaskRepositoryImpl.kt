@@ -72,10 +72,16 @@ class TaskRepositoryImpl(
 
     override suspend fun getTasksAsFlowByTaskCategory(taskCategory: TaskCategory): Flow<List<Task>> {
         try {
-            return taskService.getTasksAsFlowByTaskCategory(
-                TaskCategoryEntity.convertTaskCategoryToTaskCategoryEntity(taskCategory)
-            ).map {
-                taskEntityConverter.convertListOfTaskEntityToListOfTaskList(it)
+            return taskService
+                .getTasksAsFlowByTaskCategory(
+                    taskCategory = TaskCategoryEntity.convertTaskCategoryToTaskCategoryEntity(taskCategory)
+                )
+                .map { taskEntities ->
+                val tasks = mutableListOf<Task>()
+                taskEntities.forEach {
+                    tasks.add(taskEntityConverter.getTaskByTaskEntity(it))
+                }
+                tasks
             }
         } catch (e: Exception) {
             throw DomainException(e.message, e)

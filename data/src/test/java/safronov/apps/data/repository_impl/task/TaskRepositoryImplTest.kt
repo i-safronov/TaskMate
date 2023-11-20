@@ -340,7 +340,8 @@ class TaskRepositoryImplTest {
         if (result is Task.TaskText) {
             assertEquals(true, taskEntityConverter.convertTaskEntityToTaskText(fakeTaskService.dataToReturn.first()) == result)
         } else if (result is Task.TaskList) {
-            assertEquals(true, taskList == result)
+            assertEquals(true,
+                taskEntityConverter.convertTaskEntityToTaskList(fakeTaskService.dataToReturn[1]) == result)
         } else {
             throw IllegalStateException("oops")
         }
