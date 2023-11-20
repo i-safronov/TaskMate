@@ -35,3 +35,10 @@ TaskMate follows all the rules of [Clean Architecture](https://developer.android
 </p>
 
 The overall architecture of **TaskMate** consists of three layers; user interface layer, domain layer and data layer. Each level has dedicated components and each has different responsibilities
+
+ ## UI module
+ <p align="center">
+<img src="preview/ui_module_preview.png"/>
+</p>
+
+The UI layer consists of UI elements to configure screens that could interact with users and [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) that holds app states and restores data when configuration changes.
