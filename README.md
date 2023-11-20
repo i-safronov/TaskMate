@@ -1,7 +1,7 @@
 <h1 align="center">TaskMate</h1>
 
 <p align="center">  
-✏ TaskMate demonstrates modern Android development with Dagger, Coroutines, Flow, Jetpack (Room, ViewModel), and xml based on MVVM architecture.
+✏ TaskMate demonstrates modern Android development with Dagger, Coroutines, Flow, Jetpack (Room, ViewModel), Single Activity, and xml based on MVVM architecture.
 </p>
 
 <p align="center">
